@@ -134,5 +134,10 @@ int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, i
 
 // Hides all sprites in the shadowOAM; Must DMA the shadowOAM into the OAM after calling this function.
 void hideSprites() {
-    // add this from lab07!!
+    
+    for (int i = 0; i < 128; i++) {
+        shadowOAM[i].attr0 = ATTR0_HIDE;
+
+    } // for
+
 }
