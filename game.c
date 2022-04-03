@@ -112,8 +112,8 @@ void initZenith() {
     zenith.sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
     zenith.sprite.encodeWorldCol = zenith.sprite.worldCol * zenith.sprite.encodeFactor;
 
-    zenith.sprite.rdel = 4;
-    zenith.sprite.cdel = 4;
+    zenith.sprite.rdel = 8;
+    zenith.sprite.cdel = 8;
 
     zenith.sprite.width = 16;
     zenith.sprite.height = 16;
@@ -197,7 +197,15 @@ void moveUp(OBJECT* obj) {
         obj->yPos = obj->yTarget;
         obj->sprite.worldRow = 24 + obj->yTarget * 16 + vOff;
         obj->sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
-        obj->idle = 1;
+        
+        if (BUTTON_HELD(BUTTON_UP) && zenith.yTarget - 1 > -1) {
+            obj->yTarget--;
+            moveUp(obj);
+
+        } else {
+            obj->idle = 1;
+
+        } // if
 
     } else {
 
@@ -220,7 +228,15 @@ void moveDown(OBJECT* obj) {
         obj->yPos = obj->yTarget;
         obj->sprite.worldRow = 24 + obj->yPos * 16 + vOff;
         obj->sprite.encodeWorldRow = 8 * obj->sprite.worldRow;
-        obj->idle = 1;
+        
+        if (BUTTON_HELD(BUTTON_DOWN) && zenith.yTarget + 1 < mapHeight) {
+            obj->yTarget++;
+            moveDown(obj);
+
+        } else {
+            obj->idle = 1;
+
+        } // if
 
     } else {
 
@@ -243,7 +259,15 @@ void moveLeft(OBJECT* obj) {
         obj->xPos = obj->xTarget;
         obj->sprite.worldCol = 32 + obj->xTarget * 16 + hOff;
         obj->sprite.encodeWorldCol = zenith.sprite.worldCol * zenith.sprite.encodeFactor;
-        obj->idle = 1;
+        
+        if (BUTTON_HELD(BUTTON_LEFT) && zenith.xTarget - 1 > -1) {
+            obj->xTarget--;
+            moveLeft(obj);
+
+        } else {
+            obj->idle = 1;
+
+        } // if
 
     } else {
 
@@ -266,7 +290,15 @@ void moveRight(OBJECT* obj) {
         obj->xPos = obj->xTarget;
         obj->sprite.worldCol = 32 + obj->xPos * 16 + hOff;
         obj->sprite.encodeWorldCol = 8 * obj->sprite.worldCol;
-        obj->idle = 1;
+        
+        if (BUTTON_HELD(BUTTON_RIGHT) && zenith.xTarget + 1 < mapWidth) {
+            obj->xTarget++;
+            moveRight(obj);
+
+        } else {
+            obj->idle = 1;
+
+        } // if
 
     } else {
 
