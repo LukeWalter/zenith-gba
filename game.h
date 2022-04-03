@@ -6,4 +6,3 @@ extern int gameWon;
 void initGame();
 void updateGame();
 void drawGame();
-void updateOAM();

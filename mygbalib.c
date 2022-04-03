@@ -141,3 +141,8 @@ void hideSprites() {
     } // for
 
 }
+
+void updateOAM() {
+    DMANow(3, shadowOAM, OAM, 512);
+
+} // updateOAM

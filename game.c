@@ -84,11 +84,6 @@ void drawGame() {
 
 } // drawGame
 
-void updateOAM() {
-    DMANow(3, shadowOAM, OAM, 512);
-
-} // updateOAM
-
 void initZenith() {
 
     zenith.sprite.encodeFactor = 8;

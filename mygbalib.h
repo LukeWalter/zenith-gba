@@ -150,6 +150,7 @@ extern OBJ_ATTR shadowOAM[];
 
 // Sprite Functions.
 void hideSprites();
+void updateOAM();
 
 // Sprite Constants.
 #define ROWMASK 0xFF
