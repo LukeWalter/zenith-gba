@@ -7,11 +7,11 @@
 
 typedef struct {
 
+    int worldRow;
+    int worldCol;
     int encodeFactor;
     int encodeWorldRow;
     int encodeWorldCol;
-    int worldRow;
-    int worldCol;
     int rdel;
     int cdel;
     int width;
@@ -32,12 +32,13 @@ typedef struct {
     int yPos;
     int xTarget;
     int yTarget;
+    int idle;
     int active;
     ANISPRITE sprite;
 
-} PLAYER;
+} OBJECT;
 
-PLAYER zenith;
+OBJECT zenith;
 
 int hOff;
 int vOff;
@@ -45,10 +46,18 @@ int vOff;
 int gameOver;
 int gameWon;
 
+int mapWidth;
+int mapHeight;
+
 void initZenith();
 void updateZenith();
 void animateZenith();
 void drawZenith();
+
+void moveUp(OBJECT* obj);
+void moveDown(OBJECT* obj);
+void moveLeft(OBJECT* obj);
+void moveRight(OBJECT* obj);
 
 void initGame() {
     
@@ -57,6 +66,9 @@ void initGame() {
 
     gameOver = 0;
     gameWon = 0;
+
+    mapWidth = 11;
+    mapHeight = 7;
 
     DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
@@ -86,15 +98,22 @@ void drawGame() {
 
 void initZenith() {
 
+    zenith.xPos = 0;
+    zenith.yPos = 0;
+    zenith.xTarget = zenith.xPos;
+    zenith.yTarget = zenith.yPos;
+    zenith.idle = 1;
+    zenith.active = 1;
+
+    zenith.sprite.worldRow = 24 + zenith.yPos * 16 + vOff;
+    zenith.sprite.worldCol = 32 + zenith.xPos * 16 + hOff;
+
     zenith.sprite.encodeFactor = 8;
     zenith.sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
     zenith.sprite.encodeWorldCol = zenith.sprite.worldCol * zenith.sprite.encodeFactor;
 
-    zenith.sprite.worldRow = SCREENHEIGHT / 2 - zenith.sprite.width / 2 + vOff;
-    zenith.sprite.worldCol = SCREENWIDTH / 2 - zenith.sprite.height / 2 + hOff;
-
-    zenith.sprite.rdel = 6;
-    zenith.sprite.cdel = 6;
+    zenith.sprite.rdel = 4;
+    zenith.sprite.cdel = 4;
 
     zenith.sprite.width = 16;
     zenith.sprite.height = 16;
@@ -107,11 +126,23 @@ void initZenith() {
 
     zenith.sprite.attributes = &shadowOAM[0];
 
-    zenith.active = 1;
-
 } // initZenith
 
 void updateZenith() {
+
+    if (zenith.idle) {
+
+        if (BUTTON_PRESSED(BUTTON_UP) && zenith.yTarget - 1 > -1)                zenith.yTarget--;
+        else if (BUTTON_PRESSED(BUTTON_DOWN) && zenith.yTarget + 1 < mapHeight)  zenith.yTarget++;
+        else if (BUTTON_PRESSED(BUTTON_LEFT) && zenith.xTarget - 1 > -1)         zenith.xTarget--;
+        else if (BUTTON_PRESSED(BUTTON_RIGHT) && zenith.xTarget + 1 < mapWidth)  zenith.xTarget++;
+
+    } // if
+
+    if (zenith.yTarget < zenith.yPos)      { zenith.idle = 0; moveUp(&zenith); }
+    else if (zenith.yTarget > zenith.yPos) { zenith.idle = 0; moveDown(&zenith); }
+    else if (zenith.xTarget < zenith.xPos) { zenith.idle = 0; moveLeft(&zenith); }
+    else if (zenith.xTarget > zenith.xPos) { zenith.idle = 0; moveRight(&zenith); }
 
     animateZenith();
 
@@ -127,10 +158,10 @@ void animateZenith() {
     
     } // if
 
-    if(BUTTON_HELD(BUTTON_UP))    zenith.sprite.aniState = BACKWALK;
-    if(BUTTON_HELD(BUTTON_DOWN))  zenith.sprite.aniState = FRONTWALK;
-    if(BUTTON_HELD(BUTTON_LEFT))  zenith.sprite.aniState = LEFTWALK;
-    if(BUTTON_HELD(BUTTON_RIGHT)) zenith.sprite.aniState = RIGHTWALK;
+    if (BUTTON_HELD(BUTTON_UP))    zenith.sprite.aniState = BACKWALK;
+    if (BUTTON_HELD(BUTTON_DOWN))  zenith.sprite.aniState = FRONTWALK;
+    if (BUTTON_HELD(BUTTON_LEFT))  zenith.sprite.aniState = LEFTWALK;
+    if (BUTTON_HELD(BUTTON_RIGHT)) zenith.sprite.aniState = RIGHTWALK;
 
 
     if (zenith.sprite.aniState == IDLE) {
@@ -158,3 +189,95 @@ void drawZenith() {
     } // if
 
 } // drawZenith
+
+void moveUp(OBJECT* obj) {
+
+    if (obj->sprite.worldRow <= 24 + obj->yTarget * 16 + vOff) {
+
+        obj->yPos = obj->yTarget;
+        obj->sprite.worldRow = 24 + obj->yTarget * 16 + vOff;
+        obj->sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
+        obj->idle = 1;
+
+    } else {
+
+        obj->sprite.encodeWorldRow -= obj->sprite.rdel;
+        obj->sprite.worldRow = obj->sprite.encodeWorldRow / obj->sprite.encodeFactor;
+
+        if ((obj->sprite.worldRow - vOff < SCREENHEIGHT / 2 - obj->sprite.height / 2) && (vOff > 0)) {
+            vOff--;
+    
+        } // if
+
+    } // if
+
+} // moveUp
+
+void moveDown(OBJECT* obj) {
+    
+    if (zenith.sprite.worldRow >= 24 + obj->yTarget * 16 + vOff) {
+
+        obj->yPos = obj->yTarget;
+        obj->sprite.worldRow = 24 + obj->yPos * 16 + vOff;
+        obj->sprite.encodeWorldRow = 8 * obj->sprite.worldRow;
+        obj->idle = 1;
+
+    } else {
+
+        obj->sprite.encodeWorldRow += obj->sprite.rdel;
+        obj->sprite.worldRow = obj->sprite.encodeWorldRow / obj->sprite.encodeFactor;
+
+        if ((obj->sprite.worldRow - vOff > SCREENHEIGHT / 2 - obj->sprite.height / 2) && (vOff < mapHeight - SCREENHEIGHT)) { 
+            vOff++;
+        
+        } // if
+
+    } // if
+
+} // moveDown
+
+void moveLeft(OBJECT* obj) {
+
+    if (obj->sprite.worldCol <= 32 + obj->xTarget * 16 + hOff) {
+
+        obj->xPos = obj->xTarget;
+        obj->sprite.worldCol = 32 + obj->xTarget * 16 + hOff;
+        obj->sprite.encodeWorldCol = zenith.sprite.worldCol * zenith.sprite.encodeFactor;
+        obj->idle = 1;
+
+    } else {
+
+        obj->sprite.encodeWorldCol -= obj->sprite.cdel;
+        obj->sprite.worldCol = obj->sprite.encodeWorldCol / obj->sprite.encodeFactor;
+
+        if ((obj->sprite.worldCol - hOff < SCREENWIDTH / 2 - obj->sprite.width / 2) && (hOff > 0)) {
+            vOff--;
+    
+        } // if
+
+    } // if
+
+} // moveLeft
+
+void moveRight(OBJECT* obj) {
+
+    if (obj->sprite.worldCol >= 32 + obj->xTarget * 16 + hOff) {
+
+        obj->xPos = obj->xTarget;
+        obj->sprite.worldCol = 32 + obj->xPos * 16 + hOff;
+        obj->sprite.encodeWorldCol = 8 * obj->sprite.worldCol;
+        obj->idle = 1;
+
+    } else {
+
+        obj->sprite.encodeWorldCol += obj->sprite.cdel;
+        obj->sprite.worldCol = obj->sprite.encodeWorldCol / obj->sprite.encodeFactor;
+
+        if ((obj->sprite.worldCol - hOff > SCREENWIDTH / 2 - obj->sprite.width / 2) && (hOff < mapWidth - SCREENWIDTH)) {
+            vOff--;
+    
+        } // if
+
+    } // if
+
+} // moveRight

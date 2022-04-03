@@ -4,6 +4,7 @@
 #include "game.h"
 
 #include "zenithtitle.h"
+#include "cave.h"
 #include "winscreen.h"
 #include "losescreen.h"
 
@@ -143,9 +144,9 @@ void start() {
 // Sets up the game state.
 void goToGame() {
 
-    DMANow(3, 0, PALETTE, 256);
-    DMANow(3, 0, &CHARBLOCK[0], zenithtitleTilesLen / 2);
-    DMANow(3, 0, &SCREENBLOCK[28], zenithtitleMapLen / 2);
+    DMANow(3, cavePal, PALETTE, 256);
+    DMANow(3, caveTiles, &CHARBLOCK[0], caveTilesLen / 2);
+    DMANow(3, caveMap, &SCREENBLOCK[28], caveMapLen / 2);
 
     shadowOAM[127].attr0 = ATTR0_HIDE;
     state = GAME;
