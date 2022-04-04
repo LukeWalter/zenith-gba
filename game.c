@@ -77,10 +77,13 @@ void initGame() {
     gameOver = 0;
     gameWon = 0;
 
+    // Measured in double tiles
     mapWidth = 11;
     mapHeight = 7;
-    mapXOffset = 32;
-    mapYOffset = 24;
+
+    // Measured in single tiles
+    mapXOffset = 4;
+    mapYOffset = 3;
 
     DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
@@ -117,8 +120,8 @@ void initZenith() {
     zenith.idle = 1;
     zenith.active = 1;
 
-    zenith.sprite.worldRow = mapYOffset + zenith.yPos * 16 + vOff;
-    zenith.sprite.worldCol = mapXOffset + zenith.xPos * 16 + hOff;
+    zenith.sprite.worldRow = 8 * mapYOffset + zenith.yPos * 16 + vOff;
+    zenith.sprite.worldCol = 8 * mapXOffset + zenith.xPos * 16 + hOff;
 
     zenith.sprite.encodeFactor = 8;
     zenith.sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
@@ -232,10 +235,10 @@ void moveUp(OBJECT* obj) {
 
     obj->idle = 0;
 
-    if (obj->sprite.worldRow <= mapYOffset + obj->yTarget * 16 + vOff) {
+    if (obj->sprite.worldRow <= 8 * mapYOffset + obj->yTarget * 16 + vOff) {
 
         obj->yPos = obj->yTarget;
-        obj->sprite.worldRow = mapYOffset + obj->yTarget * 16 + vOff;
+        obj->sprite.worldRow = 8 * mapYOffset + obj->yTarget * 16 + vOff;
         obj->sprite.encodeWorldRow = obj->sprite.worldRow * obj->sprite.encodeFactor;
         
         if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {
@@ -265,10 +268,10 @@ void moveDown(OBJECT* obj) {
     
     obj->idle = 0;
 
-    if (obj->sprite.worldRow >= mapYOffset + obj->yTarget * 16 + vOff) {
+    if (obj->sprite.worldRow >= 8 * mapYOffset + obj->yTarget * 16 + vOff) {
 
         obj->yPos = obj->yTarget;
-        obj->sprite.worldRow = mapYOffset + obj->yPos * 16 + vOff;
+        obj->sprite.worldRow = 8 * mapYOffset + obj->yPos * 16 + vOff;
         obj->sprite.encodeWorldRow = 8 * obj->sprite.worldRow;
         
         if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(obj)) {
@@ -298,10 +301,10 @@ void moveLeft(OBJECT* obj) {
 
     obj->idle = 0;
 
-    if (obj->sprite.worldCol <= mapXOffset + obj->xTarget * 16 + hOff) {
+    if (obj->sprite.worldCol <= 8 * mapXOffset + obj->xTarget * 16 + hOff) {
 
         obj->xPos = obj->xTarget;
-        obj->sprite.worldCol = mapXOffset + obj->xTarget * 16 + hOff;
+        obj->sprite.worldCol = 8 * mapXOffset + obj->xTarget * 16 + hOff;
         obj->sprite.encodeWorldCol = obj->sprite.worldCol * obj->sprite.encodeFactor;
         
         if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(obj)) {
@@ -331,10 +334,10 @@ void moveRight(OBJECT* obj) {
 
     obj->idle = 0;
 
-    if (obj->sprite.worldCol >= mapXOffset + obj->xTarget * 16 + hOff) {
+    if (obj->sprite.worldCol >= 8 * mapXOffset + obj->xTarget * 16 + hOff) {
 
         obj->xPos = obj->xTarget;
-        obj->sprite.worldCol = mapXOffset + obj->xPos * 16 + hOff;
+        obj->sprite.worldCol = 8 * mapXOffset + obj->xPos * 16 + hOff;
         obj->sprite.encodeWorldCol = 8 * obj->sprite.worldCol;
         
         if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(obj)) {
