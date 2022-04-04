@@ -1,6 +1,8 @@
 #include <stdlib.h> // Possible includePath errors
 
 #include "mygbalib.h"
+#include "print.h"
+
 #include "game.h"
 
 #include "zenithtitle.h"
@@ -97,8 +99,10 @@ int main() {
 // Sets up GBA.
 void initialize() {
     
-    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
-    REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_4BPP | BG_SIZE_LARGE;
+    mgba_open();
+
+    REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
+    REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_4BPP | BG_SIZE_LARGE;
 
     buttons = BUTTONS;
     oldButtons = 0;
@@ -143,12 +147,6 @@ void start() {
 
 // Sets up the game state.
 void goToGame() {
-
-    DMANow(3, cavePal, PALETTE, 256);
-    DMANow(3, caveTiles, &CHARBLOCK[0], caveTilesLen / 2);
-    DMANow(3, caveMap, &SCREENBLOCK[28], caveMapLen / 2);
-
-    shadowOAM[127].attr0 = ATTR0_HIDE;
     state = GAME;
     
 } // goToGame

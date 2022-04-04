@@ -2,8 +2,11 @@
 
 #include "game.h"
 #include "mygbalib.h"
+#include "print.h"
 
 #include "spritesheet.h"
+#include "cave.h"
+#include "house.h"
 
 typedef struct {
 
@@ -40,9 +43,6 @@ typedef struct {
 
 OBJECT zenith;
 
-int hOff;
-int vOff;
-
 int gameOver;
 int gameWon;
 
@@ -50,6 +50,9 @@ int mapWidth;
 int mapHeight;
 int mapXOffset;
 int mapYOffset;
+
+int hOff;
+int vOff;
 
 void initZenith();
 void updateZenith();
@@ -70,9 +73,6 @@ void readInput(OBJECT* obj);
 
 
 void initGame() {
-    
-    hOff = 0;
-    vOff = 0;
 
     gameOver = 0;
     gameWon = 0;
@@ -84,6 +84,15 @@ void initGame() {
     // Measured in single tiles
     mapXOffset = 4;
     mapYOffset = 3;
+
+    hOff = 0;
+    vOff = 0;
+
+    DMANow(3, cavePal, PALETTE, 256);
+    DMANow(3, caveTiles, &CHARBLOCK[0], caveTilesLen / 2);
+    DMANow(3, caveMap, &SCREENBLOCK[28], caveMapLen / 2);
+    REG_BG1VOFF = vOff;
+    REG_BG1HOFF = hOff;
 
     DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
@@ -106,8 +115,8 @@ void drawGame() {
     waitForVBlank();
     updateOAM();
 
-    REG_BG1HOFF = hOff;
     REG_BG1VOFF = vOff;
+    REG_BG1HOFF = hOff;
 
 } // drawGame
 
@@ -120,8 +129,8 @@ void initZenith() {
     zenith.idle = 1;
     zenith.active = 1;
 
-    zenith.sprite.worldRow = 8 * mapYOffset + zenith.yPos * 16 + vOff;
-    zenith.sprite.worldCol = 8 * mapXOffset + zenith.xPos * 16 + hOff;
+    zenith.sprite.worldRow = 8 * mapYOffset + zenith.yPos * 16;
+    zenith.sprite.worldCol = 8 * mapXOffset + zenith.xPos * 16;
 
     zenith.sprite.encodeFactor = 8;
     zenith.sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
@@ -235,10 +244,10 @@ void moveUp(OBJECT* obj) {
 
     obj->idle = 0;
 
-    if (obj->sprite.worldRow <= 8 * mapYOffset + obj->yTarget * 16 + vOff) {
+    if (obj->sprite.worldRow <= 8 * mapYOffset + obj->yTarget * 16) {
 
         obj->yPos = obj->yTarget;
-        obj->sprite.worldRow = 8 * mapYOffset + obj->yTarget * 16 + vOff;
+        obj->sprite.worldRow = 8 * mapYOffset + obj->yTarget * 16;
         obj->sprite.encodeWorldRow = obj->sprite.worldRow * obj->sprite.encodeFactor;
         
         if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {
@@ -257,7 +266,7 @@ void moveUp(OBJECT* obj) {
 
         if ((obj->sprite.worldRow - vOff < SCREENHEIGHT / 2 - obj->sprite.height / 2) && (vOff > 0)) {
             vOff--;
-    
+        
         } // if
 
     } // if
@@ -268,10 +277,10 @@ void moveDown(OBJECT* obj) {
     
     obj->idle = 0;
 
-    if (obj->sprite.worldRow >= 8 * mapYOffset + obj->yTarget * 16 + vOff) {
+    if (obj->sprite.worldRow >= 8 * mapYOffset + obj->yTarget * 16) {
 
         obj->yPos = obj->yTarget;
-        obj->sprite.worldRow = 8 * mapYOffset + obj->yPos * 16 + vOff;
+        obj->sprite.worldRow = 8 * mapYOffset + obj->yPos * 16;
         obj->sprite.encodeWorldRow = 8 * obj->sprite.worldRow;
         
         if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(obj)) {
@@ -288,7 +297,7 @@ void moveDown(OBJECT* obj) {
         obj->sprite.encodeWorldRow += obj->sprite.rdel;
         obj->sprite.worldRow = obj->sprite.encodeWorldRow / obj->sprite.encodeFactor;
 
-        if ((obj->sprite.worldRow - vOff > SCREENHEIGHT / 2 - obj->sprite.height / 2) && (vOff < mapHeight - SCREENHEIGHT)) { 
+        if ((obj->sprite.worldRow - vOff > SCREENHEIGHT / 2 - obj->sprite.height / 2) && (vOff < (16 * mapHeight + 8 * mapYOffset) - SCREENHEIGHT)) {
             vOff++;
         
         } // if
@@ -301,10 +310,10 @@ void moveLeft(OBJECT* obj) {
 
     obj->idle = 0;
 
-    if (obj->sprite.worldCol <= 8 * mapXOffset + obj->xTarget * 16 + hOff) {
+    if (obj->sprite.worldCol <= 8 * mapXOffset + obj->xTarget * 16) {
 
         obj->xPos = obj->xTarget;
-        obj->sprite.worldCol = 8 * mapXOffset + obj->xTarget * 16 + hOff;
+        obj->sprite.worldCol = 8 * mapXOffset + obj->xTarget * 16;
         obj->sprite.encodeWorldCol = obj->sprite.worldCol * obj->sprite.encodeFactor;
         
         if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(obj)) {
@@ -322,7 +331,7 @@ void moveLeft(OBJECT* obj) {
         obj->sprite.worldCol = obj->sprite.encodeWorldCol / obj->sprite.encodeFactor;
 
         if ((obj->sprite.worldCol - hOff < SCREENWIDTH / 2 - obj->sprite.width / 2) && (hOff > 0)) {
-            vOff--;
+            hOff--;
     
         } // if
 
@@ -334,10 +343,10 @@ void moveRight(OBJECT* obj) {
 
     obj->idle = 0;
 
-    if (obj->sprite.worldCol >= 8 * mapXOffset + obj->xTarget * 16 + hOff) {
+    if (obj->sprite.worldCol >= 8 * mapXOffset + obj->xTarget * 16) {
 
         obj->xPos = obj->xTarget;
-        obj->sprite.worldCol = 8 * mapXOffset + obj->xPos * 16 + hOff;
+        obj->sprite.worldCol = 8 * mapXOffset + obj->xPos * 16;
         obj->sprite.encodeWorldCol = 8 * obj->sprite.worldCol;
         
         if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(obj)) {
@@ -354,8 +363,8 @@ void moveRight(OBJECT* obj) {
         obj->sprite.encodeWorldCol += obj->sprite.cdel;
         obj->sprite.worldCol = obj->sprite.encodeWorldCol / obj->sprite.encodeFactor;
 
-        if ((obj->sprite.worldCol - hOff > SCREENWIDTH / 2 - obj->sprite.width / 2) && (hOff < mapWidth - SCREENWIDTH)) {
-            vOff--;
+        if ((obj->sprite.worldCol - hOff > SCREENWIDTH / 2 - obj->sprite.width / 2) && (hOff < (16 * mapWidth + 8 * mapYOffset) - SCREENWIDTH)) {
+            hOff++;
     
         } // if
 
