@@ -51,13 +51,21 @@ int mapHeight;
 
 void initZenith();
 void updateZenith();
-void animateZenith();
+void moveZenith();
 void drawZenith();
+
+int canMoveUp(OBJECT* obj);
+int canMoveDown(OBJECT* obj);
+int canMoveLeft(OBJECT* obj);
+int canMoveRight(OBJECT* obj);
 
 void moveUp(OBJECT* obj);
 void moveDown(OBJECT* obj);
 void moveLeft(OBJECT* obj);
 void moveRight(OBJECT* obj);
+
+void readInput(OBJECT* obj);
+
 
 void initGame() {
     
@@ -130,39 +138,21 @@ void initZenith() {
 
 void updateZenith() {
 
-    if (zenith.idle) {
-
-        if (BUTTON_PRESSED(BUTTON_UP) && zenith.yTarget - 1 > -1)                zenith.yTarget--;
-        else if (BUTTON_PRESSED(BUTTON_DOWN) && zenith.yTarget + 1 < mapHeight)  zenith.yTarget++;
-        else if (BUTTON_PRESSED(BUTTON_LEFT) && zenith.xTarget - 1 > -1)         zenith.xTarget--;
-        else if (BUTTON_PRESSED(BUTTON_RIGHT) && zenith.xTarget + 1 < mapWidth)  zenith.xTarget++;
-
-    } // if
-
-    if (zenith.yTarget < zenith.yPos)      { zenith.idle = 0; moveUp(&zenith); }
-    else if (zenith.yTarget > zenith.yPos) { zenith.idle = 0; moveDown(&zenith); }
-    else if (zenith.xTarget < zenith.xPos) { zenith.idle = 0; moveLeft(&zenith); }
-    else if (zenith.xTarget > zenith.xPos) { zenith.idle = 0; moveRight(&zenith); }
-
-    animateZenith();
+    moveZenith();
 
 } // updateZenith
 
-void animateZenith() {
+void moveZenith() {
 
     zenith.sprite.prevAniState = zenith.sprite.aniState;
-    zenith.sprite.aniState = IDLE;
+    if (zenith.idle) zenith.sprite.aniState = IDLE;
 
-    if(zenith.sprite.aniCounter % 20 == 0) {
+    if (zenith.sprite.aniCounter % 15 == 0) {
         zenith.sprite.curFrame = (zenith.sprite.curFrame + 1) % zenith.sprite.numFrames;
     
     } // if
 
-    if (BUTTON_HELD(BUTTON_UP))    zenith.sprite.aniState = BACKWALK;
-    if (BUTTON_HELD(BUTTON_DOWN))  zenith.sprite.aniState = FRONTWALK;
-    if (BUTTON_HELD(BUTTON_LEFT))  zenith.sprite.aniState = LEFTWALK;
-    if (BUTTON_HELD(BUTTON_RIGHT)) zenith.sprite.aniState = RIGHTWALK;
-
+    readInput(&zenith);
 
     if (zenith.sprite.aniState == IDLE) {
         zenith.sprite.curFrame = 0;
@@ -190,15 +180,61 @@ void drawZenith() {
 
 } // drawZenith
 
+int canMoveUp(OBJECT* obj) {
+
+    if (obj->yTarget - 1 > -1) {
+        return 1;
+
+    } // if
+
+    return 0;
+
+} // canMoveUp
+
+int canMoveDown(OBJECT* obj) {
+
+    if (obj->yTarget + 1 < mapHeight) {
+        return 1;
+
+    } // if
+
+    return 0;
+
+} // canMoveDown
+
+int canMoveLeft(OBJECT* obj) {
+
+    if (obj->xTarget - 1 > -1) {
+        return 1;
+
+    } // if
+
+    return 0;
+
+} // canMoveLeft
+
+int canMoveRight(OBJECT* obj) {
+
+    if (obj->xTarget + 1 < mapWidth) {
+        return 1;
+
+    } // if
+
+    return 0;
+
+} // canMoveRight
+
 void moveUp(OBJECT* obj) {
+
+    obj->idle = 0;
 
     if (obj->sprite.worldRow <= 24 + obj->yTarget * 16 + vOff) {
 
         obj->yPos = obj->yTarget;
         obj->sprite.worldRow = 24 + obj->yTarget * 16 + vOff;
-        obj->sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
+        obj->sprite.encodeWorldRow = obj->sprite.worldRow * obj->sprite.encodeFactor;
         
-        if (BUTTON_HELD(BUTTON_UP) && zenith.yTarget - 1 > -1) {
+        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {
             obj->yTarget--;
             moveUp(obj);
 
@@ -223,13 +259,15 @@ void moveUp(OBJECT* obj) {
 
 void moveDown(OBJECT* obj) {
     
-    if (zenith.sprite.worldRow >= 24 + obj->yTarget * 16 + vOff) {
+    obj->idle = 0;
+
+    if (obj->sprite.worldRow >= 24 + obj->yTarget * 16 + vOff) {
 
         obj->yPos = obj->yTarget;
         obj->sprite.worldRow = 24 + obj->yPos * 16 + vOff;
         obj->sprite.encodeWorldRow = 8 * obj->sprite.worldRow;
         
-        if (BUTTON_HELD(BUTTON_DOWN) && zenith.yTarget + 1 < mapHeight) {
+        if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(obj)) {
             obj->yTarget++;
             moveDown(obj);
 
@@ -254,13 +292,15 @@ void moveDown(OBJECT* obj) {
 
 void moveLeft(OBJECT* obj) {
 
+    obj->idle = 0;
+
     if (obj->sprite.worldCol <= 32 + obj->xTarget * 16 + hOff) {
 
         obj->xPos = obj->xTarget;
         obj->sprite.worldCol = 32 + obj->xTarget * 16 + hOff;
-        obj->sprite.encodeWorldCol = zenith.sprite.worldCol * zenith.sprite.encodeFactor;
+        obj->sprite.encodeWorldCol = obj->sprite.worldCol * obj->sprite.encodeFactor;
         
-        if (BUTTON_HELD(BUTTON_LEFT) && zenith.xTarget - 1 > -1) {
+        if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(obj)) {
             obj->xTarget--;
             moveLeft(obj);
 
@@ -285,13 +325,15 @@ void moveLeft(OBJECT* obj) {
 
 void moveRight(OBJECT* obj) {
 
+    obj->idle = 0;
+
     if (obj->sprite.worldCol >= 32 + obj->xTarget * 16 + hOff) {
 
         obj->xPos = obj->xTarget;
         obj->sprite.worldCol = 32 + obj->xPos * 16 + hOff;
         obj->sprite.encodeWorldCol = 8 * obj->sprite.worldCol;
         
-        if (BUTTON_HELD(BUTTON_RIGHT) && zenith.xTarget + 1 < mapWidth) {
+        if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(obj)) {
             obj->xTarget++;
             moveRight(obj);
 
@@ -313,3 +355,46 @@ void moveRight(OBJECT* obj) {
     } // if
 
 } // moveRight
+
+void readInput(OBJECT* obj) {
+
+    if (obj->idle) {
+        
+        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {
+            obj->sprite.aniState = BACKWALK;
+            obj->yTarget--;
+            
+        } else if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(obj)) {
+            obj->sprite.aniState = FRONTWALK;
+            obj->yTarget++;
+            
+        } else if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(obj)) {
+            obj->sprite.aniState = LEFTWALK;
+            obj->xTarget--;
+
+        } else if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(obj)) {
+            obj->sprite.aniState = RIGHTWALK;
+            obj->xTarget++;
+
+        } else if (BUTTON_HELD(BUTTON_UP)) {
+            obj->sprite.aniState = BACKWALK;
+            
+        } else if (BUTTON_HELD(BUTTON_DOWN)) {
+            obj->sprite.aniState = FRONTWALK;
+            
+        } else if (BUTTON_HELD(BUTTON_LEFT)) {
+            obj->sprite.aniState = LEFTWALK;
+
+        } else if (BUTTON_HELD(BUTTON_RIGHT)) {
+            obj->sprite.aniState = RIGHTWALK;
+
+        } // if
+
+    } // if
+
+    if (obj->yTarget < obj->yPos)      moveUp(obj);
+    else if (obj->yTarget > obj->yPos) moveDown(obj);
+    else if (obj->xTarget < obj->xPos) moveLeft(obj);
+    else if (obj->xTarget > obj->xPos) moveRight(obj);
+
+} // readInput
