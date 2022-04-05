@@ -42,6 +42,7 @@ typedef struct {
 } OBJECT;
 
 OBJECT zenith;
+OBJECT block;
 
 int gameOver;
 int gameWon;
@@ -58,6 +59,11 @@ void initZenith();
 void updateZenith();
 void moveZenith();
 void drawZenith();
+
+void initBlock();
+void updateBlock();
+void moveBlock();
+void drawBlock();
 
 int canMoveUp(OBJECT* obj);
 int canMoveDown(OBJECT* obj);
@@ -100,6 +106,7 @@ void initGame() {
     updateOAM();
 
     initZenith();
+    initBlock();
 
 } // initGame
 
@@ -111,6 +118,7 @@ void updateGame() {
 void drawGame() {
 
     drawZenith();
+    drawBlock();
 
     waitForVBlank();
     updateOAM();
@@ -122,7 +130,7 @@ void drawGame() {
 
 void initZenith() {
 
-    zenith.xPos = 0;
+    block.xPos = 0;
     zenith.yPos = 0;
     zenith.xTarget = zenith.xPos;
     zenith.yTarget = zenith.yPos;
@@ -195,6 +203,62 @@ void drawZenith() {
     } // if
 
 } // drawZenith
+
+void initBlock() {
+
+    block.xPos = 3;
+    block.yPos = 3;
+    block.xTarget = block.xPos;
+    block.yTarget = block.yPos;
+    block.idle = 1;
+    block.active = 1;
+
+    block.sprite.worldRow = 8 * mapYOffset + block.yPos * 16;
+    block.sprite.worldCol = 8 * mapXOffset + block.xPos * 16;
+
+    block.sprite.encodeFactor = 8;
+    block.sprite.encodeWorldRow = block.sprite.worldRow * block.sprite.encodeFactor;
+    block.sprite.encodeWorldCol = block.sprite.worldCol * block.sprite.encodeFactor;
+
+    block.sprite.rdel = 4;
+    block.sprite.cdel = 4;
+
+    block.sprite.width = 16;
+    block.sprite.height = 16;
+
+    block.sprite.aniCounter = 0;
+    block.sprite.aniState = BACKWALK;
+    block.sprite.curFrame = 0;
+    block.sprite.numFrames = 1;
+    block.sprite.hide = 0;
+
+    block.sprite.attributes = &shadowOAM[1];
+
+} // initBlock
+
+void updateBlock() {
+
+
+} // updateBlock
+
+void moveBlock() {
+
+
+} // moveBlock
+
+void drawBlock() {
+
+    if (block.sprite.hide) {
+        block.sprite.attributes->attr0 |= ATTR0_HIDE;
+
+    } else {
+        block.sprite.attributes->attr0 = (block.sprite.worldRow - vOff) | ATTR0_SQUARE;
+        block.sprite.attributes->attr1 = (block.sprite.worldCol - hOff) | ATTR1_SMALL;
+        block.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(block.sprite.aniState * 2, 0);
+    
+    } // if
+
+} // drawBlock
 
 int canMoveUp(OBJECT* obj) {
 
