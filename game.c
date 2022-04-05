@@ -175,8 +175,46 @@ void moveZenith() {
         zenith.sprite.curFrame = (zenith.sprite.curFrame + 1) % zenith.sprite.numFrames;
     
     } // if
+    
+    if (zenith.idle) {
+        
+        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(&zenith)) {
+            zenith.sprite.aniState = BACKWALK;
+            zenith.yTarget--;
+            
+        } else if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(&zenith)) {
+            zenith.sprite.aniState = FRONTWALK;
+            zenith.yTarget++;
+            
+        } else if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(&zenith)) {
+            zenith.sprite.aniState = LEFTWALK;
+            zenith.xTarget--;
 
-    readInput(&zenith);
+        } else if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(&zenith)) {
+            zenith.sprite.aniState = RIGHTWALK;
+            zenith.xTarget++;
+
+        } else if (BUTTON_HELD(BUTTON_UP)) {
+            zenith.sprite.aniState = BACKWALK;
+            
+        } else if (BUTTON_HELD(BUTTON_DOWN)) {
+            zenith.sprite.aniState = FRONTWALK;
+            
+        } else if (BUTTON_HELD(BUTTON_LEFT)) {
+            zenith.sprite.aniState = LEFTWALK;
+
+        } else if (BUTTON_HELD(BUTTON_RIGHT)) {
+            zenith.sprite.aniState = RIGHTWALK;
+
+        } // if
+
+    } // if
+
+    if (zenith.yTarget < zenith.yPos)      moveUp(&zenith);
+    else if (zenith.yTarget > zenith.yPos) moveDown(&zenith);
+    else if (zenith.xTarget < zenith.xPos) moveLeft(&zenith);
+    else if (zenith.xTarget > zenith.xPos) moveRight(&zenith);
+
 
     if (zenith.sprite.aniState == IDLE) {
         zenith.sprite.curFrame = 0;
@@ -237,12 +275,16 @@ void initBlock() {
 } // initBlock
 
 void updateBlock() {
-
+    moveBlock();
 
 } // updateBlock
 
 void moveBlock() {
-
+    
+    if (block.yTarget < block.yPos)      moveUp(&block);
+    else if (block.yTarget > block.yPos) moveDown(&block);
+    else if (block.xTarget < block.xPos) moveLeft(&block);
+    else if (block.xTarget > block.xPos) moveRight(&block);
 
 } // moveBlock
 
@@ -263,6 +305,12 @@ void drawBlock() {
 int canMoveUp(OBJECT* obj) {
 
     if (obj->yTarget - 1 > -1) {
+        
+        if (obj->yTarget - 1 == block.yPos && obj->xPos == block.xPos) {
+            return 0;
+        
+        } // if
+
         return 1;
 
     } // if
@@ -274,6 +322,12 @@ int canMoveUp(OBJECT* obj) {
 int canMoveDown(OBJECT* obj) {
 
     if (obj->yTarget + 1 < mapHeight) {
+        
+        if (obj->yTarget + 1 == block.yPos && obj->xPos == block.xPos) {
+            return 0;
+        
+        } // if
+
         return 1;
 
     } // if
@@ -285,6 +339,12 @@ int canMoveDown(OBJECT* obj) {
 int canMoveLeft(OBJECT* obj) {
 
     if (obj->xTarget - 1 > -1) {
+        
+        if (obj->xTarget - 1 == block.xPos && obj->yPos == block.yPos) {
+            return 0;
+        
+        } // if
+
         return 1;
 
     } // if
@@ -296,6 +356,12 @@ int canMoveLeft(OBJECT* obj) {
 int canMoveRight(OBJECT* obj) {
 
     if (obj->xTarget + 1 < mapWidth) {
+        
+        if (obj->xTarget + 1 == block.xPos && obj->yPos == block.yPos) {
+            return 0;
+        
+        } // if
+
         return 1;
 
     } // if
