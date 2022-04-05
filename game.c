@@ -56,6 +56,8 @@ int mapYOffset;
 int hOff;
 int vOff;
 
+void initLevel(int);
+
 void initZenith();
 void updateZenith();
 void moveZenith();
@@ -66,48 +68,21 @@ void updateBlocks();
 void moveBlocks();
 void drawBlocks();
 
-int canMoveUp(OBJECT* obj);
-int canMoveDown(OBJECT* obj);
-int canMoveLeft(OBJECT* obj);
-int canMoveRight(OBJECT* obj);
+int canMoveUp(OBJECT*);
+int canMoveDown(OBJECT*);
+int canMoveLeft(OBJECT*);
+int canMoveRight(OBJECT*);
 
-void moveUp(OBJECT* obj);
-void moveDown(OBJECT* obj);
-void moveLeft(OBJECT* obj);
-void moveRight(OBJECT* obj);
+void moveUp(OBJECT*);
+void moveDown(OBJECT*);
+void moveLeft(OBJECT*);
+void moveRight(OBJECT*);
 
-void readInput(OBJECT* obj);
-
+void readInput(OBJECT*);
 
 void initGame() {
 
-    gameOver = 0;
-    gameWon = 0;
-
-    // Measured in double tiles
-    mapWidth = 11;
-    mapHeight = 7;
-
-    // Measured in single tiles
-    mapXOffset = 4;
-    mapYOffset = 3;
-
-    hOff = 0;
-    vOff = 0;
-
-    DMANow(3, cavePal, PALETTE, 256);
-    DMANow(3, caveTiles, &CHARBLOCK[0], caveTilesLen / 2);
-    DMANow(3, caveMap, &SCREENBLOCK[28], caveMapLen / 2);
-    REG_BG1VOFF = vOff;
-    REG_BG1HOFF = hOff;
-
-    DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
-    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
-    hideSprites();
-    updateOAM();
-
-    initZenith();
-    initBlocks();
+    initLevel(1);
 
 } // initGame
 
@@ -128,6 +103,84 @@ void drawGame() {
     REG_BG1HOFF = hOff;
 
 } // drawGame
+
+void initLevel(int level) {
+
+    switch (level) {
+        
+        case 1: {
+
+            gameOver = 0;
+            gameWon = 0;
+
+            // Measured in double tiles
+            mapWidth = 11;
+            mapHeight = 7;
+
+            // Measured in single tiles
+            mapXOffset = 4;
+            mapYOffset = 3;
+
+            hOff = 0;
+            vOff = 0;
+
+            DMANow(3, cavePal, PALETTE, 256);
+            DMANow(3, caveTiles, &CHARBLOCK[0], caveTilesLen / 2);
+            DMANow(3, caveMap, &SCREENBLOCK[28], caveMapLen / 2);
+            REG_BG1VOFF = vOff;
+            REG_BG1HOFF = hOff;
+
+            DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
+            DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
+            hideSprites();
+            updateOAM();
+
+            initZenith();
+            initBlocks();
+
+            break;
+
+        } // 1
+
+        case 2: {
+
+            gameOver = 0;
+            gameWon = 0;
+
+            // Measured in double tiles
+            mapWidth = 16;
+            mapHeight = 16;
+
+            // Measured in single tiles
+            mapXOffset = 0;
+            mapYOffset = 0;
+
+            hOff = 0;
+            vOff = 0;
+
+            DMANow(3, housePal, PALETTE, 256);
+            DMANow(3, houseTiles, &CHARBLOCK[0], houseTilesLen / 2);
+            DMANow(3, houseMap, &SCREENBLOCK[28], houseMapLen / 2);
+            REG_BG1VOFF = vOff;
+            REG_BG1HOFF = hOff;
+
+            DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
+            DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
+            hideSprites();
+            updateOAM();
+
+            initZenith();
+            initBlocks();
+
+            break;
+
+        } // 2
+
+        default: { break; }
+
+    } // switch
+
+} // initLevel
 
 void initZenith() {
 
@@ -448,15 +501,9 @@ void moveUp(OBJECT* obj) {
         obj->sprite.worldRow = 8 * mapYOffset + obj->yTarget * 16;
         obj->sprite.encodeWorldRow = obj->sprite.worldRow * obj->sprite.encodeFactor;
         
-        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {mgba_printf("%d", obj->baseSpeed);
-            obj->yTarget--;
-            moveUp(obj);
 
-        } else {
-            obj->sprite.rdel = obj->baseSpeed;
-            obj->idle = 1;
-
-        } // if
+        obj->sprite.rdel = obj->baseSpeed;
+        obj->idle = 1;
 
     } else {
 
@@ -481,16 +528,9 @@ void moveDown(OBJECT* obj) {
         obj->yPos = obj->yTarget;
         obj->sprite.worldRow = 8 * mapYOffset + obj->yPos * 16;
         obj->sprite.encodeWorldRow = 8 * obj->sprite.worldRow;
-        
-        if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(obj)) {
-            obj->yTarget++;
-            moveDown(obj);
 
-        } else {
-            obj->sprite.rdel = obj->baseSpeed;
-            obj->idle = 1;
-
-        } // if
+        obj->sprite.rdel = obj->baseSpeed;
+        obj->idle = 1;
 
     } else {
 
@@ -515,16 +555,9 @@ void moveLeft(OBJECT* obj) {
         obj->xPos = obj->xTarget;
         obj->sprite.worldCol = 8 * mapXOffset + obj->xTarget * 16;
         obj->sprite.encodeWorldCol = obj->sprite.worldCol * obj->sprite.encodeFactor;
-        
-        if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(obj)) {
-            obj->xTarget--;
-            moveLeft(obj);
 
-        } else {
-            obj->sprite.cdel = obj->baseSpeed;
-            obj->idle = 1;
-
-        } // if
+        obj->sprite.cdel = obj->baseSpeed;
+        obj->idle = 1;
 
     } else {
 
@@ -549,16 +582,9 @@ void moveRight(OBJECT* obj) {
         obj->xPos = obj->xTarget;
         obj->sprite.worldCol = 8 * mapXOffset + obj->xPos * 16;
         obj->sprite.encodeWorldCol = 8 * obj->sprite.worldCol;
-        
-        if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(obj)) {
-            obj->xTarget++;
-            moveRight(obj);
 
-        } else {
-            obj->sprite.cdel = obj->baseSpeed;
-            obj->idle = 1;
-
-        } // if
+        obj->sprite.cdel = obj->baseSpeed;
+        obj->idle = 1;
 
     } else {
 
