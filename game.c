@@ -43,7 +43,7 @@ typedef struct {
 } OBJECT;
 
 OBJECT zenith;
-OBJECT block;
+OBJECT blocks[BLOCKCOUNT];
 
 int gameOver;
 int gameWon;
@@ -61,10 +61,10 @@ void updateZenith();
 void moveZenith();
 void drawZenith();
 
-void initBlock();
-void updateBlock();
-void moveBlock();
-void drawBlock();
+void initBlocks();
+void updateBlocks();
+void moveBlocks();
+void drawBlocks();
 
 int canMoveUp(OBJECT* obj);
 int canMoveDown(OBJECT* obj);
@@ -107,19 +107,20 @@ void initGame() {
     updateOAM();
 
     initZenith();
-    initBlock();
+    initBlocks();
 
 } // initGame
 
 void updateGame() {
     updateZenith();
+    updateBlocks();
 
 } // updateGame
 
 void drawGame() {
 
     drawZenith();
-    drawBlock();
+    drawBlocks();
 
     waitForVBlank();
     updateOAM();
@@ -131,7 +132,7 @@ void drawGame() {
 
 void initZenith() {
 
-    block.xPos = 0;
+    zenith.xPos = 0;
     zenith.yPos = 0;
     zenith.xTarget = zenith.xPos;
     zenith.yTarget = zenith.yPos;
@@ -244,64 +245,76 @@ void drawZenith() {
 
 } // drawZenith
 
-void initBlock() {
+void initBlocks() {
 
-    block.xPos = 3;
-    block.yPos = 3;
-    block.xTarget = block.xPos;
-    block.yTarget = block.yPos;
-    block.baseSpeed = 4;
-    block.idle = 1;
-    block.active = 1;
+    for (int i = 0; i < BLOCKCOUNT; i++) {
 
-    block.sprite.worldRow = 8 * mapYOffset + block.yPos * 16;
-    block.sprite.worldCol = 8 * mapXOffset + block.xPos * 16;
+        blocks[i].xPos = 3;
+        blocks[i].yPos = 3;
+        blocks[i].xTarget = blocks[i].xPos;
+        blocks[i].yTarget = blocks[i].yPos;
+        blocks[i].baseSpeed = 4;
+        blocks[i].idle = 1;
+        blocks[i].active = 1;
 
-    block.sprite.encodeFactor = 8;
-    block.sprite.encodeWorldRow = block.sprite.worldRow * block.sprite.encodeFactor;
-    block.sprite.encodeWorldCol = block.sprite.worldCol * block.sprite.encodeFactor;
+        blocks[i].sprite.worldRow = 8 * mapYOffset + blocks[i].yPos * 16;
+        blocks[i].sprite.worldCol = 8 * mapXOffset + blocks[i].xPos * 16;
 
-    block.sprite.rdel = block.baseSpeed;
-    block.sprite.cdel = block.baseSpeed;
+        blocks[i].sprite.encodeFactor = 8;
+        blocks[i].sprite.encodeWorldRow = blocks[i].sprite.worldRow * blocks[i].sprite.encodeFactor;
+        blocks[i].sprite.encodeWorldCol = blocks[i].sprite.worldCol * blocks[i].sprite.encodeFactor;
 
-    block.sprite.width = 16;
-    block.sprite.height = 16;
+        blocks[i].sprite.rdel = blocks[i].baseSpeed;
+        blocks[i].sprite.cdel = blocks[i].baseSpeed;
 
-    block.sprite.aniCounter = 0;
-    block.sprite.aniState = BACKWALK;
-    block.sprite.curFrame = 0;
-    block.sprite.numFrames = 1;
-    block.sprite.hide = 0;
+        blocks[i].sprite.width = 16;
+        blocks[i].sprite.height = 16;
 
-    block.sprite.attributes = &shadowOAM[1];
+        blocks[i].sprite.aniCounter = 0;
+        blocks[i].sprite.aniState = BACKWALK;
+        blocks[i].sprite.curFrame = 0;
+        blocks[i].sprite.numFrames = 1;
+        blocks[i].sprite.hide = 0;
+
+        blocks[i].sprite.attributes = &shadowOAM[1];
+
+    } // for
 
 } // initBlock
 
-void updateBlock() {
-    moveBlock();
+void updateBlocks() {
+    moveBlocks();
 
 } // updateBlock
 
-void moveBlock() {
+void moveBlocks() {
     
-    if (block.yTarget < block.yPos)      moveUp(&block);
-    else if (block.yTarget > block.yPos) moveDown(&block);
-    else if (block.xTarget < block.xPos) moveLeft(&block);
-    else if (block.xTarget > block.xPos) moveRight(&block);
+    for (int i = 0; i < BLOCKCOUNT; i++) {
 
+        if (blocks[i].yTarget < blocks[i].yPos)      moveUp(&blocks[i]);
+        else if (blocks[i].yTarget > blocks[i].yPos) moveDown(&blocks[i]);
+        else if (blocks[i].xTarget < blocks[i].xPos) moveLeft(&blocks[i]);
+        else if (blocks[i].xTarget > blocks[i].xPos) moveRight(&blocks[i]);
+        
+    } // for
+    
 } // moveBlock
 
-void drawBlock() {
+void drawBlocks() {
 
-    if (block.sprite.hide) {
-        block.sprite.attributes->attr0 |= ATTR0_HIDE;
+    for (int i = 0; i < BLOCKCOUNT; i++) {
 
-    } else {
-        block.sprite.attributes->attr0 = (block.sprite.worldRow - vOff) | ATTR0_SQUARE;
-        block.sprite.attributes->attr1 = (block.sprite.worldCol - hOff) | ATTR1_SMALL;
-        block.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(block.sprite.aniState * 2, 0);
-    
-    } // if
+        if (blocks[i].sprite.hide) {
+            blocks[i].sprite.attributes->attr0 |= ATTR0_HIDE;
+
+        } else {
+            blocks[i].sprite.attributes->attr0 = (blocks[i].sprite.worldRow - vOff) | ATTR0_SQUARE;
+            blocks[i].sprite.attributes->attr1 = (blocks[i].sprite.worldCol - hOff) | ATTR1_SMALL;
+            blocks[i].sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(blocks[i].sprite.aniState * 2, 0);
+        
+        } // if
+
+    } // for
 
 } // drawBlock
 
@@ -309,10 +322,14 @@ int canMoveUp(OBJECT* obj) {
 
     if (obj->yTarget - 1 > -1) {
         
-        if (obj->yTarget - 1 == block.yPos && obj->xPos == block.xPos) {
-            return 0;
+        for (int i = 0; i < BLOCKCOUNT; i++) {
+            
+            if (obj->yTarget - 1 == blocks[i].yPos && obj->xPos == blocks[i].xPos) {
+                return 0;
         
-        } // if
+            } // if
+
+        } // for
 
         return 1;
 
@@ -326,10 +343,14 @@ int canMoveDown(OBJECT* obj) {
 
     if (obj->yTarget + 1 < mapHeight) {
         
-        if (obj->yTarget + 1 == block.yPos && obj->xPos == block.xPos) {
-            return 0;
+        for (int i = 0; i < BLOCKCOUNT; i++) {
+            
+            if (obj->yTarget + 1 == blocks[i].yPos && obj->xPos == blocks[i].xPos) {
+                return 0;
         
-        } // if
+            } // if
+
+        } // for
 
         return 1;
 
@@ -343,10 +364,14 @@ int canMoveLeft(OBJECT* obj) {
 
     if (obj->xTarget - 1 > -1) {
         
-        if (obj->xTarget - 1 == block.xPos && obj->yPos == block.yPos) {
-            return 0;
+        for (int i = 0; i < BLOCKCOUNT; i++) {
+            
+            if (obj->xTarget - 1 == blocks[i].xPos && obj->yPos == blocks[i].yPos) {
+                return 0;
         
-        } // if
+            } // if
+
+        } // for
 
         return 1;
 
@@ -360,10 +385,14 @@ int canMoveRight(OBJECT* obj) {
 
     if (obj->xTarget + 1 < mapWidth) {
         
-        if (obj->xTarget + 1 == block.xPos && obj->yPos == block.yPos) {
-            return 0;
+        for (int i = 0; i < BLOCKCOUNT; i++) {
+            
+            if (obj->xTarget + 1 == blocks[i].xPos && obj->yPos == blocks[i].yPos) {
+                return 0;
         
-        } // if
+            } // if
+
+        } // for
 
         return 1;
 
