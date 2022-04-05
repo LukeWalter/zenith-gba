@@ -35,6 +35,7 @@ typedef struct {
     int yPos;
     int xTarget;
     int yTarget;
+    int baseSpeed;
     int idle;
     int active;
     ANISPRITE sprite;
@@ -134,6 +135,7 @@ void initZenith() {
     zenith.yPos = 0;
     zenith.xTarget = zenith.xPos;
     zenith.yTarget = zenith.yPos;
+    zenith.baseSpeed = 8;
     zenith.idle = 1;
     zenith.active = 1;
 
@@ -144,8 +146,8 @@ void initZenith() {
     zenith.sprite.encodeWorldRow = zenith.sprite.worldRow * zenith.sprite.encodeFactor;
     zenith.sprite.encodeWorldCol = zenith.sprite.worldCol * zenith.sprite.encodeFactor;
 
-    zenith.sprite.rdel = 8;
-    zenith.sprite.cdel = 8;
+    zenith.sprite.rdel = zenith.baseSpeed;
+    zenith.sprite.cdel = zenith.baseSpeed;
 
     zenith.sprite.width = 16;
     zenith.sprite.height = 16;
@@ -248,6 +250,7 @@ void initBlock() {
     block.yPos = 3;
     block.xTarget = block.xPos;
     block.yTarget = block.yPos;
+    block.baseSpeed = 4;
     block.idle = 1;
     block.active = 1;
 
@@ -258,8 +261,8 @@ void initBlock() {
     block.sprite.encodeWorldRow = block.sprite.worldRow * block.sprite.encodeFactor;
     block.sprite.encodeWorldCol = block.sprite.worldCol * block.sprite.encodeFactor;
 
-    block.sprite.rdel = 4;
-    block.sprite.cdel = 4;
+    block.sprite.rdel = block.baseSpeed;
+    block.sprite.cdel = block.baseSpeed;
 
     block.sprite.width = 16;
     block.sprite.height = 16;
@@ -385,6 +388,7 @@ void moveUp(OBJECT* obj) {
             moveUp(obj);
 
         } else {
+            obj->sprite.rdel = obj->baseSpeed;
             obj->idle = 1;
 
         } // if
@@ -418,6 +422,7 @@ void moveDown(OBJECT* obj) {
             moveDown(obj);
 
         } else {
+            obj->sprite.rdel = obj->baseSpeed;
             obj->idle = 1;
 
         } // if
@@ -451,6 +456,7 @@ void moveLeft(OBJECT* obj) {
             moveLeft(obj);
 
         } else {
+            obj->sprite.cdel = obj->baseSpeed;
             obj->idle = 1;
 
         } // if
@@ -484,6 +490,7 @@ void moveRight(OBJECT* obj) {
             moveRight(obj);
 
         } else {
+            obj->sprite.cdel = obj->baseSpeed;
             obj->idle = 1;
 
         } // if
