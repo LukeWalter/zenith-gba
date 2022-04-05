@@ -181,33 +181,69 @@ void moveZenith() {
     
     if (zenith.idle) {
         
-        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(&zenith)) {
-            zenith.sprite.aniState = BACKWALK;
-            zenith.yTarget--;
-            
-        } else if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(&zenith)) {
-            zenith.sprite.aniState = FRONTWALK;
-            zenith.yTarget++;
-            
-        } else if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(&zenith)) {
-            zenith.sprite.aniState = LEFTWALK;
-            zenith.xTarget--;
+        if (BUTTON_HELD(BUTTON_B)) {
 
-        } else if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(&zenith)) {
-            zenith.sprite.aniState = RIGHTWALK;
-            zenith.xTarget++;
+            for (int i = 0; i < BLOCKCOUNT; i++) {
 
-        } else if (BUTTON_HELD(BUTTON_UP)) {
-            zenith.sprite.aniState = BACKWALK;
-            
-        } else if (BUTTON_HELD(BUTTON_DOWN)) {
-            zenith.sprite.aniState = FRONTWALK;
-            
-        } else if (BUTTON_HELD(BUTTON_LEFT)) {
-            zenith.sprite.aniState = LEFTWALK;
+                if (BUTTON_HELD(BUTTON_UP) && zenith.yTarget - 1 == blocks[i].yPos && zenith.xPos == blocks[i].xPos && canMoveUp(&blocks[i])) {
+                    zenith.sprite.aniState = BACKWALK;
+                    zenith.yTarget--;
+                    zenith.sprite.rdel = blocks[i].baseSpeed;
+                    blocks[i].yTarget--;
+                    
+                } else if (BUTTON_HELD(BUTTON_DOWN) && zenith.yTarget + 1 == blocks[i].yPos && zenith.xPos == blocks[i].xPos && canMoveDown(&blocks[i])) {
+                    zenith.sprite.aniState = FRONTWALK;
+                    zenith.yTarget++;
+                    zenith.sprite.rdel = blocks[i].baseSpeed;
+                    blocks[i].yTarget++;
+                    
+                } else if (BUTTON_HELD(BUTTON_LEFT) && zenith.xTarget - 1 == blocks[i].xPos && zenith.yPos == blocks[i].yPos && canMoveLeft(&blocks[i])) {
+                    zenith.sprite.aniState = LEFTWALK;
+                    zenith.xTarget--;
+                    zenith.sprite.cdel = blocks[i].baseSpeed;
+                    blocks[i].xTarget--;
 
-        } else if (BUTTON_HELD(BUTTON_RIGHT)) {
-            zenith.sprite.aniState = RIGHTWALK;
+                } else if (BUTTON_HELD(BUTTON_RIGHT) && zenith.xTarget + 1 == blocks[i].xPos && zenith.yPos == blocks[i].yPos && canMoveRight(&blocks[i])) {
+                    zenith.sprite.aniState = RIGHTWALK;
+                    zenith.xTarget++;
+                    zenith.sprite.cdel = blocks[i].baseSpeed;
+                    blocks[i].xTarget++;
+
+                } // if
+
+            } // for
+
+        } else {
+
+            if (BUTTON_HELD(BUTTON_UP) && canMoveUp(&zenith)) {
+                zenith.sprite.aniState = BACKWALK;
+                zenith.yTarget--;
+                
+            } else if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(&zenith)) {
+                zenith.sprite.aniState = FRONTWALK;
+                zenith.yTarget++;
+                
+            } else if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(&zenith)) {
+                zenith.sprite.aniState = LEFTWALK;
+                zenith.xTarget--;
+
+            } else if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(&zenith)) {
+                zenith.sprite.aniState = RIGHTWALK;
+                zenith.xTarget++;
+
+            } else if (BUTTON_HELD(BUTTON_UP)) {
+                zenith.sprite.aniState = BACKWALK;
+                
+            } else if (BUTTON_HELD(BUTTON_DOWN)) {
+                zenith.sprite.aniState = FRONTWALK;
+                
+            } else if (BUTTON_HELD(BUTTON_LEFT)) {
+                zenith.sprite.aniState = LEFTWALK;
+
+            } else if (BUTTON_HELD(BUTTON_RIGHT)) {
+                zenith.sprite.aniState = RIGHTWALK;
+
+            } // if
 
         } // if
 
@@ -297,7 +333,7 @@ void moveBlocks() {
         else if (blocks[i].xTarget > blocks[i].xPos) moveRight(&blocks[i]);
         
     } // for
-    
+
 } // moveBlock
 
 void drawBlocks() {
