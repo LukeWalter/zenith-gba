@@ -113,7 +113,6 @@ void initGame() {
 
 void updateGame() {
     updateZenith();
-    updateBlocks();
 
 } // updateGame
 
@@ -164,7 +163,6 @@ void initZenith() {
 } // initZenith
 
 void updateZenith() {
-
     moveZenith();
 
 } // updateZenith
@@ -186,28 +184,28 @@ void moveZenith() {
             for (int i = 0; i < BLOCKCOUNT; i++) {
 
                 if (BUTTON_HELD(BUTTON_UP) && zenith.yTarget - 1 == blocks[i].yPos && zenith.xPos == blocks[i].xPos && canMoveUp(&blocks[i])) {
+                    blocks[i].yTarget--;
                     zenith.sprite.aniState = BACKWALK;
                     zenith.yTarget--;
                     zenith.sprite.rdel = blocks[i].baseSpeed;
-                    blocks[i].yTarget--;
                     
                 } else if (BUTTON_HELD(BUTTON_DOWN) && zenith.yTarget + 1 == blocks[i].yPos && zenith.xPos == blocks[i].xPos && canMoveDown(&blocks[i])) {
+                    blocks[i].yTarget++;
                     zenith.sprite.aniState = FRONTWALK;
                     zenith.yTarget++;
                     zenith.sprite.rdel = blocks[i].baseSpeed;
-                    blocks[i].yTarget++;
                     
                 } else if (BUTTON_HELD(BUTTON_LEFT) && zenith.xTarget - 1 == blocks[i].xPos && zenith.yPos == blocks[i].yPos && canMoveLeft(&blocks[i])) {
+                    blocks[i].xTarget--;
                     zenith.sprite.aniState = LEFTWALK;
                     zenith.xTarget--;
                     zenith.sprite.cdel = blocks[i].baseSpeed;
-                    blocks[i].xTarget--;
 
                 } else if (BUTTON_HELD(BUTTON_RIGHT) && zenith.xTarget + 1 == blocks[i].xPos && zenith.yPos == blocks[i].yPos && canMoveRight(&blocks[i])) {
+                    blocks[i].xTarget++;
                     zenith.sprite.aniState = RIGHTWALK;
                     zenith.xTarget++;
                     zenith.sprite.cdel = blocks[i].baseSpeed;
-                    blocks[i].xTarget++;
 
                 } // if
 
@@ -248,6 +246,8 @@ void moveZenith() {
         } // if
 
     } // if
+
+    updateBlocks();
 
     if (zenith.yTarget < zenith.yPos)      moveUp(&zenith);
     else if (zenith.yTarget > zenith.yPos) moveDown(&zenith);
@@ -448,7 +448,7 @@ void moveUp(OBJECT* obj) {
         obj->sprite.worldRow = 8 * mapYOffset + obj->yTarget * 16;
         obj->sprite.encodeWorldRow = obj->sprite.worldRow * obj->sprite.encodeFactor;
         
-        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {
+        if (BUTTON_HELD(BUTTON_UP) && canMoveUp(obj)) {mgba_printf("%d", obj->baseSpeed);
             obj->yTarget--;
             moveUp(obj);
 
