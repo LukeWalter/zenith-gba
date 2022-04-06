@@ -93,7 +93,7 @@ void initGame() {
     gameOver = 0;
     gameWon = 0;
 
-    buildLevels();
+    buildRooms();
     initLevel(1);
 
 } // initGame

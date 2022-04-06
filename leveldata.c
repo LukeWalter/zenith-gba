@@ -6,9 +6,17 @@
 #include "cave.h"
 #include "house.h"
 
-void buildLevels() {
+void buildRm1();
+void buildRm2();
 
-    // Level 1
+void buildRooms() {
+
+    buildRm1();
+    buildRm2();
+
+} // buildLevels
+
+void buildRm1() {
 
     levels[0].mapWidth = 11;
     levels[0].mapHeight = 7;
@@ -37,8 +45,9 @@ void buildLevels() {
     DMANow(3, caveTiles, (volatile void*) levels[0].tiles, houseTilesLen / 2);
     DMANow(3, caveMap, (volatile void*) levels[0].map, houseMapLen / 2);
 
+} // buildLv1
 
-    // Level 2
+void buildRm2() {
 
     levels[1].mapWidth = 16;
     levels[1].mapHeight = 16;
@@ -67,4 +76,4 @@ void buildLevels() {
     DMANow(3, houseTiles, (volatile void*) levels[1].tiles, houseTilesLen / 2);
     DMANow(3, houseMap, (volatile void*) levels[1].map, houseMapLen / 2);
 
-} // buildLevels
+} // buildLv2
