@@ -4,9 +4,9 @@
 #include "mygbalib.h"
 #include "print.h"
 
+#include "leveldata.h"
+
 #include "spritesheet.h"
-#include "cave.h"
-#include "house.h"
 
 typedef struct {
 
@@ -46,6 +46,8 @@ OBJECT zenith;
 OBJECT blocks[BLOCKCOUNT];
 OBJECT plates[PLATECOUNT];
 
+LEVEL levels[LEVELCOUNT];
+
 int gameOver;
 int gameWon;
 
@@ -59,17 +61,17 @@ int vOff;
 
 void initLevel(int);
 
-void initZenith();
+void initZenith(int, COORDINATE);
 void updateZenith();
 void moveZenith();
 void drawZenith();
 
-void initBlocks();
+void initBlocks(COORDINATE*);
 void updateBlocks();
 void moveBlocks();
 void drawBlocks();
 
-void initPlates();
+void initPlates(COORDINATE*);
 void updatePlates();
 void movePlates();
 void drawPlates();
@@ -88,6 +90,10 @@ void readInput(OBJECT*);
 
 void initGame() {
 
+    gameOver = 0;
+    gameWon = 0;
+
+    buildLevels();
     initLevel(1);
 
 } // initGame
@@ -114,88 +120,38 @@ void drawGame() {
 
 void initLevel(int level) {
 
-    switch (level) {
-        
-        case 1: {
+    // Measured in double tiles
+    mapWidth = levels[level - 1].mapWidth;
+    mapHeight = levels[level - 1].mapHeight;
 
-            gameOver = 0;
-            gameWon = 0;
+    // Measured in single tiles
+    mapXOffset = levels[level - 1].mapXOffset;
+    mapYOffset = levels[level - 1].mapYOffset;
 
-            // Measured in double tiles
-            mapWidth = 11;
-            mapHeight = 7;
+    hOff = levels[level - 1].hOff;
+    vOff = levels[level - 1].vOff;
 
-            // Measured in single tiles
-            mapXOffset = 4;
-            mapYOffset = 3;
+    DMANow(3, levels[level - 1].pal, PALETTE, 256);
+    DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
+    DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
+    REG_BG1VOFF = vOff;
+    REG_BG1HOFF = hOff;
 
-            hOff = 0;
-            vOff = 0;
+    DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
+    hideSprites();
+    updateOAM();
 
-            DMANow(3, cavePal, PALETTE, 256);
-            DMANow(3, caveTiles, &CHARBLOCK[0], caveTilesLen / 2);
-            DMANow(3, caveMap, &SCREENBLOCK[28], caveMapLen / 2);
-            REG_BG1VOFF = vOff;
-            REG_BG1HOFF = hOff;
-
-            DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
-            DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
-            hideSprites();
-            updateOAM();
-
-            initZenith();
-            initBlocks();
-            initPlates();
-
-            break;
-
-        } // 1
-
-        case 2: {
-
-            gameOver = 0;
-            gameWon = 0;
-
-            // Measured in double tiles
-            mapWidth = 16;
-            mapHeight = 16;
-
-            // Measured in single tiles
-            mapXOffset = 0;
-            mapYOffset = 0;
-
-            hOff = 0;
-            vOff = 0;
-
-            DMANow(3, housePal, PALETTE, 256);
-            DMANow(3, houseTiles, &CHARBLOCK[0], houseTilesLen / 2);
-            DMANow(3, houseMap, &SCREENBLOCK[28], houseMapLen / 2);
-            REG_BG1VOFF = vOff;
-            REG_BG1HOFF = hOff;
-
-            DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
-            DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
-            hideSprites();
-            updateOAM();
-
-            initZenith();
-            initBlocks();
-            initPlates();
-
-            break;
-
-        } // 2
-
-        default: { break; }
-
-    } // switch
+    initZenith(levels[level - 1].zenithOrientation, levels[level - 1].zenithLoc);
+    initBlocks(levels[level - 1].blockLocs);
+    initPlates(levels[level - 1].plateLocs);
 
 } // initLevel
 
-void initZenith() {
+void initZenith(int zenithOrientation, COORDINATE zenithLoc) {
 
-    zenith.xPos = 0;
-    zenith.yPos = 0;
+    zenith.xPos = zenithLoc.col;
+    zenith.yPos = zenithLoc.row;
     zenith.xTarget = zenith.xPos;
     zenith.yTarget = zenith.yPos;
     zenith.baseSpeed = 8;
@@ -216,7 +172,7 @@ void initZenith() {
     zenith.sprite.height = 16;
 
     zenith.sprite.aniCounter = 0;
-    zenith.sprite.aniState = FRONTWALK;
+    zenith.sprite.aniState = zenithOrientation;
     zenith.sprite.curFrame = 0;
     zenith.sprite.numFrames = 3;
     zenith.sprite.hide = 0;
@@ -344,12 +300,12 @@ void drawZenith() {
 
 } // drawZenith
 
-void initBlocks() {
+void initBlocks(COORDINATE* blockLocs) {
 
     for (int i = 0; i < BLOCKCOUNT; i++) {
 
-        blocks[i].xPos = 3;
-        blocks[i].yPos = 3;
+        blocks[i].xPos = blockLocs[i].col;
+        blocks[i].yPos = blockLocs[i].row;
         blocks[i].xTarget = blocks[i].xPos;
         blocks[i].yTarget = blocks[i].yPos;
         blocks[i].baseSpeed = 4;
@@ -417,12 +373,12 @@ void drawBlocks() {
 
 } // drawBlock
 
-void initPlates() {
+void initPlates(COORDINATE* plateLocs) {
 
     for (int i = 0; i < PLATECOUNT; i++) {
 
-        plates[i].xPos = 4;
-        plates[i].yPos = 4;
+        plates[i].xPos = plateLocs[i].col;
+        plates[i].yPos = plateLocs[i].row;
         plates[i].xTarget = plates[i].xPos;
         plates[i].yTarget = plates[i].yPos;
         plates[i].baseSpeed = 0;
