@@ -158,8 +158,12 @@ void updateOAM();
 
 // Generic struct for animated sprite.
 typedef struct {
+
     int worldRow;
     int worldCol;
+    int encodeFactor;
+    int encodeWorldRow;
+    int encodeWorldCol;
     int rdel;
     int cdel;
     int width;
@@ -170,7 +174,22 @@ typedef struct {
     int curFrame;
     int numFrames;
     int hide;
-} SPRITE;
+    OBJ_ATTR* attributes;
+
+} ANISPRITE;
+
+typedef struct {
+    
+    int xPos;
+    int yPos;
+    int xTarget;
+    int yTarget;
+    int baseSpeed;
+    int idle;
+    int active;
+    ANISPRITE sprite;
+
+} OBJECT;
 
 // Button Register.
 #define BUTTONS (*(volatile unsigned short *)0x04000130)

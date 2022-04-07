@@ -8,40 +8,6 @@
 
 #include "spritesheet.h"
 
-typedef struct {
-
-    int worldRow;
-    int worldCol;
-    int encodeFactor;
-    int encodeWorldRow;
-    int encodeWorldCol;
-    int rdel;
-    int cdel;
-    int width;
-    int height;
-    int aniCounter;
-    int aniState;
-    int prevAniState;
-    int curFrame;
-    int numFrames;
-    int hide;
-    OBJ_ATTR* attributes;
-
-} ANISPRITE;
-
-typedef struct {
-    
-    int xPos;
-    int yPos;
-    int xTarget;
-    int yTarget;
-    int baseSpeed;
-    int idle;
-    int active;
-    ANISPRITE sprite;
-
-} OBJECT;
-
 OBJECT zenith;
 OBJECT blocks[BLOCKCOUNT];
 OBJECT plates[PLATECOUNT];
