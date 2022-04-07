@@ -54,6 +54,8 @@ void moveRight(OBJECT*);
 
 void readInput(OBJECT*);
 
+
+
 void initGame() {
 
     gameOver = 0;
@@ -84,6 +86,9 @@ void drawGame() {
 
 } // drawGame
 
+
+
+
 void initLevel(int level) {
 
     // Measured in double tiles
@@ -113,6 +118,9 @@ void initLevel(int level) {
     initPlates(levels[level - 1].plateLocs);
 
 } // initLevel
+
+
+
 
 void initZenith(int zenithOrientation, COORDINATE zenithLoc) {
 
@@ -266,6 +274,9 @@ void drawZenith() {
 
 } // drawZenith
 
+
+
+
 void initBlocks(COORDINATE* blockLocs) {
 
     for (int i = 0; i < BLOCKCOUNT; i++) {
@@ -338,6 +349,9 @@ void drawBlocks() {
     } // for
 
 } // drawBlock
+
+
+
 
 void initPlates(COORDINATE* plateLocs) {
 
@@ -417,6 +431,9 @@ void drawPlates() {
     } // for
 
 } // drawPlates
+
+
+
 
 int canMoveUp(OBJECT* obj) {
 
@@ -501,6 +518,9 @@ int canMoveRight(OBJECT* obj) {
     return 0;
 
 } // canMoveRight
+
+
+
 
 void moveUp(OBJECT* obj) {
 
@@ -610,6 +630,9 @@ void moveRight(OBJECT* obj) {
     } // if
 
 } // moveRight
+
+
+
 
 void readInput(OBJECT* obj) {
 
