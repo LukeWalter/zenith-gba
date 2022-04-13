@@ -3,6 +3,7 @@
 #include "mygbalib.h"
 #include "game.h"
 
+#include "spritesheet.h"
 #include "cave.h"
 #include "house.h"
 
@@ -15,6 +16,36 @@ void buildRooms() {
     buildRm2();
 
 } // buildLevels
+
+void initLevel(int level) {
+
+    // Measured in double tiles
+    mapWidth = levels[level - 1].mapWidth;
+    mapHeight = levels[level - 1].mapHeight;
+
+    // Measured in single tiles
+    mapXOffset = levels[level - 1].mapXOffset;
+    mapYOffset = levels[level - 1].mapYOffset;
+
+    hOff = levels[level - 1].hOff;
+    vOff = levels[level - 1].vOff;
+
+    DMANow(3, levels[level - 1].pal, PALETTE, 256);
+    DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
+    DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
+    REG_BG1VOFF = vOff;
+    REG_BG1HOFF = hOff;
+
+    DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
+    hideSprites();
+    updateOAM();
+
+    initZenith(levels[level - 1].zenithOrientation, levels[level - 1].zenithLoc);
+    initBlocks(levels[level - 1].blockLocs);
+    initPlates(levels[level - 1].plateLocs);
+
+} // initLevel
 
 void buildRm1() {
 

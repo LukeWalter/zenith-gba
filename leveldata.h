@@ -1,3 +1,6 @@
+#ifndef LEVEL_DATA
+#define LEVEL_DATA
+
 #define LEVELCOUNT 2
 
 typedef struct {
@@ -34,4 +37,15 @@ typedef struct {
 
 extern LEVEL levels[LEVELCOUNT];
 
+extern int mapWidth;
+extern int mapHeight;
+extern int mapXOffset;
+extern int mapYOffset;
+
+extern int hOff;
+extern int vOff;
+
 void buildRooms();
+void initLevel(int);
+
+#endif
