@@ -4,6 +4,10 @@
 #include "mygbalib.h"
 #include "print.h"
 
+#include "player.h"
+#include "block.h"
+#include "plate.h"
+
 #include "leveldata.h"
 
 #include "spritesheet.h"
