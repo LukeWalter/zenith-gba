@@ -41,8 +41,8 @@ void initLevel(int level) {
     hideSprites();
     updateOAM();
 
-    initZenith(levels[level - 1].zenithOrientation, levels[level - 1].zenithLoc);
-    initBlocks(levels[level - 1].blockLocs);
+    initZenith(levels[level - 1]);
+    initBlocks(levels[level - 1]);
     initPlates(levels[level - 1]);
 
 } // initLevel

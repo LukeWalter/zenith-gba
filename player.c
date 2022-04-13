@@ -1,9 +1,9 @@
 #include "player.h"
 
-void initZenith(int zenithOrientation, COORDINATE zenithLoc) {
+void initZenith(LEVEL level) {
 
-    zenith.obj.xPos = zenithLoc.col;
-    zenith.obj.yPos = zenithLoc.row;
+    zenith.obj.xPos = level.zenithLoc.col;
+    zenith.obj.yPos = level.zenithLoc.row;
     zenith.obj.xTarget = zenith.obj.xPos;
     zenith.obj.yTarget = zenith.obj.yPos;
     zenith.obj.baseSpeed = 8;
@@ -24,7 +24,7 @@ void initZenith(int zenithOrientation, COORDINATE zenithLoc) {
     zenith.obj.sprite.height = 16;
 
     zenith.obj.sprite.aniCounter = 0;
-    zenith.obj.sprite.aniState = zenithOrientation;
+    zenith.obj.sprite.aniState = level.zenithOrientation;
     zenith.obj.sprite.curFrame = 0;
     zenith.obj.sprite.numFrames = 3;
     zenith.obj.sprite.hide = 0;

@@ -14,7 +14,7 @@ typedef struct {
 
 } PLAYER;
 
-void initZenith(int, COORDINATE);
+void initZenith(LEVEL);
 void updateZenith();
 void moveZenith();
 void drawZenith();

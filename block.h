@@ -16,7 +16,7 @@ typedef struct {
 
 extern BLOCK blocks[BLOCKCOUNT];
 
-void initBlocks(COORDINATE*);
+void initBlocks(LEVEL);
 void updateBlocks();
 void moveBlocks();
 void drawBlocks();
