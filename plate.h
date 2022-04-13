@@ -8,8 +8,6 @@
 #include "player.h"
 #include "block.h"
 
-#define PLATECOUNT 1
-
 typedef struct {
 
     OBJECT obj;
