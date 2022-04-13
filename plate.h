@@ -19,7 +19,7 @@ typedef struct {
 
 extern PLATE plates[PLATECOUNT];
 
-void initPlates(COORDINATE*);
+void initPlates(LEVEL);
 void updatePlates();
 void movePlates();
 void drawPlates();

@@ -43,7 +43,7 @@ void initLevel(int level) {
 
     initZenith(levels[level - 1].zenithOrientation, levels[level - 1].zenithLoc);
     initBlocks(levels[level - 1].blockLocs);
-    initPlates(levels[level - 1].plateLocs);
+    initPlates(levels[level - 1]);
 
 } // initLevel
 
@@ -100,7 +100,7 @@ void buildRm2() {
     COORDINATE bLoc2 = {4, 4};
     levels[1].blockLocs[0] = bLoc2;
 
-    COORDINATE pLoc2 = {5, 5};
+    COORDINATE pLoc2 = {4, 4};
     levels[1].plateLocs[0] = pLoc2;
 
     levels[1].plateInitStates[0] = 1;

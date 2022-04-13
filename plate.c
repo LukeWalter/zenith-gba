@@ -1,11 +1,11 @@
 #include "plate.h"
 
-void initPlates(COORDINATE* plateLocs) {
+void initPlates(LEVEL level) {
 
     for (int i = 0; i < PLATECOUNT; i++) {
 
-        plates[i].obj.xPos = plateLocs[i].col;
-        plates[i].obj.yPos = plateLocs[i].row;
+        plates[i].obj.xPos = level.plateLocs[i].col;
+        plates[i].obj.yPos = level.plateLocs[i].row;
         plates[i].obj.xTarget = plates[i].obj.xPos;
         plates[i].obj.yTarget = plates[i].obj.yPos;
         plates[i].obj.baseSpeed = 0;
@@ -33,9 +33,9 @@ void initPlates(COORDINATE* plateLocs) {
 
         plates[i].obj.sprite.attributes = &shadowOAM[2];
 
-        plates[i].pressed = 0;
-        plates[i].onFunc = &updateLevel;
-        plates[i].offFunc = &doNothing;
+        plates[i].pressed = level.plateInitStates[i];
+        plates[i].onFunc = level.onFuncs[i];
+        plates[i].offFunc = level.offFuncs[i];
 
     } // for
     
