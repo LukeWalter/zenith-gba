@@ -1,5 +1,5 @@
-#ifndef GAME
-#define GAME
+#ifndef GAME_LOOP
+#define GAME_LOOP
 
 #include "mygbalib.h"
 #include "leveldata.h"
