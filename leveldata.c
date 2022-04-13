@@ -41,9 +41,9 @@ void initLevel(int level) {
     hideSprites();
     updateOAM();
 
-    initZenith(levels[level - 1].zenithOrientation, levels[level - 1].zenithLoc);
-    initBlocks(levels[level - 1].blockLocs);
-    initPlates(levels[level - 1].plateLocs);
+    initZenith(levels[level - 1]);
+    initBlocks(levels[level - 1]);
+    initPlates(levels[level - 1]);
 
 } // initLevel
 
@@ -67,6 +67,10 @@ void buildRm1() {
 
     COORDINATE pLoc = {4, 4};
     levels[0].plateLocs[0] = pLoc;
+
+    levels[0].plateInitStates[0] = 0;
+    levels[0].onFuncs[0] = &updateLevel;
+    levels[0].offFuncs[0] = &doNothing;
 
     levels[0].palLen = cavePalLen;
     levels[0].tileLen = caveTilesLen;
@@ -96,8 +100,12 @@ void buildRm2() {
     COORDINATE bLoc2 = {4, 4};
     levels[1].blockLocs[0] = bLoc2;
 
-    COORDINATE pLoc2 = {5, 5};
+    COORDINATE pLoc2 = {4, 4};
     levels[1].plateLocs[0] = pLoc2;
+
+    levels[1].plateInitStates[0] = 1;
+    levels[1].onFuncs[0] = &doNothing;
+    levels[1].offFuncs[0] = &updateLevel;
 
     levels[1].palLen = housePalLen;
     levels[1].tileLen = houseTilesLen;

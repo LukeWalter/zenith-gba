@@ -8,17 +8,18 @@
 #include "player.h"
 #include "block.h"
 
-#define PLATECOUNT 1
-
 typedef struct {
 
     OBJECT obj;
+    int pressed;
+    void (*onFunc)(void);
+    void (*offFunc)(void);
 
 } PLATE;
 
 extern PLATE plates[PLATECOUNT];
 
-void initPlates(COORDINATE*);
+void initPlates(LEVEL);
 void updatePlates();
 void movePlates();
 void drawPlates();

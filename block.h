@@ -8,8 +8,6 @@
 #include "player.h"
 #include "plate.h"
 
-#define BLOCKCOUNT 1
-
 typedef struct {
 
     OBJECT obj;
@@ -18,7 +16,7 @@ typedef struct {
 
 extern BLOCK blocks[BLOCKCOUNT];
 
-void initBlocks(COORDINATE*);
+void initBlocks(LEVEL);
 void updateBlocks();
 void moveBlocks();
 void drawBlocks();

@@ -12,6 +12,8 @@ LEVEL levels[LEVELCOUNT];
 int gameOver;
 int gameWon;
 
+int level;
+
 int mapWidth;
 int mapHeight;
 int mapXOffset;
@@ -25,10 +27,19 @@ void initGame() {
     gameOver = 0;
     gameWon = 0;
 
+    level = 1;
+
     buildRooms();
-    initLevel(1);
+    initLevel(level);
 
 } // initGame
+
+void updateLevel() {
+    level++;
+    if (level > LEVELCOUNT) level = 1;
+    initLevel(level);
+
+} // updateLevel
 
 void updateGame() {
     updateZenith();

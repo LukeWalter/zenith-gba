@@ -12,11 +12,14 @@ enum { FRONTWALK, BACKWALK, RIGHTWALK, LEFTWALK, IDLE };
 extern int gameOver;
 extern int gameWon;
 
+extern int level;
+
 void initGame();
 void updateGame();
 void drawGame();
 
 void initLevel(int);
+void updateLevel();
 
 int canMoveUp(OBJECT*);
 int canMoveDown(OBJECT*);

@@ -3,6 +3,9 @@
 
 #define LEVELCOUNT 2
 
+#define BLOCKCOUNT 1
+#define PLATECOUNT 1
+
 typedef struct {
     int col;
     int row;
@@ -22,8 +25,12 @@ typedef struct {
     int zenithOrientation;
     
     COORDINATE zenithLoc;
-    COORDINATE blockLocs[1];
-    COORDINATE plateLocs[1];
+    COORDINATE blockLocs[BLOCKCOUNT];
+    COORDINATE plateLocs[PLATECOUNT];
+
+    int plateInitStates[PLATECOUNT];
+    void (*onFuncs[PLATECOUNT])(void);
+    void (*offFuncs[PLATECOUNT])(void);
 
     unsigned int palLen;
     unsigned int tileLen;

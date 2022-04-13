@@ -1,11 +1,11 @@
 #include "plate.h"
 
-void initPlates(COORDINATE* plateLocs) {
+void initPlates(LEVEL level) {
 
     for (int i = 0; i < PLATECOUNT; i++) {
 
-        plates[i].obj.xPos = plateLocs[i].col;
-        plates[i].obj.yPos = plateLocs[i].row;
+        plates[i].obj.xPos = level.plateLocs[i].col;
+        plates[i].obj.yPos = level.plateLocs[i].row;
         plates[i].obj.xTarget = plates[i].obj.xPos;
         plates[i].obj.yTarget = plates[i].obj.yPos;
         plates[i].obj.baseSpeed = 0;
@@ -33,27 +33,73 @@ void initPlates(COORDINATE* plateLocs) {
 
         plates[i].obj.sprite.attributes = &shadowOAM[2];
 
+        plates[i].pressed = level.plateInitStates[i];
+        plates[i].onFunc = level.onFuncs[i];
+        plates[i].offFunc = level.offFuncs[i];
+
     } // for
     
 } // initPlates
 
 void updatePlates() {
 
+    int switchState = 0;
+
     for (int i = 0; i < PLATECOUNT; i++) {
 
-        if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
-            initLevel(1);
+        switchState = 1;
+
+        if (plates[i].pressed) {
+
+            if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
+                switchState = 0;
+
+            } else {
+
+                for (int j = 0; j < BLOCKCOUNT; j++) {
+                    
+                    if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
+                        switchState = 0;
+                    
+                    } // if
+
+                } // for
+
+            } // if
+
+            if (switchState) {
+                plates[i].offFunc();
+                plates[i].pressed = 0;
+                plates[i].obj.sprite.curFrame = 0;
+
+            } // if
 
         } else {
 
-            for (int j = 0; j < BLOCKCOUNT; j++) {
-                
-                if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
-                    initLevel(2);
-                
-                } // if
+            switchState = 0;
 
-            } // for
+            if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
+                switchState = 1;
+
+            } else {
+
+                for (int j = 0; j < BLOCKCOUNT; j++) {
+                    
+                    if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
+                        switchState = 1;
+                    
+                    } // if
+
+                } // for
+
+            } // if
+
+            if (switchState) {
+                plates[i].onFunc();
+                plates[i].pressed = 1;
+                plates[i].obj.sprite.curFrame = 1;
+
+            } // if
 
         } // if
 

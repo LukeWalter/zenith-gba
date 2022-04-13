@@ -1,11 +1,11 @@
 #include "block.h"
 
-void initBlocks(COORDINATE* blockLocs) {
+void initBlocks(LEVEL level) {
 
     for (int i = 0; i < BLOCKCOUNT; i++) {
 
-        blocks[i].obj.xPos = blockLocs[i].col;
-        blocks[i].obj.yPos = blockLocs[i].row;
+        blocks[i].obj.xPos = level.blockLocs[i].col;
+        blocks[i].obj.yPos = level.blockLocs[i].row;
         blocks[i].obj.xTarget = blocks[i].obj.xPos;
         blocks[i].obj.yTarget = blocks[i].obj.yPos;
         blocks[i].obj.baseSpeed = 4;
