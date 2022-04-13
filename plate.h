@@ -16,7 +16,7 @@ typedef struct {
 
 } PLATE;
 
-extern OBJECT plates[PLATECOUNT];
+extern PLATE plates[PLATECOUNT];
 
 void initPlates(COORDINATE*);
 void updatePlates();

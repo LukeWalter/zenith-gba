@@ -5,7 +5,7 @@
 
 PLAYER zenith;
 BLOCK blocks[BLOCKCOUNT];
-OBJECT plates[PLATECOUNT];
+PLATE plates[PLATECOUNT];
 
 LEVEL levels[LEVELCOUNT];
 
