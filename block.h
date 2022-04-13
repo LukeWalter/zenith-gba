@@ -16,7 +16,7 @@ typedef struct {
 
 } BLOCK;
 
-extern OBJECT blocks[BLOCKCOUNT];
+extern BLOCK blocks[BLOCKCOUNT];
 
 void initBlocks(COORDINATE*);
 void updateBlocks();

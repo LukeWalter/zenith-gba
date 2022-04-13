@@ -54,29 +54,29 @@ void moveZenith() {
 
             for (int i = 0; i < BLOCKCOUNT; i++) {
 
-                if (BUTTON_HELD(BUTTON_UP) && zenith.obj.yTarget - 1 == blocks[i].yPos && zenith.obj.xPos == blocks[i].xPos && canMoveUp(&blocks[i])) {
-                    blocks[i].yTarget--;
+                if (BUTTON_HELD(BUTTON_UP) && zenith.obj.yTarget - 1 == blocks[i].obj.yPos && zenith.obj.xPos == blocks[i].obj.xPos && canMoveUp(&blocks[i].obj)) {
+                    blocks[i].obj.yTarget--;
                     zenith.obj.sprite.aniState = BACKWALK;
                     zenith.obj.yTarget--;
-                    zenith.obj.sprite.rdel = blocks[i].baseSpeed;
+                    zenith.obj.sprite.rdel = blocks[i].obj.baseSpeed;
                     
-                } else if (BUTTON_HELD(BUTTON_DOWN) && zenith.obj.yTarget + 1 == blocks[i].yPos && zenith.obj.xPos == blocks[i].xPos && canMoveDown(&blocks[i])) {
-                    blocks[i].yTarget++;
+                } else if (BUTTON_HELD(BUTTON_DOWN) && zenith.obj.yTarget + 1 == blocks[i].obj.yPos && zenith.obj.xPos == blocks[i].obj.xPos && canMoveDown(&blocks[i].obj)) {
+                    blocks[i].obj.yTarget++;
                     zenith.obj.sprite.aniState = FRONTWALK;
                     zenith.obj.yTarget++;
-                    zenith.obj.sprite.rdel = blocks[i].baseSpeed;
+                    zenith.obj.sprite.rdel = blocks[i].obj.baseSpeed;
                     
-                } else if (BUTTON_HELD(BUTTON_LEFT) && zenith.obj.xTarget - 1 == blocks[i].xPos && zenith.obj.yPos == blocks[i].yPos && canMoveLeft(&blocks[i])) {
-                    blocks[i].xTarget--;
+                } else if (BUTTON_HELD(BUTTON_LEFT) && zenith.obj.xTarget - 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos && canMoveLeft(&blocks[i].obj)) {
+                    blocks[i].obj.xTarget--;
                     zenith.obj.sprite.aniState = LEFTWALK;
                     zenith.obj.xTarget--;
-                    zenith.obj.sprite.cdel = blocks[i].baseSpeed;
+                    zenith.obj.sprite.cdel = blocks[i].obj.baseSpeed;
 
-                } else if (BUTTON_HELD(BUTTON_RIGHT) && zenith.obj.xTarget + 1 == blocks[i].xPos && zenith.obj.yPos == blocks[i].yPos && canMoveRight(&blocks[i])) {
-                    blocks[i].xTarget++;
+                } else if (BUTTON_HELD(BUTTON_RIGHT) && zenith.obj.xTarget + 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos && canMoveRight(&blocks[i].obj)) {
+                    blocks[i].obj.xTarget++;
                     zenith.obj.sprite.aniState = RIGHTWALK;
                     zenith.obj.xTarget++;
-                    zenith.obj.sprite.cdel = blocks[i].baseSpeed;
+                    zenith.obj.sprite.cdel = blocks[i].obj.baseSpeed;
 
                 } // if
 

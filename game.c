@@ -4,7 +4,7 @@
 #include "print.h"
 
 PLAYER zenith;
-OBJECT blocks[BLOCKCOUNT];
+BLOCK blocks[BLOCKCOUNT];
 OBJECT plates[PLATECOUNT];
 
 LEVEL levels[LEVELCOUNT];
@@ -74,7 +74,7 @@ int canMoveUp(OBJECT* obj) {
         
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
-            if (obj->yTarget - 1 == blocks[i].yPos && obj->xPos == blocks[i].xPos) {
+            if (obj->yTarget - 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
                 return 0;
         
             } // if
@@ -95,7 +95,7 @@ int canMoveDown(OBJECT* obj) {
         
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
-            if (obj->yTarget + 1 == blocks[i].yPos && obj->xPos == blocks[i].xPos) {
+            if (obj->yTarget + 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
                 return 0;
         
             } // if
@@ -116,7 +116,7 @@ int canMoveLeft(OBJECT* obj) {
         
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
-            if (obj->xTarget - 1 == blocks[i].xPos && obj->yPos == blocks[i].yPos) {
+            if (obj->xTarget - 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
                 return 0;
         
             } // if
@@ -137,7 +137,7 @@ int canMoveRight(OBJECT* obj) {
         
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
-            if (obj->xTarget + 1 == blocks[i].xPos && obj->yPos == blocks[i].yPos) {
+            if (obj->xTarget + 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
                 return 0;
         
             } // if

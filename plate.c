@@ -48,7 +48,7 @@ void updatePlates() {
 
             for (int j = 0; j < BLOCKCOUNT; j++) {
                 
-                if (plates[i].xPos == blocks[j].xPos && plates[i].yPos == blocks[j].yPos) {
+                if (plates[i].xPos == blocks[j].obj.xPos && plates[i].yPos == blocks[j].obj.yPos) {
                     initLevel(2);
                 
                 } // if
