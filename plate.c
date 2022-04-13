@@ -33,6 +33,9 @@ void initPlates(COORDINATE* plateLocs) {
 
         plates[i].obj.sprite.attributes = &shadowOAM[2];
 
+        plates[i].onFunc = &updateLevel;
+        plates[i].offFunc = &doNothing;
+
     } // for
     
 } // initPlates
@@ -42,14 +45,14 @@ void updatePlates() {
     for (int i = 0; i < PLATECOUNT; i++) {
 
         if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
-            initLevel(1);
+            plates[i].onFunc();
 
         } else {
 
             for (int j = 0; j < BLOCKCOUNT; j++) {
                 
                 if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
-                    initLevel(2);
+                    plates[i].onFunc();
                 
                 } // if
 

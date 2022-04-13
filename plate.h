@@ -13,6 +13,8 @@
 typedef struct {
 
     OBJECT obj;
+    void (*onFunc)(void);
+    void (*offFunc)(void);
 
 } PLATE;
 
