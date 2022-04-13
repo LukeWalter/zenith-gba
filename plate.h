@@ -13,6 +13,7 @@
 typedef struct {
 
     OBJECT obj;
+    int pressed;
     void (*onFunc)(void);
     void (*offFunc)(void);
 

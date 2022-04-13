@@ -33,6 +33,7 @@ void initPlates(COORDINATE* plateLocs) {
 
         plates[i].obj.sprite.attributes = &shadowOAM[2];
 
+        plates[i].pressed = 0;
         plates[i].onFunc = &updateLevel;
         plates[i].offFunc = &doNothing;
 
@@ -42,21 +43,63 @@ void initPlates(COORDINATE* plateLocs) {
 
 void updatePlates() {
 
+    int switchState = 0;
+
     for (int i = 0; i < PLATECOUNT; i++) {
 
-        if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
-            plates[i].onFunc();
+        switchState = 1;
+
+        if (plates[i].pressed) {
+
+            if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
+                switchState = 0;
+
+            } else {
+
+                for (int j = 0; j < BLOCKCOUNT; j++) {
+                    
+                    if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
+                        switchState = 0;
+                    
+                    } // if
+
+                } // for
+
+            } // if
+
+            if (switchState) {
+                plates[i].offFunc();
+                plates[i].pressed = 0;
+                plates[i].obj.sprite.curFrame = 0;
+
+            } // if
 
         } else {
 
-            for (int j = 0; j < BLOCKCOUNT; j++) {
-                
-                if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
-                    plates[i].onFunc();
-                
-                } // if
+            switchState = 0;
 
-            } // for
+            if (plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
+                switchState = 1;
+
+            } else {
+
+                for (int j = 0; j < BLOCKCOUNT; j++) {
+                    
+                    if (plates[i].obj.xPos == blocks[j].obj.xPos && plates[i].obj.yPos == blocks[j].obj.yPos) {
+                        switchState = 1;
+                    
+                    } // if
+
+                } // for
+
+            } // if
+
+            if (switchState) {
+                plates[i].onFunc();
+                plates[i].pressed = 1;
+                plates[i].obj.sprite.curFrame = 1;
+
+            } // if
 
         } // if
 
