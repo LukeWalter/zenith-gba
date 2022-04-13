@@ -68,6 +68,10 @@ void buildRm1() {
     COORDINATE pLoc = {4, 4};
     levels[0].plateLocs[0] = pLoc;
 
+    levels[0].plateInitStates[0] = 0;
+    levels[0].onFuncs[0] = &updateLevel;
+    levels[0].offFuncs[0] = &doNothing;
+
     levels[0].palLen = cavePalLen;
     levels[0].tileLen = caveTilesLen;
     levels[0].mapLen = caveMapLen;
@@ -98,6 +102,10 @@ void buildRm2() {
 
     COORDINATE pLoc2 = {5, 5};
     levels[1].plateLocs[0] = pLoc2;
+
+    levels[1].plateInitStates[0] = 1;
+    levels[1].onFuncs[0] = &doNothing;
+    levels[1].offFuncs[0] = &updateLevel;
 
     levels[1].palLen = housePalLen;
     levels[1].tileLen = houseTilesLen;

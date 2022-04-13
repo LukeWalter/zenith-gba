@@ -28,6 +28,10 @@ typedef struct {
     COORDINATE blockLocs[BLOCKCOUNT];
     COORDINATE plateLocs[PLATECOUNT];
 
+    int plateInitStates[PLATECOUNT];
+    void (*onFuncs[PLATECOUNT])(void);
+    void (*offFuncs[PLATECOUNT])(void);
+
     unsigned int palLen;
     unsigned int tileLen;
     unsigned int mapLen;
