@@ -41,7 +41,7 @@ void updatePlates() {
 
     for (int i = 0; i < PLATECOUNT; i++) {
 
-        if (plates[i].xPos == zenith.xPos && plates[i].yPos == zenith.yPos) {
+        if (plates[i].xPos == zenith.obj.xPos && plates[i].yPos == zenith.obj.yPos) {
             initLevel(1);
 
         } else {

@@ -1,5 +1,5 @@
-#ifndef BLOCK
-#define BLOCK
+#ifndef BLOCK_OBJ
+#define BLOCK_OBJ
 
 #include "mygbalib.h"
 #include "leveldata.h"

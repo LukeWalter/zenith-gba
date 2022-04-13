@@ -1,5 +1,5 @@
-#ifndef PLATE
-#define PLATE
+#ifndef PLATE_OBJ
+#define PLATE_OBJ
 
 #include "mygbalib.h"
 #include "leveldata.h"

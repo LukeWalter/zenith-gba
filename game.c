@@ -3,7 +3,7 @@
 #include "game.h"
 #include "print.h"
 
-OBJECT zenith;
+PLAYER zenith;
 OBJECT blocks[BLOCKCOUNT];
 OBJECT plates[PLATECOUNT];
 

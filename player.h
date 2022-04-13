@@ -1,10 +1,10 @@
-#ifndef PLAYER
-#define PLAYER
+#ifndef PLAYER_OBJ
+#define PLAYER_OBJ
 
 #include "mygbalib.h"
 #include "leveldata.h"
-
 #include "game.h"
+
 #include "block.h"
 #include "plate.h"
 
@@ -19,6 +19,6 @@ void updateZenith();
 void moveZenith();
 void drawZenith();
 
-extern OBJECT zenith;
+extern PLAYER zenith;
 
 #endif
