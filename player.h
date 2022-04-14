@@ -12,7 +12,7 @@
 typedef struct {
 
     OBJECT obj;
-    // TOOL equippedTool;
+    TOOL* equippedTool;
 
 } PLAYER;
 

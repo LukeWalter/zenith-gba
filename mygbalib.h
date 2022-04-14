@@ -1,6 +1,8 @@
 #ifndef MY_GBA_LIB
 #define MY_GBA_LIB
 
+#include <stddef.h>
+
 // Common Typedefs.
 typedef unsigned char u8;
 typedef unsigned short u16;
