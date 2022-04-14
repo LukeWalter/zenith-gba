@@ -5,12 +5,14 @@
 #include "leveldata.h"
 #include "game.h"
 
+#include "tool.h"
 #include "block.h"
 #include "plate.h"
 
 typedef struct {
 
     OBJECT obj;
+    TOOL* equippedTool;
 
 } PLAYER;
 

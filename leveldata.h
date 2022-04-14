@@ -5,6 +5,7 @@
 
 #define BLOCKCOUNT 1
 #define PLATECOUNT 1
+#define TOOLCOUNT 1
 
 typedef struct {
     int col;
@@ -27,10 +28,13 @@ typedef struct {
     COORDINATE zenithLoc;
     COORDINATE blockLocs[BLOCKCOUNT];
     COORDINATE plateLocs[PLATECOUNT];
+    COORDINATE toolLocs[TOOLCOUNT];
 
     int plateInitStates[PLATECOUNT];
     void (*onFuncs[PLATECOUNT])(void);
     void (*offFuncs[PLATECOUNT])(void);
+
+    void (*toolAbilities[TOOLCOUNT])(void);
 
     unsigned int palLen;
     unsigned int tileLen;
