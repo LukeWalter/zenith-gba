@@ -6,6 +6,7 @@
 PLAYER zenith;
 BLOCK blocks[BLOCKCOUNT];
 PLATE plates[PLATECOUNT];
+TOOL tools[TOOLCOUNT];
 
 LEVEL levels[LEVELCOUNT];
 
@@ -52,6 +53,7 @@ void drawGame() {
     drawZenith();
     drawBlocks();
     drawPlates();
+    drawTools();
 
     waitForVBlank();
     updateOAM();
