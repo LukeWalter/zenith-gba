@@ -3,10 +3,6 @@
 
 #include "mygbalib.h"
 #include "leveldata.h"
-#include "game.h"
-
-#include "player.h"
-#include "plate.h"
 
 typedef struct {
 

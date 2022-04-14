@@ -6,8 +6,6 @@
 #include "game.h"
 
 #include "tool.h"
-#include "block.h"
-#include "plate.h"
 
 typedef struct {
 
@@ -15,6 +13,8 @@ typedef struct {
     TOOL* equippedTool;
 
 } PLAYER;
+
+TOOL equippedTool;
 
 void initZenith(LEVEL);
 void updateZenith();

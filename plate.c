@@ -1,5 +1,9 @@
 #include "plate.h"
 
+#include "game.h"
+#include "player.h"
+#include "block.h"
+
 void initPlates(LEVEL level) {
 
     for (int i = 0; i < PLATECOUNT; i++) {

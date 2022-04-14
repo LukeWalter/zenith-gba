@@ -1,5 +1,8 @@
 #include "player.h"
 
+#include "block.h"
+#include "plate.h"
+
 void initZenith(LEVEL level) {
 
     zenith.obj.xPos = level.zenithLoc.col;

@@ -1,5 +1,9 @@
 #include "tool.h"
 
+#include "game.h"
+#include "plate.h"
+#include "block.h"
+
 void initTools(LEVEL level) {
 
     for (int i = 0; i < TOOLCOUNT; i++) {

@@ -1,7 +1,10 @@
 #ifndef MY_GBA_LIB
 #define MY_GBA_LIB
 
+#include <stdlib.h>
 #include <stddef.h>
+
+#include "print.h"
 
 // Common Typedefs.
 typedef unsigned char u8;

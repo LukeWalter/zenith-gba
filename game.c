@@ -1,7 +1,4 @@
-#include <stdlib.h>
-
 #include "game.h"
-#include "print.h"
 
 PLAYER zenith;
 BLOCK blocks[BLOCKCOUNT];

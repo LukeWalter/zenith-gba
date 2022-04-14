@@ -6,6 +6,7 @@
 #include "player.h"
 #include "block.h"
 #include "plate.h"
+#include "tool.h"
 
 enum { FRONTWALK, BACKWALK, RIGHTWALK, LEFTWALK, IDLE };
 
