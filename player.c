@@ -29,7 +29,7 @@ void initZenith(LEVEL level) {
     zenith.obj.sprite.aniCounter = 0;
     zenith.obj.sprite.aniState = level.zenithOrientation;
     zenith.obj.sprite.curFrame = 0;
-    zenith.obj.sprite.numFrames = 3;
+    zenith.obj.sprite.numFrames = 4;
     zenith.obj.sprite.hide = 0;
 
     zenith.obj.sprite.attributes = &shadowOAM[0];
@@ -174,9 +174,9 @@ void drawZenith() {
         zenith.obj.sprite.attributes->attr0 |= ATTR0_HIDE;
 
     } else {
-        zenith.obj.sprite.attributes->attr0 = (zenith.obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
-        zenith.obj.sprite.attributes->attr1 = (zenith.obj.sprite.worldCol - hOff) | ATTR1_SMALL;
-        zenith.obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(zenith.obj.sprite.aniState * 2, zenith.obj.sprite.curFrame * 2);
+        zenith.obj.sprite.attributes->attr0 = (zenith.obj.sprite.worldRow - vOff) | ATTR0_TALL;
+        zenith.obj.sprite.attributes->attr1 = (zenith.obj.sprite.worldCol - hOff) | ATTR1_MEDIUM;
+        zenith.obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(zenith.obj.sprite.aniState * 2, zenith.obj.sprite.curFrame * 4);
     
     } // if
 
