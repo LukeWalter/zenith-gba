@@ -69,7 +69,7 @@ void drawBlocks() {
         } else {
             blocks[i].obj.sprite.attributes->attr0 = (blocks[i].obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
             blocks[i].obj.sprite.attributes->attr1 = (blocks[i].obj.sprite.worldCol - hOff) | ATTR1_SMALL;
-            blocks[i].obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(blocks[i].obj.sprite.aniState * 2, 0);
+            blocks[i].obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(10, 0);
         
         } // if
 
