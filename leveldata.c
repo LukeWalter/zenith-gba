@@ -10,6 +10,8 @@
 void buildRm1();
 void buildRm2();
 
+void drawTile(int, int, int);
+
 void buildRooms() {
 
     buildRm1();
@@ -40,13 +42,8 @@ void initLevel(int level) {
 
         for (int r = 0; r < levels[level - 1].mapHeight * 2; r += 2) {
             
-            int tilerow = 0;
-            int tilecol = 0;
-            
-            SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 0, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 0, 32);
-            SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 0, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 0, 32);
-            SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 1, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 1, 32);
-            SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 1, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 1, 32);
+            int tileposition = 3;
+            drawTile(c, r, tileposition);
 
         }  // for
 
@@ -143,3 +140,15 @@ void buildRm2() {
     levels[1].map = caveMap;
 
 } // buildLv2
+
+void drawTile(int c, int r, int tileposition) {
+
+    int tilecol = tileposition % 16;
+    int tilerow = tileposition / 16;
+
+    SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 0, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 0, 32);
+    SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 0, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 0, 32);
+    SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 1, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 1, 32);
+    SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 1, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 1, 32);
+
+} // drawTile
