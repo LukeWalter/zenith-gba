@@ -5,11 +5,11 @@
 //
 //	cave, 256x256@4, 
 //	+ palette 256 entries, not compressed
-//	+ 81 tiles (t|f|p reduced) not compressed
+//	+ 1024 tiles not compressed
 //	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 2592 + 2048 = 5152
+//	Total size: 512 + 32768 + 2048 = 35328
 //
-//	Time-stamp: 2022-04-22, 22:18:48
+//	Time-stamp: 2022-04-22, 22:52:41
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -18,8 +18,8 @@
 #ifndef GRIT_CAVE_H
 #define GRIT_CAVE_H
 
-#define caveTilesLen 2592
-extern const unsigned short caveTiles[1296];
+#define caveTilesLen 32768
+extern const unsigned short caveTiles[16384];
 
 #define caveMapLen 2048
 extern const unsigned short caveMap[1024];

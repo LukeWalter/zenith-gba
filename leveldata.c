@@ -35,6 +35,22 @@ void initLevel(int level) {
     DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
     REG_BG1VOFF = vOff;
     REG_BG1HOFF = hOff;
+ 
+    for (int c = 0; c < levels[level - 1].mapWidth * 2; c += 2) {
+
+        for (int r = 0; r < levels[level - 1].mapHeight * 2; r += 2) {
+            
+            int tilerow = 0;
+            int tilecol = 0;
+            
+            SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 0, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 0, 32);
+            SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 0, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 0, 32);
+            SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 1, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 1, 32);
+            SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 1, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 1, 32);
+
+        }  // for
+
+    } // for
 
     DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
@@ -50,17 +66,17 @@ void initLevel(int level) {
 
 void buildRm1() {
 
-    levels[0].mapWidth = 11;
-    levels[0].mapHeight = 7;
-    levels[0].mapXOffset = 4;
-    levels[0].mapYOffset = 3;
+    levels[0].mapWidth = 15;
+    levels[0].mapHeight = 10;
+    levels[0].mapXOffset = 0;
+    levels[0].mapYOffset = 0;
 
     levels[0].hOff = 0;
     levels[0].vOff = 0;
 
     levels[0].zenithOrientation = FRONTWALK;
 
-    COORDINATE zLoc = {0, 0};
+    COORDINATE zLoc = {1, 1};
     levels[0].zenithLoc = zLoc;
 
     COORDINATE bLoc = {3, 3};
@@ -118,12 +134,12 @@ void buildRm2() {
 
     levels[1].toolAbilities[0] = &doNothing;
 
-    levels[1].palLen = housePalLen;
-    levels[1].tileLen = houseTilesLen;
-    levels[1].mapLen = houseMapLen;
+    levels[1].palLen = cavePalLen;
+    levels[1].tileLen = caveTilesLen;
+    levels[1].mapLen = caveMapLen;
 
-    levels[1].pal = housePal;
-    levels[1].tiles = houseTiles;
-    levels[1].map = houseMap;
+    levels[1].pal = cavePal;
+    levels[1].tiles = caveTiles;
+    levels[1].map = caveMap;
 
 } // buildLv2
