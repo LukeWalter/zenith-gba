@@ -82,9 +82,9 @@ void buildRm1() {
     levels[0].tileLen = caveTilesLen;
     levels[0].mapLen = caveMapLen;
 
-    DMANow(3, cavePal, (volatile void*) levels[0].pal, 256);
-    DMANow(3, caveTiles, (volatile void*) levels[0].tiles, houseTilesLen / 2);
-    DMANow(3, caveMap, (volatile void*) levels[0].map, houseMapLen / 2);
+    levels[0].pal = cavePal;
+    levels[0].tiles = caveTiles;
+    levels[0].map = caveMap;
 
 } // buildLv1
 
@@ -122,8 +122,8 @@ void buildRm2() {
     levels[1].tileLen = houseTilesLen;
     levels[1].mapLen = houseMapLen;
 
-    DMANow(3, housePal, (volatile void*) levels[1].pal, 256);
-    DMANow(3, houseTiles, (volatile void*) levels[1].tiles, houseTilesLen / 2);
-    DMANow(3, houseMap, (volatile void*) levels[1].map, houseMapLen / 2);
+    levels[1].pal = housePal;
+    levels[1].tiles = houseTiles;
+    levels[1].map = houseMap;
 
 } // buildLv2

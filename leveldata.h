@@ -40,9 +40,9 @@ typedef struct {
     unsigned int tileLen;
     unsigned int mapLen;
 
-    const unsigned short pal[256];
-    const unsigned short tiles[1024];
-    const unsigned short map[1024];
+    const volatile void* pal;
+    const volatile void* tiles;
+    const volatile void* map;
 
 } LEVEL;
 
