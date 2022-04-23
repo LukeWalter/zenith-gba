@@ -44,6 +44,8 @@ typedef struct {
     const unsigned short* tiles;
     const unsigned short* map;
 
+    unsigned short mapTiles[64 * 64];
+
 } LEVEL;
 
 extern LEVEL levels[LEVELCOUNT];

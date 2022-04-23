@@ -37,12 +37,12 @@ void initLevel(int level) {
     DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
     REG_BG1VOFF = vOff;
     REG_BG1HOFF = hOff;
- 
+
     for (int c = 0; c < levels[level - 1].mapWidth * 2; c += 2) {
 
         for (int r = 0; r < levels[level - 1].mapHeight * 2; r += 2) {
             
-            int tileposition = 3;
+            int tileposition = levels[level - 1].mapTiles[OFFSET(c / 2, r / 2, mapWidth)];
             drawTile(c, r, tileposition);
 
         }  // for
@@ -99,6 +99,23 @@ void buildRm1() {
     levels[0].tiles = caveTiles;
     levels[0].map = caveMap;
 
+    const unsigned short tileData[15 * 10] = {
+
+        5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+
+    };
+
+    DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
+
 } // buildLv1
 
 void buildRm2() {
@@ -138,6 +155,29 @@ void buildRm2() {
     levels[1].pal = cavePal;
     levels[1].tiles = caveTiles;
     levels[1].map = caveMap;
+
+    const unsigned short tileData[16 * 16] = {
+
+        5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+
+    };
+
+    DMANow(3, tileData, levels[1].mapTiles, 16 * 16);
 
 } // buildLv2
 
