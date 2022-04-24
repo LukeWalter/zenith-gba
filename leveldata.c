@@ -19,7 +19,7 @@ void buildRooms() {
 
 } // buildLevels
 
-void initLevel(int level) {
+LEVEL* initLevel(int level) {
 
     // Measured in double tiles
     mapWidth = levels[level - 1].mapWidth;
@@ -58,6 +58,8 @@ void initLevel(int level) {
     initBlocks(levels[level - 1]);
     initPlates(levels[level - 1]);
     initTools(levels[level - 1]);
+
+    return &levels[level - 1];
 
 } // initLevel
 

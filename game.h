@@ -19,7 +19,6 @@ void initGame();
 void updateGame();
 void drawGame();
 
-void initLevel(int);
 void updateLevel();
 
 int canMoveUp(OBJECT*);

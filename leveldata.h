@@ -59,6 +59,8 @@ extern int hOff;
 extern int vOff;
 
 void buildRooms();
-void initLevel(int);
+LEVEL* initLevel(int);
+
+int getTileId(int, int);
 
 #endif

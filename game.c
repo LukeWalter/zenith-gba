@@ -10,8 +10,6 @@ LEVEL levels[LEVELCOUNT];
 int gameOver;
 int gameWon;
 
-int level;
-
 int mapWidth;
 int mapHeight;
 int mapXOffset;
@@ -20,22 +18,25 @@ int mapYOffset;
 int hOff;
 int vOff;
 
+int level;
+LEVEL* levelData;
+
 void initGame() {
+
+    buildRooms();
+
+    level = 1;
+    levelData = initLevel(level);
 
     gameOver = 0;
     gameWon = 0;
-
-    level = 1;
-
-    buildRooms();
-    initLevel(level);
 
 } // initGame
 
 void updateLevel() {
     level++;
     if (level > LEVELCOUNT) level = 1;
-    initLevel(level);
+    levelData = initLevel(level);
 
 } // updateLevel
 
@@ -82,6 +83,9 @@ int canMoveUp(OBJECT* obj) {
 
     if (obj->yTarget - 1 > -1) {
         
+        int tileId = getTileId(obj->xTarget, obj->yTarget - 1);
+        if (tileId != 0 && tileId != 30) return 0;
+
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
             if (obj->yTarget - 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
@@ -103,6 +107,9 @@ int canMoveDown(OBJECT* obj) {
 
     if (obj->yTarget + 1 < mapHeight) {
         
+        int tileId = getTileId(obj->xTarget, obj->yTarget + 1);
+        if (tileId != 0 && tileId != 30) return 0;
+
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
             if (obj->yTarget + 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
@@ -124,6 +131,9 @@ int canMoveLeft(OBJECT* obj) {
 
     if (obj->xTarget - 1 > -1) {
         
+        int tileId = getTileId(obj->xTarget - 1, obj->yTarget);
+        if (tileId != 0 && tileId != 30) return 0;
+
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
             if (obj->xTarget - 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
@@ -145,6 +155,9 @@ int canMoveRight(OBJECT* obj) {
 
     if (obj->xTarget + 1 < mapWidth) {
         
+        int tileId = getTileId(obj->xTarget + 1, obj->yTarget);
+        if (tileId != 0 && tileId != 30) return 0;
+
         for (int i = 0; i < BLOCKCOUNT; i++) {
             
             if (obj->xTarget + 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
@@ -319,3 +332,8 @@ void readInput(OBJECT* obj) {
     else if (obj->xTarget > obj->xPos) moveRight(obj);
 
 } // readInput
+
+int getTileId(int x, int y) {
+    return levelData->mapTiles[OFFSET(x, y, mapWidth)];
+
+} // getTileId
