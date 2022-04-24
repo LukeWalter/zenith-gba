@@ -40,9 +40,11 @@ typedef struct {
     unsigned int tileLen;
     unsigned int mapLen;
 
-    const unsigned short pal[256];
-    const unsigned short tiles[1024];
-    const unsigned short map[1024];
+    const unsigned short* pal;
+    const unsigned short* tiles;
+    const unsigned short* map;
+
+    unsigned short mapTiles[64 * 64];
 
 } LEVEL;
 
@@ -57,6 +59,8 @@ extern int hOff;
 extern int vOff;
 
 void buildRooms();
-void initLevel(int);
+LEVEL* initLevel(int);
+
+int getTileId(int, int);
 
 #endif

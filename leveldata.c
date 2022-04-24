@@ -10,6 +10,8 @@
 void buildRm1();
 void buildRm2();
 
+void drawTile(int, int, int);
+
 void buildRooms() {
 
     buildRm1();
@@ -17,7 +19,7 @@ void buildRooms() {
 
 } // buildLevels
 
-void initLevel(int level) {
+LEVEL* initLevel(int level) {
 
     // Measured in double tiles
     mapWidth = levels[level - 1].mapWidth;
@@ -36,6 +38,17 @@ void initLevel(int level) {
     REG_BG1VOFF = vOff;
     REG_BG1HOFF = hOff;
 
+    for (int c = 0; c < levels[level - 1].mapWidth * 2; c += 2) {
+
+        for (int r = 0; r < levels[level - 1].mapHeight * 2; r += 2) {
+            
+            int tileposition = levels[level - 1].mapTiles[OFFSET(c / 2, r / 2, mapWidth)];
+            drawTile(c, r, tileposition);
+
+        }  // for
+
+    } // for
+
     DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
     hideSprites();
@@ -46,30 +59,32 @@ void initLevel(int level) {
     initPlates(levels[level - 1]);
     initTools(levels[level - 1]);
 
+    return &levels[level - 1];
+
 } // initLevel
 
 void buildRm1() {
 
-    levels[0].mapWidth = 11;
-    levels[0].mapHeight = 7;
-    levels[0].mapXOffset = 4;
-    levels[0].mapYOffset = 3;
+    levels[0].mapWidth = 15;
+    levels[0].mapHeight = 10;
+    levels[0].mapXOffset = 0;
+    levels[0].mapYOffset = 0;
 
     levels[0].hOff = 0;
     levels[0].vOff = 0;
 
     levels[0].zenithOrientation = FRONTWALK;
 
-    COORDINATE zLoc = {0, 0};
+    COORDINATE zLoc = {1, 6};
     levels[0].zenithLoc = zLoc;
 
-    COORDINATE bLoc = {3, 3};
+    COORDINATE bLoc = {2, 6};
     levels[0].blockLocs[0] = bLoc;
 
-    COORDINATE pLoc = {4, 4};
+    COORDINATE pLoc = {3, 6};
     levels[0].plateLocs[0] = pLoc;
 
-    COORDINATE tLoc = {0, 3};
+    COORDINATE tLoc = {0, 6};
     levels[0].toolLocs[0] = tLoc;
 
     levels[0].plateInitStates[0] = 0;
@@ -82,9 +97,26 @@ void buildRm1() {
     levels[0].tileLen = caveTilesLen;
     levels[0].mapLen = caveMapLen;
 
-    DMANow(3, cavePal, (volatile void*) levels[0].pal, 256);
-    DMANow(3, caveTiles, (volatile void*) levels[0].tiles, houseTilesLen / 2);
-    DMANow(3, caveMap, (volatile void*) levels[0].map, houseMapLen / 2);
+    levels[0].pal = cavePal;
+    levels[0].tiles = caveTiles;
+    levels[0].map = caveMap;
+
+    const unsigned short tileData[15 * 10] = {
+
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,15,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,30,5,6,5,6,5,13,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
+
+    };
+
+    DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
 
 } // buildLv1
 
@@ -118,12 +150,47 @@ void buildRm2() {
 
     levels[1].toolAbilities[0] = &doNothing;
 
-    levels[1].palLen = housePalLen;
-    levels[1].tileLen = houseTilesLen;
-    levels[1].mapLen = houseMapLen;
+    levels[1].palLen = cavePalLen;
+    levels[1].tileLen = caveTilesLen;
+    levels[1].mapLen = caveMapLen;
 
-    DMANow(3, housePal, (volatile void*) levels[1].pal, 256);
-    DMANow(3, houseTiles, (volatile void*) levels[1].tiles, houseTilesLen / 2);
-    DMANow(3, houseMap, (volatile void*) levels[1].map, houseMapLen / 2);
+    levels[1].pal = cavePal;
+    levels[1].tiles = caveTiles;
+    levels[1].map = caveMap;
+
+    const unsigned short tileData[16 * 16] = {
+
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+
+    };
+
+    DMANow(3, tileData, levels[1].mapTiles, 16 * 16);
 
 } // buildLv2
+
+void drawTile(int c, int r, int tileposition) {
+
+    int tilecol = tileposition % 15;
+    int tilerow = tileposition / 15;
+
+    SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 0, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 0, 32);
+    SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 0, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 0, 32);
+    SCREENBLOCK[28].tilemap[OFFSET(c + 0, r + 1, 32)] = OFFSET(2 * tilecol + 0, 2 * tilerow + 1, 32);
+    SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 1, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 1, 32);
+
+} // drawTile
