@@ -144,6 +144,7 @@ void start() {
     
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
         srand(seed);
+        playSoundA(cavemusic_data, cavemusic_length, 1);
         goToGame();    
         initGame();
 
@@ -153,7 +154,6 @@ void start() {
 
 // Sets up the game state.
 void goToGame() {
-    playSoundA(cavemusic_data, cavemusic_length, 1);
     state = GAME;
     
 } // goToGame
