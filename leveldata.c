@@ -38,12 +38,12 @@ LEVEL* initLevel(int level) {
     REG_BG1VOFF = vOff;
     REG_BG1HOFF = hOff;
 
-    for (int c = 0; c < levels[level - 1].mapWidth * 2; c += 2) {
+    for (int c = 0; c < levels[level - 1].mapWidth; c++) {
 
-        for (int r = 0; r < levels[level - 1].mapHeight * 2; r += 2) {
+        for (int r = 0; r < levels[level - 1].mapHeight; r++) {
             
-            int tileposition = levels[level - 1].mapTiles[OFFSET(c / 2, r / 2, mapWidth)];
-            drawTile(c, r, tileposition);
+            int tileposition = levels[level - 1].mapTiles[OFFSET(c, r, mapWidth)];
+            drawTile(c * 2, r * 2, tileposition);
 
         }  // for
 
@@ -88,8 +88,8 @@ void buildRm1() {
     levels[0].toolLocs[0] = tLoc;
 
     levels[0].plateInitStates[0] = 0;
-    levels[0].onFuncs[0] = &updateLevel;
-    levels[0].offFuncs[0] = &doNothing;
+    levels[0].onFuncs[0] = &openDoor;
+    levels[0].offFuncs[0] = &closeDoor;
 
     levels[0].toolAbilities[0] = &doNothing;
 
@@ -105,8 +105,8 @@ void buildRm1() {
 
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,
-        5,6,5,6,5,6,5,15,5,6,5,6,5,6,5,
-        5,6,5,6,5,6,5,30,5,6,5,6,5,13,1,
+        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,33,5,6,5,6,5,13,1,
         0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
         0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
         0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
@@ -160,22 +160,22 @@ void buildRm2() {
 
     const unsigned short tileData[16 * 16] = {
 
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
     };
 
@@ -194,3 +194,36 @@ void drawTile(int c, int r, int tileposition) {
     SCREENBLOCK[28].tilemap[OFFSET(c + 1, r + 1, 32)] = OFFSET(2 * tilecol + 1, 2 * tilerow + 1, 32);
 
 } // drawTile
+
+void openDoor() {
+    
+    int tileId = getTileId(7, 3);
+
+    if (tileId == 33) {
+
+        levelData->mapTiles[OFFSET(7, 2, levelData->mapWidth)] -= 3;
+        levelData->mapTiles[OFFSET(7, 3, levelData->mapWidth)] -= 3;
+
+        drawTile(7 * 2, 2 * 2, tileId - 15 - 3);
+        drawTile(7 * 2, 3 * 2, tileId - 3);
+
+    } // if
+    
+} // openDoor
+
+void closeDoor() {
+    
+    int tileId = getTileId(7, 3);
+
+    if (tileId == 30) {
+        
+        levelData->mapTiles[OFFSET(7, 2, levelData->mapWidth)] += 3;
+        levelData->mapTiles[OFFSET(7, 3, levelData->mapWidth)] += 3;
+
+        drawTile(7 * 2, 2 * 2, tileId - 15 + 3);
+        drawTile(7 * 2, 3 * 2, tileId + 3);
+
+    } // if
+
+
+} // closeDoor

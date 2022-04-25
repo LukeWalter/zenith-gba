@@ -14,6 +14,7 @@ extern int gameOver;
 extern int gameWon;
 
 extern int level;
+extern LEVEL* levelData;
 
 void initGame();
 void updateGame();
