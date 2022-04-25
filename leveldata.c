@@ -7,6 +7,9 @@
 #include "cave.h"
 #include "house.h"
 
+#include "sound.h"
+#include "door.h"
+
 void buildRm1();
 void buildRm2();
 
@@ -197,6 +200,8 @@ void drawTile(int c, int r, int tileposition) {
 
 void openDoor() {
     
+    playSoundB(door_data, door_length, 0);
+
     int tileId = getTileId(7, 3);
 
     if (tileId == 33) {
@@ -213,6 +218,8 @@ void openDoor() {
 
 void closeDoor() {
     
+    playSoundB(door_data, door_length, 0);
+
     int tileId = getTileId(7, 3);
 
     if (tileId == 30) {

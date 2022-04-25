@@ -262,6 +262,53 @@ extern DMA *dma;
 // DMA Functions.
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
 
+// Controllers
+#define REG_TM0CNT *(volatile unsigned short*)0x4000102
+#define REG_TM1CNT *(volatile unsigned short*)0x4000106
+#define REG_TM2CNT *(volatile unsigned short*)0x400010A
+#define REG_TM3CNT *(volatile unsigned short*)0x400010E
+
+// Timer values
+#define REG_TM0D       *(volatile unsigned short*)0x4000100
+#define REG_TM1D       *(volatile unsigned short*)0x4000104
+#define REG_TM2D       *(volatile unsigned short*)0x4000108
+#define REG_TM3D       *(volatile unsigned short*)0x400010C
+
+// Timer flags
+#define TIMER_ON      (1<<7)
+#define TIMER_OFF     (0<<7)
+#define TM_IRQ        (1<<6)
+#define TM_CASCADE    (1<<2)
+#define TM_FREQ_1     0
+#define TM_FREQ_64    1
+#define TM_FREQ_256   2
+#define TM_FREQ_1024  3
+
+// Controller
+#define REG_IME *(unsigned short*)0x4000208
+// Enabler
+#define REG_IE *(unsigned short*)0x4000200
+// Flag
+#define REG_IF *(volatile unsigned short*)0x4000202
+
+// Interrupt handler function pointer
+typedef void (*ihp)(void);
+// Interrupt handler register
+#define REG_INTERRUPT *((ihp*)0x03007FFC)
+// Display status register
+#define REG_DISPSTAT *(unsigned short*)0x4000004
+
+// Interrupt constants for turning them on
+#define INT_VBLANK_ENABLE 1 << 3
+
+// Interrupt constants for checking which type of interrupt happened 
+#define INT_VBLANK 1 << 0   
+#define INT_TM0 1<<3    
+#define INT_TM1 1<<4    
+#define INT_TM2 1<<5    
+#define INT_TM3 1<<6    
+#define INT_BUTTON 1 << 12
+
 // Miscellaneous Functions.
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
 void doNothing();
