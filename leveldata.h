@@ -63,4 +63,7 @@ LEVEL* initLevel(int);
 
 int getTileId(int, int);
 
+void openDoor();
+void closeDoor();
+
 #endif

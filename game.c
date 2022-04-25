@@ -44,6 +44,8 @@ void updateGame() {
     updateZenith();
     updatePlates();
 
+    if (getTileId(zenith.obj.xPos, zenith.obj.yPos) == 30) updateLevel();
+
 } // updateGame
 
 void drawGame() {
