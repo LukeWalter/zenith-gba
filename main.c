@@ -5,6 +5,9 @@
 
 #include "game.h"
 
+#include "sound.h"
+#include "cavemusic.h"
+
 #include "zenithtitle.h"
 #include "cave.h"
 #include "winscreen.h"
@@ -107,6 +110,9 @@ void initialize() {
     buttons = BUTTONS;
     oldButtons = 0;
 
+    setupSounds();
+    setupInterrupts();
+
     goToStart();
     // goToGame();
 
@@ -147,13 +153,14 @@ void start() {
 
 // Sets up the game state.
 void goToGame() {
+    playSoundA(cavemusic_data, cavemusic_length, 1);
     state = GAME;
     
 } // goToGame
 
 // Runs every frame of the game state.
 void game() {  
-    
+
     updateGame();
     drawGame();
 
