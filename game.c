@@ -34,11 +34,18 @@ void initGame() {
 } // initGame
 
 void updateLevel() {
+    
     level++;
-    if (level > LEVELCOUNT) level = 1;
-    levelData = initLevel(level);
-    levelData->setup();
+    
+    if (level > LEVELCOUNT) {
+        gameWon = 1;
+    
+    } else {
+        levelData = initLevel(level);
+        levelData->setup();
 
+    } // if
+    
 } // updateLevel
 
 void updateGame() {
