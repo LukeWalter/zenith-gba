@@ -121,6 +121,8 @@ void buildRm1() {
 
     DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
 
+    levels[0].setup = &closeDoor;
+
 } // buildLv1
 
 void buildRm2() {
@@ -183,6 +185,8 @@ void buildRm2() {
     };
 
     DMANow(3, tileData, levels[1].mapTiles, 16 * 16);
+
+    levels[1].setup = &doNothing;
 
 } // buildLv2
 

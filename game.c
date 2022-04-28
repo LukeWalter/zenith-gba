@@ -37,6 +37,7 @@ void updateLevel() {
     level++;
     if (level > LEVELCOUNT) level = 1;
     levelData = initLevel(level);
+    levelData->setup();
 
 } // updateLevel
 

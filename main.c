@@ -7,6 +7,7 @@
 
 #include "sound.h"
 #include "cavemusic.h"
+#include "titlemusic.h"
 
 #include "zenithtitle.h"
 #include "cave.h"
@@ -133,6 +134,7 @@ void goToStart() {
     waitForVBlank();
     updateOAM();
     
+    playSoundA(titlemusic_data, titlemusic_length, 1);
     state = START;
 
 } // goToStart
