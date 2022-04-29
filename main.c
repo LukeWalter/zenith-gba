@@ -191,6 +191,29 @@ void game() {
 
 // Sets up the pause state.
 void goToPause() {
+    
+    shadowOAM[0].attr0 = 14 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[0].attr1 = 14 | ATTR1_MEDIUM;
+
+    shadowOAM[3].attr0 = 14 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[3].attr1 = 46 | ATTR1_MEDIUM;
+
+    shadowOAM[1].attr0 = 34 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[1].attr1 = 14 | ATTR1_MEDIUM;
+
+    shadowOAM[4].attr0 = 34 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[4].attr1 = 46 | ATTR1_MEDIUM;
+
+    shadowOAM[2].attr0 = 54 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[2].attr1 = 14 | ATTR1_MEDIUM;
+
+    shadowOAM[5].attr0 = 54 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[5].attr1 = 46 | ATTR1_MEDIUM;
+
+    shadowOAM[6].attr0 = 10 | ATTR0_4BPP | ATTR0_SQUARE;
+    shadowOAM[6].attr1 = 10 | ATTR1_LARGE;
+    shadowOAM[6].attr2 = ATTR2_TILEID(0, 24);
+    
     pauseSelected = 1;
     state = PAUSE;
 
@@ -199,35 +222,93 @@ void goToPause() {
 // Runs every frame of the pause state.
 void pause() {
 
+    shadowOAM[0].attr2 = ATTR2_TILEID(8, 20);
+    shadowOAM[3].attr2 = ATTR2_TILEID(12, 20);
+    shadowOAM[1].attr2 = ATTR2_TILEID(16, 16);
+    shadowOAM[4].attr2 = ATTR2_TILEID(20, 16);
+    shadowOAM[2].attr2 = ATTR2_TILEID(8, 16);
+    shadowOAM[5].attr2 = ATTR2_TILEID(12, 16);
+
+    switch (pauseSelected) {
+    case 1: 
+        
+        shadowOAM[0].attr2 = ATTR2_TILEID(8, 22);
+        shadowOAM[3].attr2 = ATTR2_TILEID(12, 22);
+
+        if (BUTTON_PRESSED(BUTTON_START)) {
+
+            for (int i = 0; i < 7; i++) {
+                shadowOAM[i].attr0 = ATTR0_HIDE;
+            
+            } // for
+            
+            goToGame();
+        
+        } else if (BUTTON_PRESSED(BUTTON_UP)) {
+            pauseSelected = 3;
+
+        } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
+            pauseSelected = 2;
+
+        } // if
+        
+        break;
+
+    case 2: 
+
+        shadowOAM[1].attr2 = ATTR2_TILEID(16, 18);
+        shadowOAM[4].attr2 = ATTR2_TILEID(20, 18);
+
+        if (BUTTON_PRESSED(BUTTON_START)) {
+
+            for (int i = 0; i < 7; i++) {
+                shadowOAM[i].attr0 = ATTR0_HIDE;
+            
+            } // for
+            
+            goToControls();
+        
+        } else if (BUTTON_PRESSED(BUTTON_UP)) {
+            pauseSelected = 1;
+
+        } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
+            pauseSelected = 3;
+
+        } // if
+        
+        break;
+
+    case 3:
+
+        shadowOAM[2].attr2 = ATTR2_TILEID(8, 18);
+        shadowOAM[5].attr2 = ATTR2_TILEID(12, 18);
+
+        if (BUTTON_PRESSED(BUTTON_START)) {
+
+            for (int i = 0; i < 7; i++) {
+                shadowOAM[i].attr0 = ATTR0_HIDE;
+            
+            } // for
+            
+            goToStart();
+        
+        } else if (BUTTON_PRESSED(BUTTON_UP)) {
+            pauseSelected = 2;
+
+        } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
+            pauseSelected = 1;
+
+        } // if
+        
+        break;
+
+    default:
+        break;
+
+    } // switch
+
     waitForVBlank();
     updateOAM();
-
-    if (BUTTON_PRESSED(BUTTON_START)) {
-
-        switch (pauseSelected) {
-        case 1: 
-            goToGame();
-            break;
-
-        case 2: 
-            goToControls();
-            break;
-
-        case 3:
-            goToStart();
-            break;
-
-        default:
-            goToGame();
-            break;
-
-        } // switch
-
-    } else if (BUTTON_PRESSED(BUTTON_UP)) {
-
-    } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
-
-    } // if
 
 } // pause
 
@@ -272,7 +353,29 @@ void goToControls() {
 
 // Runs every frame of the lose state.
 void controls() {
-    if (BUTTON_PRESSED(BUTTON_SELECT)) goToGame();
+    
+    if (BUTTON_PRESSED(BUTTON_START)) {
+
+        DMANow(3, levels[level - 1].pal, PALETTE, 256);
+        DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
+        DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
+        REG_BG1VOFF = vOff;
+        REG_BG1HOFF = hOff;
+
+        for (int c = 0; c < levels[level - 1].mapWidth; c++) {
+
+            for (int r = 0; r < levels[level - 1].mapHeight; r++) {
+            
+                int tileposition = levels[level - 1].mapTiles[OFFSET(c, r, mapWidth)];
+                drawTile(c * 2, r * 2, tileposition);
+
+            }  // for
+
+        } // for
+
+        goToGame();
+    
+    } // if
 
 } // lose
 

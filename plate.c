@@ -35,7 +35,7 @@ void initPlates(LEVEL level) {
         plates[i].obj.sprite.numFrames = 2;
         plates[i].obj.sprite.hide = 0;
 
-        plates[i].obj.sprite.attributes = &shadowOAM[5 + BLOCKCOUNT + PLATECOUNT + i];
+        plates[i].obj.sprite.attributes = &shadowOAM[8 + BLOCKCOUNT + PLATECOUNT + i];
 
         plates[i].pressed = level.plateInitStates[i];
         plates[i].onFunc = level.onFuncs[i];

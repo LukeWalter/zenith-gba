@@ -35,7 +35,7 @@ void initTools(LEVEL level) {
         tools[i].obj.sprite.numFrames = 2;
         tools[i].obj.sprite.hide = 0;
 
-        tools[i].obj.sprite.attributes = &shadowOAM[5 + BLOCKCOUNT + i];
+        tools[i].obj.sprite.attributes = &shadowOAM[8 + BLOCKCOUNT + i];
 
         tools[i].ability = level.toolAbilities[i];
 

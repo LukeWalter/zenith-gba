@@ -35,7 +35,7 @@ void initBlocks(LEVEL level) {
         blocks[i].obj.sprite.numFrames = 1;
         blocks[i].obj.sprite.hide = 0;
 
-        blocks[i].obj.sprite.attributes = &shadowOAM[5 + i];
+        blocks[i].obj.sprite.attributes = &shadowOAM[8 + i];
 
     } // for
 

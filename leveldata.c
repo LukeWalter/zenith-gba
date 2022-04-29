@@ -13,8 +13,6 @@
 void buildRm1();
 void buildRm2();
 
-void drawTile(int, int, int);
-
 void buildRooms() {
 
     buildRm1();

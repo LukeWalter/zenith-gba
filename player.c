@@ -32,7 +32,7 @@ void initZenith(LEVEL level) {
     zenith.obj.sprite.numFrames = 4;
     zenith.obj.sprite.hide = 0;
 
-    zenith.obj.sprite.attributes = &shadowOAM[4];
+    zenith.obj.sprite.attributes = &shadowOAM[7];
 
 } // initZenith
 

@@ -67,6 +67,7 @@ void buildRooms();
 LEVEL* initLevel(int);
 
 int getTileId(int, int);
+void drawTile(int, int, int);
 
 void openDoor();
 void closeDoor();
