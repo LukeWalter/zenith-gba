@@ -3,7 +3,7 @@
 
 #define LEVELCOUNT 2
 
-#define BLOCKCOUNT 1
+#define BLOCKCOUNT 2
 #define PLATECOUNT 1
 #define TOOLCOUNT 3
 
