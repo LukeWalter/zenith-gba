@@ -548,7 +548,9 @@ void cheaterShovelFunction() {
             } else if (tileId == 33) {
                 playSoundB(despawn_data, despawn_length, 0);
                 levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 30;
-                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 30);
+                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 2, mapWidth)] = 15;
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 2) * 2, 15);
 
             } // tileId
             
