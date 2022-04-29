@@ -571,7 +571,7 @@ void cheaterShovelFunction() {
 
         for (int i = 0; i < numBlocks; i++) {
             
-            if (zenith.obj.xPos == blocks[i].obj.xPos - 1 && zenith.obj.yPos== blocks[i].obj.yPos) {
+            if (zenith.obj.xPos - 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos) {
                 blocks[i].obj.sprite.hide = 1;
                 blocks[i].obj.active = 0;
                 break;
@@ -598,7 +598,7 @@ void cheaterShovelFunction() {
 
         for (int i = 0; i < numBlocks; i++) {
             
-            if (zenith.obj.xPos == blocks[i].obj.xPos + 1 && zenith.obj.yPos == blocks[i].obj.yPos) {
+            if (zenith.obj.xPos + 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos) {
                 blocks[i].obj.sprite.hide = 1;
                 blocks[i].obj.active = 0;
                 break;
