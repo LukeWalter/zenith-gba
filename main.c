@@ -14,6 +14,7 @@
 #include "cave.h"
 #include "winscreen.h"
 #include "losescreen.h"
+#include "caveexit.h"
 
 #include "spritesheet.h"
 
@@ -315,9 +316,9 @@ void pause() {
 // Sets up the win state.
 void goToWin() {
     
-    DMANow(3, winscreenPal, PALETTE, 256);
-    DMANow(3, winscreenTiles, &CHARBLOCK[0], winscreenTilesLen / 2);
-    DMANow(3, winscreenMap, &SCREENBLOCK[28], winscreenMapLen / 2);
+    DMANow(3, caveexitPal, PALETTE, 256);
+    DMANow(3, caveexitTiles, &CHARBLOCK[0], caveexitTilesLen / 2);
+    DMANow(3, caveexitMap, &SCREENBLOCK[28], caveexitMapLen / 2);
 
     hideSprites();
 
