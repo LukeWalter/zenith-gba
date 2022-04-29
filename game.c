@@ -1,5 +1,9 @@
 #include "game.h"
 
+#include "sound.h"
+#include "break.h"
+#include "despawn.h"
+
 PLAYER zenith;
 BLOCK blocks[BLOCKCOUNT];
 PLATE plates[PLATECOUNT];
@@ -363,6 +367,7 @@ void pickaxeFunction() {
                 tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
 
                 if (tileId == 3 || tileId == 4) {
+                    playSoundB(break_data, break_length, 0);
                     levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
                     drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
 
@@ -379,6 +384,7 @@ void pickaxeFunction() {
                 tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
 
                 if (tileId == 3 || tileId == 4) {
+                    playSoundB(break_data, break_length, 0);
                     levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
                     drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
 
@@ -395,6 +401,7 @@ void pickaxeFunction() {
                 tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
 
                 if (tileId == 3 || tileId == 4) {
+                    playSoundB(break_data, break_length, 0);
                     levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
                     drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
 
@@ -411,6 +418,7 @@ void pickaxeFunction() {
                 tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
 
                 if (tileId == 3 || tileId == 4) {
+                    playSoundB(break_data, break_length, 0);
                     levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
                     drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
 
@@ -504,6 +512,7 @@ void cheaterShovelFunction() {
             tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
 
             if (tileId == 3 || tileId == 4) {
+                playSoundB(despawn_data, despawn_length, 0);
                 levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
                 drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
 
@@ -514,6 +523,7 @@ void cheaterShovelFunction() {
         for (int i = 0; i < numBlocks; i++) {
             
             if (zenith.obj.xPos == blocks[i].obj.xPos && zenith.obj.yPos + 1 == blocks[i].obj.yPos) {
+                playSoundB(despawn_data, despawn_length, 0);
                 blocks[i].obj.sprite.hide = 1;
                 blocks[i].obj.active = 0;
                 break;
@@ -531,10 +541,12 @@ void cheaterShovelFunction() {
             tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
 
             if (tileId == 3 || tileId == 4) {
+                playSoundB(despawn_data, despawn_length, 0);
                 levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
                 drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
 
             } else if (tileId == 33) {
+                playSoundB(despawn_data, despawn_length, 0);
                 levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 30;
                 drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
 
@@ -545,6 +557,7 @@ void cheaterShovelFunction() {
         for (int i = 0; i < numBlocks; i++) {
             
             if (zenith.obj.xPos == blocks[i].obj.xPos && zenith.obj.yPos - 1 == blocks[i].obj.yPos) {
+                playSoundB(despawn_data, despawn_length, 0);
                 blocks[i].obj.sprite.hide = 1;
                 blocks[i].obj.active = 0;
                 break;
@@ -562,6 +575,7 @@ void cheaterShovelFunction() {
             tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
 
             if (tileId == 3 || tileId == 4) {
+                playSoundB(despawn_data, despawn_length, 0);
                 levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
                 drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
 
@@ -572,6 +586,7 @@ void cheaterShovelFunction() {
         for (int i = 0; i < numBlocks; i++) {
             
             if (zenith.obj.xPos - 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos) {
+                playSoundB(despawn_data, despawn_length, 0);
                 blocks[i].obj.sprite.hide = 1;
                 blocks[i].obj.active = 0;
                 break;
@@ -589,6 +604,7 @@ void cheaterShovelFunction() {
             tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
 
             if (tileId == 3 || tileId == 4) {
+                playSoundB(despawn_data, despawn_length, 0);
                 levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
                 drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
 
@@ -599,6 +615,7 @@ void cheaterShovelFunction() {
         for (int i = 0; i < numBlocks; i++) {
             
             if (zenith.obj.xPos + 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos) {
+                playSoundB(despawn_data, despawn_length, 0);
                 blocks[i].obj.sprite.hide = 1;
                 blocks[i].obj.active = 0;
                 break;
