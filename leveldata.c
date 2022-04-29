@@ -14,6 +14,7 @@ void buildRm1();
 void buildRm2();
 
 void setupMapOne();
+void setupMapTwo();
 
 void buildRooms() {
 
@@ -34,6 +35,8 @@ LEVEL* initLevel(int level) {
 
     hOff = levels[level - 1].hOff;
     vOff = levels[level - 1].vOff;
+
+    levels[level - 1].setup();
 
     DMANow(3, levels[level - 1].pal, PALETTE, 256);
     DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
@@ -175,9 +178,9 @@ void buildRm2() {
 
     };
 
-    DMANow(3, tileData, levels[1].mapTiles, 16 * 16);
+    DMANow(3, tileData, levels[1].mapTiles, 15 * 10);
 
-    levels[1].setup = &doNothing;
+    levels[1].setup = &setupMapTwo;
 
 } // buildLv2
 
@@ -250,3 +253,24 @@ void setupMapOne() {
     DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
 
 } // setupMapOne
+
+void setupMapTwo() {
+
+    const unsigned short tileData[15 * 10] = {
+
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        5,6,5,6,5,6,5,6,5,6,5,6,5,13,1,
+        5,6,5,6,5,6,5,15,5,6,5,6,13,7,1,
+        5,6,5,6,5,6,5,30,5,6,5,13,7,7,1,
+        5,6,5,13,0,0,3,0,4,0,0,7,7,7,1,
+        5,6,13,7,0,4,0,0,0,0,0,7,7,7,1,
+        5,13,7,7,0,0,0,4,0,3,0,7,7,7,1,
+        1,7,7,7,0,0,0,0,0,0,0,7,7,7,1,
+        1,7,7,7,3,0,0,0,0,0,0,7,7,7,1,
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
+
+    };
+
+    DMANow(3, tileData, levels[1].mapTiles, 15 * 10);
+
+} // setupMapTwo

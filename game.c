@@ -37,14 +37,8 @@ void updateLevel() {
     
     level++;
     
-    if (level > LEVELCOUNT) {
-        gameWon = 1;
-    
-    } else {
-        levelData = initLevel(level);
-        levelData->setup();
-
-    } // if
+    if (level > LEVELCOUNT) gameWon = 1;
+    else levelData = initLevel(level);
     
 } // updateLevel
 
@@ -52,11 +46,7 @@ void updateGame() {
     
     gamePaused = 0;
     if (BUTTON_PRESSED(BUTTON_START) && zenith.obj.idle) gamePaused = 1;
-    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) {
-        levelData = initLevel(level);
-        levelData->setup();
-
-    } // if
+    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) levelData = initLevel(level);
     
     updateZenith();
     updatePlates();
