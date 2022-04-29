@@ -4,9 +4,13 @@
 #include "plate.h"
 #include "block.h"
 
+int numTools;
+
 void initTools(LEVEL level) {
 
-    for (int i = 0; i < level.numTools; i++) {
+    numTools = level.numTools;
+
+    for (int i = 0; i < numTools; i++) {
 
         tools[i].obj.xPos = level.toolLocs[i].col;
         tools[i].obj.yPos = level.toolLocs[i].row;
@@ -45,7 +49,7 @@ void initTools(LEVEL level) {
 
 void drawTools() {
 
-    for (int i = 0; i < TOOLCOUNT; i++) {
+    for (int i = 0; i < numTools; i++) {
 
         if (tools[i].obj.sprite.hide) {
             tools[i].obj.sprite.attributes->attr0 |= ATTR0_HIDE;

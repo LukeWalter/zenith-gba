@@ -4,9 +4,13 @@
 #include "player.h"
 #include "block.h"
 
+int numPlates;
+
 void initPlates(LEVEL level) {
 
-    for (int i = 0; i < level.numPlates; i++) {
+    numPlates = level.numPlates;
+
+    for (int i = 0; i < numPlates; i++) {
 
         plates[i].obj.xPos = level.plateLocs[i].col;
         plates[i].obj.yPos = level.plateLocs[i].row;
@@ -49,7 +53,7 @@ void updatePlates() {
 
     int switchState = 0;
 
-    for (int i = 0; i < PLATECOUNT; i++) {
+    for (int i = 0; i < numPlates; i++) {
 
         switchState = 1;
 

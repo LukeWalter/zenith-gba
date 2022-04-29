@@ -4,9 +4,13 @@
 #include "player.h"
 #include "plate.h"
 
+int numBlocks;
+
 void initBlocks(LEVEL level) {
 
-    for (int i = 0; i < level.numBlocks; i++) {
+    numBlocks = level.numBlocks;
+
+    for (int i = 0; i < numBlocks; i++) {
 
         blocks[i].obj.xPos = level.blockLocs[i].col;
         blocks[i].obj.yPos = level.blockLocs[i].row;
@@ -48,7 +52,7 @@ void updateBlocks() {
 
 void moveBlocks() {
     
-    for (int i = 0; i < BLOCKCOUNT; i++) {
+    for (int i = 0; i < numBlocks; i++) {
 
         if (blocks[i].obj.yTarget < blocks[i].obj.yPos)      moveUp(&blocks[i].obj);
         else if (blocks[i].obj.yTarget > blocks[i].obj.yPos) moveDown(&blocks[i].obj);
@@ -61,7 +65,7 @@ void moveBlocks() {
 
 void drawBlocks() {
 
-    for (int i = 0; i < BLOCKCOUNT; i++) {
+    for (int i = 0; i < numBlocks; i++) {
 
         if (blocks[i].obj.sprite.hide) {
             blocks[i].obj.sprite.attributes->attr0 |= ATTR0_HIDE;
