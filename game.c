@@ -357,15 +357,13 @@ int getTileId(int x, int y) {
 
 void pickaxeFunction() {
 
-    mgba_printf("Pickaxe swing!");
-
     int tileId;
 
-    switch (zenith.obj.sprite.aniState) {
+    switch (zenith.obj.sprite.prevAniState) {
     
     case FRONTWALK:
         
-        if (zenith.obj.yPos < mapHeight) {
+        if (zenith.obj.yPos < mapHeight - 1) {
             
             tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
 
@@ -380,12 +378,55 @@ void pickaxeFunction() {
         break;
     
     case BACKWALK:
+        
+        if (zenith.obj.yPos > 0) {
+            
+            tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
+
+            } // if
+        
+        } // if
+        
         break;
     
     case LEFTWALK:
+        
+        if (zenith.obj.xPos > 0) {
+            
+            tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
+                drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
+
+            } // if
+        
+        } // if
+        
         break;
     
     case RIGHTWALK:
+        
+        if (zenith.obj.xPos < mapWidth - 1) {
+            
+            tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
+                drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
+
+            } // if
+        
+        } // if
+        
+        break;
+
+    default:
+        mgba_printf("Hmm");
         break;
 
     } // switch
