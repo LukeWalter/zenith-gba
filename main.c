@@ -12,8 +12,6 @@
 
 #include "zenithtitle.h"
 #include "cave.h"
-#include "winscreen.h"
-#include "losescreen.h"
 #include "caveexit.h"
 #include "instructions.h"
 
@@ -155,6 +153,7 @@ void goToStart() {
     updateOAM();
     
     enableTimer();
+    stopSound();
     playSoundA(titlemusic_data, titlemusic_length, 1);
     state = START;
 
@@ -166,6 +165,7 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
 
         disableTimer();
+        stopSound();
         playSoundA(cavemusic_data, cavemusic_length, 1);
         goToGame();    
         initGame();
@@ -326,6 +326,7 @@ void goToWin() {
     waitForVBlank();
     updateOAM();
     
+    stopSound();
     playSoundA(gamecomplete_data, gamecomplete_length, 0);
     state = WIN;
 
