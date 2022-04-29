@@ -10,7 +10,7 @@
 
 enum { FRONTWALK, BACKWALK, RIGHTWALK, LEFTWALK, IDLE };
 
-extern int gameOver;
+extern int gamePaused;
 extern int gameWon;
 
 extern int level;

@@ -132,11 +132,11 @@ void goToStart() {
     DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
     hideSprites();
 
-    shadowOAM[127].attr0 = 40 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[127].attr0 = 80 | ATTR0_4BPP | ATTR0_WIDE;
     shadowOAM[127].attr1 = 50 | ATTR1_LARGE;
     shadowOAM[127].attr2 = ATTR2_TILEID(16, 21);
 
-    shadowOAM[126].attr0 = 40 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[126].attr0 = 80 | ATTR0_4BPP | ATTR0_WIDE;
     shadowOAM[126].attr1 = 114 | ATTR1_LARGE;
     shadowOAM[126].attr2 = ATTR2_TILEID(24, 21);
 
@@ -183,8 +183,7 @@ void game() {
     drawGame();
 
     if (gameWon) goToWin();
-    if (gameOver) goToLose();
-    if (BUTTON_PRESSED(BUTTON_START)) goToPause();
+    if (gamePaused) goToPause();
 
 } // game
 
