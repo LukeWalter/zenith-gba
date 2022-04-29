@@ -8,6 +8,7 @@
 #include "sound.h"
 #include "cavemusic.h"
 #include "titlemusic.h"
+#include "gamecomplete.h"
 
 #include "zenithtitle.h"
 #include "cave.h"
@@ -29,6 +30,12 @@ void win();
 void goToLose();
 void lose();
 
+void enableTimer();
+void disableTimer();
+
+void setupInterrupts();
+void interruptHandler();
+
 // States.
 enum {
     START,
@@ -42,9 +49,6 @@ int state;
 // Button Variables.
 unsigned short buttons;
 unsigned short oldButtons;
-
-// Seed.
-int seed;
 
 // Shadow OAM.
 OBJ_ATTR shadowOAM[128];
@@ -134,6 +138,7 @@ void goToStart() {
     waitForVBlank();
     updateOAM();
     
+    enableTimer();
     playSoundA(titlemusic_data, titlemusic_length, 1);
     state = START;
 
@@ -142,10 +147,9 @@ void goToStart() {
 // Runs every frame of the start state.
 void start() {
     
-    seed++;
-    
-    if (BUTTON_PRESSED(BUTTON_SELECT)) {
-        srand(seed);
+    if (BUTTON_PRESSED(BUTTON_START)) {
+
+        disableTimer();
         playSoundA(cavemusic_data, cavemusic_length, 1);
         goToGame();    
         initGame();
@@ -205,13 +209,13 @@ void goToWin() {
     waitForVBlank();
     updateOAM();
     
+    playSoundA(gamecomplete_data, gamecomplete_length, 0);
     state = WIN;
 
 } // goToWin
 
 // Runs every frame of the win state.
 void win() {
-    seed++;
     if (BUTTON_PRESSED(BUTTON_SELECT)) goToStart();
 
 } // win
@@ -234,7 +238,88 @@ void goToLose() {
 
 // Runs every frame of the lose state.
 void lose() {
-    seed++;
     if (BUTTON_PRESSED(BUTTON_SELECT)) goToStart();
 
 } // lose
+
+void enableTimer() {
+  
+    REG_IME = 0;
+
+    REG_IE |= INT_TM3;
+
+    REG_TM3CNT = 0;
+    REG_TM3D = 65536 - 16384;
+    REG_TM3CNT = TM_FREQ_1024 | TIMER_ON | TM_IRQ;
+
+    REG_IME = 1;
+
+} // enableTimer
+
+void disableTimer() {
+
+    REG_IME = 0;
+    REG_TM3CNT = TIMER_OFF;
+    REG_IME = 1;
+
+} // disableTimer
+
+void setupInterrupts() {
+
+	REG_IME = 0;
+
+    REG_IE |= INT_VBLANK;
+    REG_DISPSTAT |= INT_VBLANK_ENABLE;
+
+    REG_INTERRUPT = interruptHandler;
+	REG_IME = 1;
+
+} // setupInterrupts
+
+void interruptHandler() {
+
+	REG_IME = 0;
+
+	if(REG_IF & INT_VBLANK) {
+        if (soundA.isPlaying) {
+
+            soundA.vBlankCount = soundA.vBlankCount + 1;
+            if (soundA.vBlankCount > soundA.duration) {
+                if (soundA.loops) {
+                    playSoundA(soundA.data, soundA.length, soundA.loops);
+                } else {
+                    soundA.isPlaying = 0;
+                    dma[1].cnt = 0;
+                    REG_TM0CNT = TIMER_OFF;
+                }
+            }
+        }
+
+        if (soundB.isPlaying) {
+
+            soundB.vBlankCount = soundB.vBlankCount + 1;
+            if (soundB.vBlankCount > soundB.duration) {
+                if (soundB.loops) {
+                    playSoundB(soundB.data, soundB.length, soundB.loops);
+                } else {
+                    soundB.isPlaying = 0;
+                    dma[2].cnt = 0;
+                    REG_TM1CNT = TIMER_OFF;
+                }
+            }
+		}
+
+
+		REG_IF = INT_VBLANK;
+
+	} // if
+
+    if (REG_IF & INT_TM3) {
+        mgba_printf("Timer Interrupt");
+
+    } // if
+
+    REG_IF = REG_IF;
+	REG_IME = 1;
+
+} // interruptHandler
