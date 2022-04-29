@@ -57,6 +57,8 @@ void moveZenith() {
     
     if (zenith.obj.idle) {
         
+        int pickedUp = 0;
+
         if (BUTTON_HELD(BUTTON_B)) {
 
             for (int i = 0; i < numBlocks; i++) {
@@ -91,8 +93,6 @@ void moveZenith() {
 
         } else if (BUTTON_PRESSED(BUTTON_A)) {
 
-            int pickedUp = 0;
-
             for (int i = 0; i < numTools; i++) {
 
                 if (tools[i].obj.active && tools[i].obj.xPos == zenith.obj.xPos && tools[i].obj.yPos == zenith.obj.yPos) {
@@ -119,11 +119,6 @@ void moveZenith() {
                 } // if
 
             } // for
-
-            if (!pickedUp && zenith.equippedTool != NULL) {
-                zenith.equippedTool->ability();
-
-            } // if
 
         } else {
 
@@ -156,6 +151,11 @@ void moveZenith() {
                 zenith.obj.sprite.aniState = RIGHTWALK;
 
             } // if
+
+        } // if
+
+        if (!pickedUp && zenith.equippedTool != NULL) {
+            zenith.equippedTool->ability();
 
         } // if
 

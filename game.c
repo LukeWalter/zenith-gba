@@ -357,78 +357,81 @@ int getTileId(int x, int y) {
 
 void pickaxeFunction() {
 
-    int tileId;
+    if (BUTTON_PRESSED(BUTTON_A)) {
 
-    switch (zenith.obj.sprite.prevAniState) {
-    
-    case FRONTWALK:
+        int tileId;
+
+        switch (zenith.obj.sprite.prevAniState) {
         
-        if (zenith.obj.yPos < mapHeight - 1) {
+        case FRONTWALK:
             
-            tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
+            if (zenith.obj.yPos < mapHeight - 1) {
+                
+                tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
 
-            if (tileId == 3 || tileId == 4) {
-                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
-                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
+                    drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
 
-            } // if
-        
-        } // if
-        
-        break;
-    
-    case BACKWALK:
-        
-        if (zenith.obj.yPos > 0) {
+                } // if
             
-            tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
-
-            if (tileId == 3 || tileId == 4) {
-                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
-                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
-
             } // if
-        
-        } // if
-        
-        break;
-    
-    case LEFTWALK:
-        
-        if (zenith.obj.xPos > 0) {
             
-            tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
-
-            if (tileId == 3 || tileId == 4) {
-                levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
-                drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
-
-            } // if
+            break;
         
-        } // if
-        
-        break;
-    
-    case RIGHTWALK:
-        
-        if (zenith.obj.xPos < mapWidth - 1) {
+        case BACKWALK:
             
-            tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
+            if (zenith.obj.yPos > 0) {
+                
+                tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
 
-            if (tileId == 3 || tileId == 4) {
-                levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
-                drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
+                    drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
 
+                } // if
+            
             } // if
+            
+            break;
         
-        } // if
+        case LEFTWALK:
+            
+            if (zenith.obj.xPos > 0) {
+                
+                tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
+
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
+                    drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
+
+                } // if
+            
+            } // if
+            
+            break;
         
-        break;
+        case RIGHTWALK:
+            
+            if (zenith.obj.xPos < mapWidth - 1) {
+                
+                tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
 
-    default:
-        mgba_printf("Hmm");
-        break;
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
+                    drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
 
-    } // switch
+                } // if
+            
+            } // if
+            
+            break;
+
+        default:
+            break;
+
+        } // switch
+
+    } // if
     
 } // pickaxe
