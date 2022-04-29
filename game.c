@@ -5,6 +5,8 @@ BLOCK blocks[BLOCKCOUNT];
 PLATE plates[PLATECOUNT];
 TOOL tools[TOOLCOUNT];
 
+TOOL cheaterShovel;
+
 LEVEL levels[LEVELCOUNT];
 
 int gamePaused;
@@ -61,6 +63,7 @@ void drawGame() {
     drawBlocks();
     drawPlates();
     drawTools();
+    drawCheaterShovel();
 
     waitForVBlank();
     updateOAM();
@@ -92,9 +95,9 @@ int canMoveUp(OBJECT* obj) {
         int tileId = getTileId(obj->xTarget, obj->yTarget - 1);
         if (tileId != 0 && tileId != 30) return 0;
 
-        for (int i = 0; i < BLOCKCOUNT; i++) {
+        for (int i = 0; i < numBlocks; i++) {
             
-            if (obj->yTarget - 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
+            if (blocks[i].obj.active && obj->yTarget - 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
                 return 0;
         
             } // if
@@ -116,9 +119,9 @@ int canMoveDown(OBJECT* obj) {
         int tileId = getTileId(obj->xTarget, obj->yTarget + 1);
         if (tileId != 0 && tileId != 30) return 0;
 
-        for (int i = 0; i < BLOCKCOUNT; i++) {
+        for (int i = 0; i < numBlocks; i++) {
             
-            if (obj->yTarget + 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
+            if (blocks[i].obj.active && obj->yTarget + 1 == blocks[i].obj.yPos && obj->xPos == blocks[i].obj.xPos) {
                 return 0;
         
             } // if
@@ -140,9 +143,9 @@ int canMoveLeft(OBJECT* obj) {
         int tileId = getTileId(obj->xTarget - 1, obj->yTarget);
         if (tileId != 0 && tileId != 30) return 0;
 
-        for (int i = 0; i < BLOCKCOUNT; i++) {
+        for (int i = 0; i < numBlocks; i++) {
             
-            if (obj->xTarget - 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
+            if (blocks[i].obj.active && obj->xTarget - 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
                 return 0;
         
             } // if
@@ -164,9 +167,9 @@ int canMoveRight(OBJECT* obj) {
         int tileId = getTileId(obj->xTarget + 1, obj->yTarget);
         if (tileId != 0 && tileId != 30) return 0;
 
-        for (int i = 0; i < BLOCKCOUNT; i++) {
+        for (int i = 0; i < numBlocks; i++) {
             
-            if (obj->xTarget + 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
+            if (blocks[i].obj.active && obj->xTarget + 1 == blocks[i].obj.xPos && obj->yPos == blocks[i].obj.yPos) {
                 return 0;
         
             } // if
@@ -424,4 +427,205 @@ void pickaxeFunction() {
 
     } // if
     
-} // pickaxe
+} // pickaxeFunction
+
+
+void spawnCheaterShovel() {
+
+    int spawnable = 1;
+
+    for (int i = 0; i < numTools; i++) {
+
+        if (tools[i].obj.active && tools[i].obj.xPos == zenith.obj.xPos && tools[i].obj.yPos == zenith.obj.yPos) {
+            spawnable = 0;
+            break;
+
+        } // if
+
+    } // for
+
+    for (int i = 0; i < numPlates; i++) {
+
+        if (plates[i].obj.active && plates[i].obj.xPos == zenith.obj.xPos && plates[i].obj.yPos == zenith.obj.yPos) {
+            spawnable = 0;
+            break;
+
+        } // if
+
+    } // for
+
+    if (spawnable) {
+
+        cheaterShovel.obj.xPos = zenith.obj.xPos;
+        cheaterShovel.obj.yPos = zenith.obj.yPos;
+        cheaterShovel.obj.xTarget = cheaterShovel.obj.xPos;
+        cheaterShovel.obj.yTarget = cheaterShovel.obj.yPos;
+        cheaterShovel.obj.baseSpeed = 0;
+        cheaterShovel.obj.idle = 1;
+        cheaterShovel.obj.active = 1;
+
+        cheaterShovel.obj.sprite.worldRow = 8 * mapYOffset + cheaterShovel.obj.yPos * 16;
+        cheaterShovel.obj.sprite.worldCol = 8 * mapXOffset + cheaterShovel.obj.xPos * 16;
+
+        cheaterShovel.obj.sprite.encodeFactor = 8;
+        cheaterShovel.obj.sprite.encodeWorldRow = cheaterShovel.obj.sprite.worldRow * cheaterShovel.obj.sprite.encodeFactor;
+        cheaterShovel.obj.sprite.encodeWorldCol = cheaterShovel.obj.sprite.worldCol * cheaterShovel.obj.sprite.encodeFactor;
+
+        cheaterShovel.obj.sprite.rdel = cheaterShovel.obj.baseSpeed;
+        cheaterShovel.obj.sprite.cdel = cheaterShovel.obj.baseSpeed;
+
+        cheaterShovel.obj.sprite.width = 16;
+        cheaterShovel.obj.sprite.height = 16;
+
+        cheaterShovel.obj.sprite.aniCounter = 0;
+        cheaterShovel.obj.sprite.aniState = LEFTWALK;
+        cheaterShovel.obj.sprite.curFrame = 0;
+        cheaterShovel.obj.sprite.numFrames = 2;
+        cheaterShovel.obj.sprite.hide = 0;
+
+        cheaterShovel.obj.sprite.attributes = &shadowOAM[100];
+
+        cheaterShovel.ability = &cheaterShovelFunction;
+
+    } // if
+
+} // spawnCheaterShovel
+
+void cheaterShovelFunction() {
+
+    int tileId;
+
+    switch (zenith.obj.sprite.prevAniState) {
+        
+    case FRONTWALK:
+            
+        if (zenith.obj.yPos < mapHeight - 1) {
+                
+            tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
+
+            } // if
+            
+        } // if
+
+        for (int i = 0; i < numBlocks; i++) {
+            
+            if (zenith.obj.xPos == blocks[i].obj.xPos && zenith.obj.yPos + 1 == blocks[i].obj.yPos) {
+                blocks[i].obj.sprite.hide = 1;
+                blocks[i].obj.active = 0;
+                break;
+        
+            } // if
+
+        } // for
+            
+        break;
+        
+    case BACKWALK:
+            
+        if (zenith.obj.yPos > 0) {
+                
+            tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
+
+            } else if (tileId == 33) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 30;
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
+
+            } // tileId
+            
+        } // if
+
+        for (int i = 0; i < numBlocks; i++) {
+            
+            if (zenith.obj.xPos == blocks[i].obj.xPos && zenith.obj.yPos - 1 == blocks[i].obj.yPos) {
+                blocks[i].obj.sprite.hide = 1;
+                blocks[i].obj.active = 0;
+                break;
+        
+            } // if
+
+        } // for
+            
+        break;
+        
+    case LEFTWALK:
+            
+        if (zenith.obj.xPos > 0) {
+                
+            tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
+                drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
+
+            } // if
+            
+        } // if
+
+        for (int i = 0; i < numBlocks; i++) {
+            
+            if (zenith.obj.xPos == blocks[i].obj.xPos - 1 && zenith.obj.yPos== blocks[i].obj.yPos) {
+                blocks[i].obj.sprite.hide = 1;
+                blocks[i].obj.active = 0;
+                break;
+        
+            } // if
+
+        } // for
+            
+        break;
+        
+    case RIGHTWALK:
+            
+        if (zenith.obj.xPos < mapWidth - 1) {
+                
+            tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
+                drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
+
+            } // if
+            
+        } // if
+
+        for (int i = 0; i < numBlocks; i++) {
+            
+            if (zenith.obj.xPos == blocks[i].obj.xPos + 1 && zenith.obj.yPos == blocks[i].obj.yPos) {
+                blocks[i].obj.sprite.hide = 1;
+                blocks[i].obj.active = 0;
+                break;
+        
+            } // if
+
+        } // for
+            
+        break;
+
+    default:
+        break;
+
+    } // switch
+
+} // cheaterShovelFunction
+
+void drawCheaterShovel() {
+
+    if (cheaterShovel.obj.sprite.hide) {
+        cheaterShovel.obj.sprite.attributes->attr0 |= ATTR0_HIDE;
+
+    } else {
+        cheaterShovel.obj.sprite.attributes->attr0 = (cheaterShovel.obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
+        cheaterShovel.obj.sprite.attributes->attr1 = (cheaterShovel.obj.sprite.worldCol - hOff) | ATTR1_SMALL;
+        cheaterShovel.obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(12, 4);
+        
+    } // if
+
+} // drawCheaterShovel
