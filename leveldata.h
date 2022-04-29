@@ -3,9 +3,9 @@
 
 #define LEVELCOUNT 2
 
-#define BLOCKCOUNT 2
+#define BLOCKCOUNT 1
 #define PLATECOUNT 1
-#define TOOLCOUNT 3
+#define TOOLCOUNT 2
 
 typedef struct {
     int col;
