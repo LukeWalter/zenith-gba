@@ -83,10 +83,10 @@ void buildRm1() {
     COORDINATE zLoc = {1, 6};
     levels[0].zenithLoc = zLoc;
 
-    COORDINATE bLoc = {2, 6};
+    COORDINATE bLoc = {11, 7};
     levels[0].blockLocs[0] = bLoc;
 
-    COORDINATE pLoc = {3, 6};
+    COORDINATE pLoc = {7, 5};
     levels[0].plateLocs[0] = pLoc;
 
     levels[0].plateInitStates[0] = 0;
