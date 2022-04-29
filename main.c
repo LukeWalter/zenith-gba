@@ -12,8 +12,8 @@
 
 #include "zenithtitle.h"
 #include "cave.h"
-#include "winscreen.h"
-#include "losescreen.h"
+#include "caveexit.h"
+#include "instructions.h"
 
 #include "spritesheet.h"
 
@@ -153,6 +153,7 @@ void goToStart() {
     updateOAM();
     
     enableTimer();
+    stopSound();
     playSoundA(titlemusic_data, titlemusic_length, 1);
     state = START;
 
@@ -164,6 +165,7 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
 
         disableTimer();
+        stopSound();
         playSoundA(cavemusic_data, cavemusic_length, 1);
         goToGame();    
         initGame();
@@ -315,15 +317,16 @@ void pause() {
 // Sets up the win state.
 void goToWin() {
     
-    DMANow(3, winscreenPal, PALETTE, 256);
-    DMANow(3, winscreenTiles, &CHARBLOCK[0], winscreenTilesLen / 2);
-    DMANow(3, winscreenMap, &SCREENBLOCK[28], winscreenMapLen / 2);
+    DMANow(3, caveexitPal, PALETTE, 256);
+    DMANow(3, caveexitTiles, &CHARBLOCK[0], caveexitTilesLen / 2);
+    DMANow(3, caveexitMap, &SCREENBLOCK[28], caveexitMapLen / 2);
 
     hideSprites();
 
     waitForVBlank();
     updateOAM();
     
+    stopSound();
     playSoundA(gamecomplete_data, gamecomplete_length, 0);
     state = WIN;
 
@@ -338,9 +341,9 @@ void win() {
 // Sets up the lose state.
 void goToControls() {
 
-    DMANow(3, losescreenPal, PALETTE, 256);
-    DMANow(3, losescreenTiles, &CHARBLOCK[0], losescreenTilesLen / 2);
-    DMANow(3, losescreenMap, &SCREENBLOCK[28], losescreenMapLen / 2);
+    DMANow(3, instructionsPal, PALETTE, 256);
+    DMANow(3, instructionsTiles, &CHARBLOCK[0], instructionsTilesLen / 2);
+    DMANow(3, instructionsMap, &SCREENBLOCK[28], instructionsMapLen / 2);
 
     hideSprites();
 
