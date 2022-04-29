@@ -327,7 +327,7 @@ void goToWin() {
     updateOAM();
     
     stopSound();
-    playSoundA(gamecomplete_data, gamecomplete_length, 0);
+    playSoundB(gamecomplete_data, gamecomplete_length, 0);
     state = WIN;
 
 } // goToWin
