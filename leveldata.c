@@ -13,6 +13,8 @@
 void buildRm1();
 void buildRm2();
 
+void setupMapOne();
+
 void buildRooms() {
 
     buildRm1();
@@ -118,7 +120,7 @@ void buildRm1() {
 
     DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
 
-    levels[0].setup = &closeDoor;
+    levels[0].setup = &setupMapOne;
 
 } // buildLv1
 
@@ -239,3 +241,24 @@ void closeDoor() {
 
 
 } // closeDoor
+
+void setupMapOne() {
+
+    const unsigned short tileData[15 * 10] = {
+
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,33,5,6,5,6,5,13,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
+
+    };
+
+    DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
+
+} // setupMapOne
