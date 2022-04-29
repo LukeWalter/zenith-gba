@@ -25,7 +25,7 @@ void initGame() {
 
     buildRooms();
 
-    level = 1;
+    level = 2;
     levelData = initLevel(level);
 
     gamePaused = 0;
@@ -94,12 +94,6 @@ void drawGame() {
 
 
 
-
-
-void showGameObjects() {
-
-
-} // showGameObjects
 
 int canMoveUp(OBJECT* obj) {
 

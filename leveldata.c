@@ -126,35 +126,29 @@ void buildRm1() {
 
 void buildRm2() {
 
-    levels[1].mapWidth = 16;
-    levels[1].mapHeight = 16;
+    levels[1].mapWidth = 15;
+    levels[1].mapHeight = 10;
     levels[1].mapXOffset = 0;
     levels[1].mapYOffset = 0;
 
     levels[1].hOff = 0;
     levels[1].vOff = 0;
 
-    levels[1].zenithOrientation = RIGHTWALK;
+    levels[1].zenithOrientation = BACKWALK;
 
     levels[1].numBlocks = 1;
-    levels[1].numPlates = 1;
+    levels[1].numPlates = 0;
     levels[1].numTools = 1;
 
-    COORDINATE zLoc2 = {1, 1};
+    COORDINATE zLoc2 = {7, 8};
     levels[1].zenithLoc = zLoc2;
 
-    COORDINATE bLoc2 = {4, 4};
+    COORDINATE bLoc2 = {7, 4};
     levels[1].blockLocs[0] = bLoc2;
 
-    COORDINATE pLoc2 = {4, 4};
-    levels[1].plateLocs[0] = pLoc2;
     
-    COORDINATE tLoc2 = {10, 2};
+    COORDINATE tLoc2 = {4, 4};
     levels[1].toolLocs[0] = tLoc2;
-
-    levels[1].plateInitStates[0] = 1;
-    levels[1].onFuncs[0] = &doNothing;
-    levels[1].offFuncs[0] = &updateLevel;
 
     levels[1].toolAbilities[0] = &doNothing;
 
@@ -166,24 +160,18 @@ void buildRm2() {
     levels[1].tiles = caveTiles;
     levels[1].map = caveMap;
 
-    const unsigned short tileData[16 * 16] = {
+    const unsigned short tileData[15 * 10] = {
 
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        5,6,5,6,5,6,5,6,5,6,5,6,5,13,1,
+        5,6,5,6,5,6,5,15,5,6,5,6,13,7,1,
+        5,6,5,6,5,6,5,30,5,6,5,13,7,7,1,
+        5,6,5,13,0,0,3,0,4,0,0,7,7,7,1,
+        5,6,13,7,0,0,0,0,0,0,0,7,7,7,1,
+        5,13,7,7,0,0,0,0,0,0,0,7,7,7,1,
+        1,7,7,7,0,0,0,0,0,0,0,7,7,7,1,
+        1,7,7,7,0,0,0,0,0,0,0,7,7,7,1,
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
 
     };
 

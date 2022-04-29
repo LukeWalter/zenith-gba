@@ -34,6 +34,8 @@ void initZenith(LEVEL level) {
 
     zenith.obj.sprite.attributes = &shadowOAM[7];
 
+    zenith.equippedTool = NULL;
+
 } // initZenith
 
 void updateZenith() {
