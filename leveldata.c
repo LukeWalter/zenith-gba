@@ -25,6 +25,8 @@ void buildRooms() {
 
 LEVEL* initLevel(int level) {
 
+    hideSprites();
+
     // Measured in double tiles
     mapWidth = levels[level - 1].mapWidth;
     mapHeight = levels[level - 1].mapHeight;

@@ -25,7 +25,7 @@ void initGame() {
 
     buildRooms();
 
-    level = 2;
+    level = 1;
     levelData = initLevel(level);
 
     gamePaused = 0;
@@ -34,7 +34,7 @@ void initGame() {
 } // initGame
 
 void updateLevel() {
-    
+
     level++;
     
     if (level > LEVELCOUNT) gameWon = 1;

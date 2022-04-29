@@ -43,6 +43,12 @@ void initBlocks(LEVEL level) {
 
     } // for
 
+    for (int i = numBlocks; i < BLOCKCOUNT; i++) {
+        blocks[i].obj.sprite.hide = 1;
+        blocks[i].obj.active = 0;
+
+    } // for
+
 } // initBlock
 
 void updateBlocks() {

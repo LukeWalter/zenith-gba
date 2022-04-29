@@ -44,6 +44,12 @@ void initTools(LEVEL level) {
         tools[i].ability = level.toolAbilities[i];
 
     } // for
+
+    for (int i = numTools; i < TOOLCOUNT; i++) {
+        tools[i].obj.sprite.hide = 1;
+        tools[i].obj.active = 0;
+
+    } // for
     
 } // initTools
 
