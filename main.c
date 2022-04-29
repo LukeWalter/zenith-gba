@@ -13,6 +13,9 @@
 #include "zenithtitle.h"
 #include "cave.h"
 #include "caveexit.h"
+
+#include "cavefarthestparallax.h"
+#include "cavebackparallax.h"
 #include "instructions.h"
 
 #include "spritesheet.h"
@@ -53,6 +56,9 @@ unsigned short buttons;
 unsigned short oldButtons;
 
 int pauseSelected;
+int frameCounter;
+int pauseHoff1;
+int pauseHoff2;
 
 // Shadow OAM.
 OBJ_ATTR shadowOAM[128];
@@ -341,9 +347,31 @@ void win() {
 // Sets up the lose state.
 void goToControls() {
 
+    REG_DISPCTL = MODE0 | BG2_ENABLE | BG1_ENABLE | BG0_ENABLE;
+    REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(31) | BG_SIZE_SMALL;
+    REG_BG1CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_SMALL;
+    REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(29) | BG_SIZE_SMALL;
+
     DMANow(3, instructionsPal, PALETTE, 256);
+
     DMANow(3, instructionsTiles, &CHARBLOCK[0], instructionsTilesLen / 2);
-    DMANow(3, instructionsMap, &SCREENBLOCK[28], instructionsMapLen / 2);
+    DMANow(3, instructionsMap, &SCREENBLOCK[29], instructionsMapLen / 2);
+
+    DMANow(3, cavebackparallaxTiles, &CHARBLOCK[1], cavebackparallaxTilesLen / 2);
+    DMANow(3, cavebackparallaxMap, &SCREENBLOCK[30], cavebackparallaxMapLen / 2);
+
+    DMANow(3, cavefarthestparallaxTiles, &CHARBLOCK[2], cavefarthestparallaxTilesLen / 2);
+    DMANow(3, cavefarthestparallaxMap, &SCREENBLOCK[31], cavefarthestparallaxMapLen / 2);
+
+    frameCounter = 0;
+    pauseHoff1 = 0;
+    pauseHoff2 = 0;
+
+    REG_BG1VOFF = 0;
+    REG_BG2VOFF = 0;
+
+    REG_BG1HOFF = pauseHoff1;
+    REG_BG2HOFF = pauseHoff2;
 
     hideSprites();
 
@@ -357,7 +385,24 @@ void goToControls() {
 // Runs every frame of the lose state.
 void controls() {
     
+    frameCounter++;
+
+    if (frameCounter % 2500 == 0) {
+        pauseHoff1++;
+        REG_BG1HOFF = pauseHoff1;
+    
+    } // if
+
+    if (frameCounter % 5500 == 0) {
+        pauseHoff2++;
+        REG_BG2HOFF = pauseHoff2;
+    
+    } // if
+
     if (BUTTON_PRESSED(BUTTON_START)) {
+
+        REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
+        REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_4BPP | BG_SIZE_LARGE;
 
         DMANow(3, levels[level - 1].pal, PALETTE, 256);
         DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
