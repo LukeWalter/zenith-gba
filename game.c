@@ -91,7 +91,10 @@ void drawGame() {
 
 
 
+void showGameObjects() {
 
+
+} // showGameObjects
 
 int canMoveUp(OBJECT* obj) {
 

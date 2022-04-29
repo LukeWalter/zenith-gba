@@ -29,8 +29,8 @@ void goToPause();
 void pause();
 void goToWin();
 void win();
-void goToLose();
-void lose();
+void goToControls();
+void controls();
 
 void enableTimer();
 void disableTimer();
@@ -44,13 +44,15 @@ enum {
     GAME,
     PAUSE,
     WIN,
-    LOSE
+    CONTROL
 };
 int state;
 
 // Button Variables.
 unsigned short buttons;
 unsigned short oldButtons;
+
+int pauseSelected;
 
 // Shadow OAM.
 OBJ_ATTR shadowOAM[128];
@@ -90,8 +92,8 @@ int main() {
                 
             } // WIN
             
-            case LOSE: {
-                lose();
+            case CONTROL: {
+                controls();
                 break;
                 
             } // LOSE
@@ -189,6 +191,7 @@ void game() {
 
 // Sets up the pause state.
 void goToPause() {
+    pauseSelected = 1;
     state = PAUSE;
 
 } // goToPause
@@ -199,8 +202,32 @@ void pause() {
     waitForVBlank();
     updateOAM();
 
-    if (BUTTON_PRESSED(BUTTON_START)) goToGame();
-    if (BUTTON_PRESSED(BUTTON_SELECT)) goToStart();
+    if (BUTTON_PRESSED(BUTTON_START)) {
+
+        switch (pauseSelected) {
+        case 1: 
+            goToGame();
+            break;
+
+        case 2: 
+            goToControls();
+            break;
+
+        case 3:
+            goToStart();
+            break;
+
+        default:
+            goToGame();
+            break;
+
+        } // switch
+
+    } else if (BUTTON_PRESSED(BUTTON_UP)) {
+
+    } else if (BUTTON_PRESSED(BUTTON_DOWN)) {
+
+    } // if
 
 } // pause
 
@@ -228,7 +255,7 @@ void win() {
 } // win
 
 // Sets up the lose state.
-void goToLose() {
+void goToControls() {
 
     DMANow(3, losescreenPal, PALETTE, 256);
     DMANow(3, losescreenTiles, &CHARBLOCK[0], losescreenTilesLen / 2);
@@ -239,13 +266,13 @@ void goToLose() {
     waitForVBlank();
     updateOAM();
 
-    state = LOSE;
+    state = CONTROL;
      
 } // goToLose
 
 // Runs every frame of the lose state.
-void lose() {
-    if (BUTTON_PRESSED(BUTTON_SELECT)) goToStart();
+void controls() {
+    if (BUTTON_PRESSED(BUTTON_SELECT)) goToGame();
 
 } // lose
 
