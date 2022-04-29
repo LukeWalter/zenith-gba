@@ -16,6 +16,8 @@ extern int gameWon;
 extern int level;
 extern LEVEL* levelData;
 
+extern TOOL cheaterShovel;
+
 void initGame();
 void updateGame();
 void drawGame();
@@ -35,5 +37,9 @@ void moveRight(OBJECT*);
 void readInput(OBJECT*);
 
 void pickaxeFunction();
+
+void spawnCheaterShovel();
+void cheaterShovelFunction();
+void drawCheaterShovel();
 
 #endif

@@ -59,7 +59,10 @@ void moveZenith() {
         
         int pickedUp = 0;
 
-        if (BUTTON_HELD(BUTTON_B)) {
+        if (BUTTON_PRESSED(BUTTON_R)) {
+            spawnCheaterShovel();
+
+        } else if (BUTTON_HELD(BUTTON_B)) {
 
             for (int i = 0; i < numBlocks; i++) {
 
@@ -92,33 +95,57 @@ void moveZenith() {
             } // for
 
         } else if (BUTTON_PRESSED(BUTTON_A)) {
+            
+            if (cheaterShovel.obj.active && cheaterShovel.obj.xPos == zenith.obj.xPos && cheaterShovel.obj.yPos == zenith.obj.yPos) {
 
-            for (int i = 0; i < numTools; i++) {
-
-                if (tools[i].obj.active && tools[i].obj.xPos == zenith.obj.xPos && tools[i].obj.yPos == zenith.obj.yPos) {
-
-                    tools[i].obj.active = 0;
-                    tools[i].obj.sprite.hide = 1;
+                cheaterShovel.obj.active = 0;
+                cheaterShovel.obj.sprite.hide = 1;
                     
-                    if (zenith.equippedTool != NULL) {
+                if (zenith.equippedTool != NULL) {
                         
-                        zenith.equippedTool->obj.xPos = zenith.obj.xPos;
-                        zenith.equippedTool->obj.yPos = zenith.obj.yPos;
-                        zenith.equippedTool->obj.sprite.worldRow = 8 * mapYOffset + tools[i].obj.yPos * 16;
-                        zenith.equippedTool->obj.sprite.worldCol = 8 * mapXOffset + tools[i].obj.xPos * 16;
+                    zenith.equippedTool->obj.xPos = zenith.obj.xPos;
+                    zenith.equippedTool->obj.yPos = zenith.obj.yPos;
+                    zenith.equippedTool->obj.sprite.worldRow = 8 * mapYOffset + cheaterShovel.obj.yPos * 16;
+                    zenith.equippedTool->obj.sprite.worldCol = 8 * mapXOffset + cheaterShovel.obj.xPos * 16;
 
-                        zenith.equippedTool->obj.active = 1;
-                        zenith.equippedTool->obj.sprite.hide = 0;
-
-                    } // if
-
-                    zenith.equippedTool = &tools[i];
-                    pickedUp = 1;
-                    break;
+                    zenith.equippedTool->obj.active = 1;
+                    zenith.equippedTool->obj.sprite.hide = 0;
 
                 } // if
 
-            } // for
+                zenith.equippedTool = &cheaterShovel;
+                pickedUp = 1;
+
+            } else {
+
+                for (int i = 0; i < numTools; i++) {
+
+                    if (tools[i].obj.active && tools[i].obj.xPos == zenith.obj.xPos && tools[i].obj.yPos == zenith.obj.yPos) {
+
+                        tools[i].obj.active = 0;
+                        tools[i].obj.sprite.hide = 1;
+                        
+                        if (zenith.equippedTool != NULL) {
+                            
+                            zenith.equippedTool->obj.xPos = zenith.obj.xPos;
+                            zenith.equippedTool->obj.yPos = zenith.obj.yPos;
+                            zenith.equippedTool->obj.sprite.worldRow = 8 * mapYOffset + tools[i].obj.yPos * 16;
+                            zenith.equippedTool->obj.sprite.worldCol = 8 * mapXOffset + tools[i].obj.xPos * 16;
+
+                            zenith.equippedTool->obj.active = 1;
+                            zenith.equippedTool->obj.sprite.hide = 0;
+
+                        } // if
+
+                        zenith.equippedTool = &tools[i];
+                        pickedUp = 1;
+                        break;
+
+                    } // if
+
+                } // for
+
+            } // if
 
         } else {
 
