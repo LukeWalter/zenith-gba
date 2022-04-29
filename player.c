@@ -7,6 +7,7 @@
 
 #include "sound.h"
 #include "step.h"
+#include "door.h"
 
 void initZenith(LEVEL level) {
 
@@ -74,24 +75,28 @@ void moveZenith() {
                     zenith.obj.sprite.aniState = BACKWALK;
                     zenith.obj.yTarget--;
                     zenith.obj.sprite.rdel = blocks[i].obj.baseSpeed;
+                    playSoundB(door_data, door_length, 0);
                     
                 } else if (BUTTON_HELD(BUTTON_DOWN) && zenith.obj.yTarget + 1 == blocks[i].obj.yPos && zenith.obj.xPos == blocks[i].obj.xPos && canMoveDown(&blocks[i].obj)) {
                     blocks[i].obj.yTarget++;
                     zenith.obj.sprite.aniState = FRONTWALK;
                     zenith.obj.yTarget++;
                     zenith.obj.sprite.rdel = blocks[i].obj.baseSpeed;
+                    playSoundB(door_data, door_length, 0);
                     
                 } else if (BUTTON_HELD(BUTTON_LEFT) && zenith.obj.xTarget - 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos && canMoveLeft(&blocks[i].obj)) {
                     blocks[i].obj.xTarget--;
                     zenith.obj.sprite.aniState = LEFTWALK;
                     zenith.obj.xTarget--;
                     zenith.obj.sprite.cdel = blocks[i].obj.baseSpeed;
+                    playSoundB(door_data, door_length, 0);
 
                 } else if (BUTTON_HELD(BUTTON_RIGHT) && zenith.obj.xTarget + 1 == blocks[i].obj.xPos && zenith.obj.yPos == blocks[i].obj.yPos && canMoveRight(&blocks[i].obj)) {
                     blocks[i].obj.xTarget++;
                     zenith.obj.sprite.aniState = RIGHTWALK;
                     zenith.obj.xTarget++;
                     zenith.obj.sprite.cdel = blocks[i].obj.baseSpeed;
+                    playSoundB(door_data, door_length, 0);
 
                 } // if
 
