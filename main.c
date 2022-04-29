@@ -15,6 +15,7 @@
 #include "winscreen.h"
 #include "losescreen.h"
 #include "caveexit.h"
+#include "instructions.h"
 
 #include "spritesheet.h"
 
@@ -339,9 +340,9 @@ void win() {
 // Sets up the lose state.
 void goToControls() {
 
-    DMANow(3, losescreenPal, PALETTE, 256);
-    DMANow(3, losescreenTiles, &CHARBLOCK[0], losescreenTilesLen / 2);
-    DMANow(3, losescreenMap, &SCREENBLOCK[28], losescreenMapLen / 2);
+    DMANow(3, instructionsPal, PALETTE, 256);
+    DMANow(3, instructionsTiles, &CHARBLOCK[0], instructionsTilesLen / 2);
+    DMANow(3, instructionsMap, &SCREENBLOCK[28], instructionsMapLen / 2);
 
     hideSprites();
 
