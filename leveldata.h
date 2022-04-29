@@ -3,9 +3,9 @@
 
 #define LEVELCOUNT 2
 
-#define BLOCKCOUNT 1
+#define BLOCKCOUNT 2
 #define PLATECOUNT 1
-#define TOOLCOUNT 1
+#define TOOLCOUNT 3
 
 typedef struct {
     int col;
@@ -45,6 +45,11 @@ typedef struct {
     const unsigned short* map;
 
     unsigned short mapTiles[64 * 64];
+    void (*setup)(void);
+
+    int numBlocks;
+    int numPlates;
+    int numTools;
 
 } LEVEL;
 
@@ -62,6 +67,7 @@ void buildRooms();
 LEVEL* initLevel(int);
 
 int getTileId(int, int);
+void drawTile(int, int, int);
 
 void openDoor();
 void closeDoor();

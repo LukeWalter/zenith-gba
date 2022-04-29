@@ -6,7 +6,7 @@
 
 void initBlocks(LEVEL level) {
 
-    for (int i = 0; i < BLOCKCOUNT; i++) {
+    for (int i = 0; i < level.numBlocks; i++) {
 
         blocks[i].obj.xPos = level.blockLocs[i].col;
         blocks[i].obj.yPos = level.blockLocs[i].row;
@@ -35,7 +35,7 @@ void initBlocks(LEVEL level) {
         blocks[i].obj.sprite.numFrames = 1;
         blocks[i].obj.sprite.hide = 0;
 
-        blocks[i].obj.sprite.attributes = &shadowOAM[1];
+        blocks[i].obj.sprite.attributes = &shadowOAM[8 + i];
 
     } // for
 

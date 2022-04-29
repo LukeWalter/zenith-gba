@@ -13,8 +13,6 @@
 void buildRm1();
 void buildRm2();
 
-void drawTile(int, int, int);
-
 void buildRooms() {
 
     buildRm1();
@@ -78,6 +76,10 @@ void buildRm1() {
 
     levels[0].zenithOrientation = FRONTWALK;
 
+    levels[0].numBlocks = 1;
+    levels[0].numPlates = 1;
+    levels[0].numTools = 1;
+
     COORDINATE zLoc = {1, 6};
     levels[0].zenithLoc = zLoc;
 
@@ -121,6 +123,8 @@ void buildRm1() {
 
     DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
 
+    levels[0].setup = &closeDoor;
+
 } // buildLv1
 
 void buildRm2() {
@@ -134,6 +138,10 @@ void buildRm2() {
     levels[1].vOff = 0;
 
     levels[1].zenithOrientation = RIGHTWALK;
+
+    levels[1].numBlocks = 1;
+    levels[1].numPlates = 1;
+    levels[1].numTools = 1;
 
     COORDINATE zLoc2 = {1, 1};
     levels[1].zenithLoc = zLoc2;
@@ -183,6 +191,8 @@ void buildRm2() {
     };
 
     DMANow(3, tileData, levels[1].mapTiles, 16 * 16);
+
+    levels[1].setup = &doNothing;
 
 } // buildLv2
 

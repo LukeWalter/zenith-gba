@@ -7,7 +7,7 @@ TOOL tools[TOOLCOUNT];
 
 LEVEL levels[LEVELCOUNT];
 
-int gameOver;
+int gamePaused;
 int gameWon;
 
 int mapWidth;
@@ -28,19 +28,36 @@ void initGame() {
     level = 1;
     levelData = initLevel(level);
 
-    gameOver = 0;
+    gamePaused = 0;
     gameWon = 0;
 
 } // initGame
 
 void updateLevel() {
+    
     level++;
-    if (level > LEVELCOUNT) level = 1;
-    levelData = initLevel(level);
+    
+    if (level > LEVELCOUNT) {
+        gameWon = 1;
+    
+    } else {
+        levelData = initLevel(level);
+        levelData->setup();
 
+    } // if
+    
 } // updateLevel
 
 void updateGame() {
+    
+    gamePaused = 0;
+    if (BUTTON_PRESSED(BUTTON_START) && zenith.obj.idle) gamePaused = 1;
+    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) {
+        levelData = initLevel(level);
+        levelData->setup();
+
+    } // if
+    
     updateZenith();
     updatePlates();
 
@@ -79,7 +96,10 @@ void drawGame() {
 
 
 
+void showGameObjects() {
 
+
+} // showGameObjects
 
 int canMoveUp(OBJECT* obj) {
 

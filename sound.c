@@ -60,57 +60,6 @@ void playSoundB( const signed char* sound, int length, int loops) {
     soundB.vBlankCount = 0;
 }
 
-void setupInterrupts() {
-
-	REG_IME = 0;
-
-    REG_IE |= INT_VBLANK;
-    REG_DISPSTAT |= INT_VBLANK_ENABLE;
-
-    REG_INTERRUPT = interruptHandler;
-	REG_IME = 1;
-}
-
-void interruptHandler() {
-
-	REG_IME = 0;
-
-	if(REG_IF & INT_VBLANK) {
-        if (soundA.isPlaying) {
-
-            soundA.vBlankCount = soundA.vBlankCount + 1;
-            if (soundA.vBlankCount > soundA.duration) {
-                if (soundA.loops) {
-                    playSoundA(soundA.data, soundA.length, soundA.loops);
-                } else {
-                    soundA.isPlaying = 0;
-                    dma[1].cnt = 0;
-                    REG_TM0CNT = TIMER_OFF;
-                }
-            }
-        }
-
-        if (soundB.isPlaying) {
-
-            soundB.vBlankCount = soundB.vBlankCount + 1;
-            if (soundB.vBlankCount > soundB.duration) {
-                if (soundB.loops) {
-                    playSoundB(soundB.data, soundB.length, soundB.loops);
-                } else {
-                    soundB.isPlaying = 0;
-                    dma[2].cnt = 0;
-                    REG_TM1CNT = TIMER_OFF;
-                }
-            }
-		}
-
-
-		REG_IF = INT_VBLANK;
-	}
-
-	REG_IME = 1;
-}
-
 void pauseSound() {
     soundA.isPlaying = 0;
     soundB.isPlaying = 0;
