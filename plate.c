@@ -6,7 +6,7 @@
 
 void initPlates(LEVEL level) {
 
-    for (int i = 0; i < PLATECOUNT; i++) {
+    for (int i = 0; i < level.numPlates; i++) {
 
         plates[i].obj.xPos = level.plateLocs[i].col;
         plates[i].obj.yPos = level.plateLocs[i].row;
@@ -35,7 +35,7 @@ void initPlates(LEVEL level) {
         plates[i].obj.sprite.numFrames = 2;
         plates[i].obj.sprite.hide = 0;
 
-        plates[i].obj.sprite.attributes = &shadowOAM[2];
+        plates[i].obj.sprite.attributes = &shadowOAM[5 + BLOCKCOUNT + PLATECOUNT + i];
 
         plates[i].pressed = level.plateInitStates[i];
         plates[i].onFunc = level.onFuncs[i];

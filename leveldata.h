@@ -5,7 +5,7 @@
 
 #define BLOCKCOUNT 1
 #define PLATECOUNT 1
-#define TOOLCOUNT 1
+#define TOOLCOUNT 3
 
 typedef struct {
     int col;
@@ -46,6 +46,10 @@ typedef struct {
 
     unsigned short mapTiles[64 * 64];
     void (*setup)(void);
+
+    int numBlocks;
+    int numPlates;
+    int numTools;
 
 } LEVEL;
 
