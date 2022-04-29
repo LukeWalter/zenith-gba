@@ -78,7 +78,7 @@ void buildRm1() {
 
     levels[0].numBlocks = 1;
     levels[0].numPlates = 1;
-    levels[0].numTools = 1;
+    levels[0].numTools = 0;
 
     COORDINATE zLoc = {1, 6};
     levels[0].zenithLoc = zLoc;
@@ -89,14 +89,9 @@ void buildRm1() {
     COORDINATE pLoc = {3, 6};
     levels[0].plateLocs[0] = pLoc;
 
-    COORDINATE tLoc = {0, 6};
-    levels[0].toolLocs[0] = tLoc;
-
     levels[0].plateInitStates[0] = 0;
     levels[0].onFuncs[0] = &openDoor;
     levels[0].offFuncs[0] = &closeDoor;
-
-    levels[0].toolAbilities[0] = &doNothing;
 
     levels[0].palLen = cavePalLen;
     levels[0].tileLen = caveTilesLen;
