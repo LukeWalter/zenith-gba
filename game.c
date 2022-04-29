@@ -641,7 +641,7 @@ void drawCheaterShovel() {
     } else {
         cheaterShovel.obj.sprite.attributes->attr0 = (cheaterShovel.obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
         cheaterShovel.obj.sprite.attributes->attr1 = (cheaterShovel.obj.sprite.worldCol - hOff) | ATTR1_SMALL;
-        cheaterShovel.obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(12, 4);
+        cheaterShovel.obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(14, 4);
         
     } // if
 
