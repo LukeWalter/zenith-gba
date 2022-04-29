@@ -348,8 +348,8 @@ void win() {
 void goToControls() {
 
     REG_DISPCTL = MODE0 | BG2_ENABLE | BG1_ENABLE | BG0_ENABLE;
-    REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(31) | BG_SIZE_SMALL;
-    REG_BG1CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(30) | BG_SIZE_SMALL;
+    REG_BG2CNT = BG_CHARBLOCK(2) | BG_SCREENBLOCK(27) | BG_SIZE_SMALL;
+    REG_BG1CNT = BG_CHARBLOCK(1) | BG_SCREENBLOCK(28) | BG_SIZE_SMALL;
     REG_BG0CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(29) | BG_SIZE_SMALL;
 
     DMANow(3, instructionsPal, PALETTE, 256);
@@ -358,10 +358,10 @@ void goToControls() {
     DMANow(3, instructionsMap, &SCREENBLOCK[29], instructionsMapLen / 2);
 
     DMANow(3, cavebackparallaxTiles, &CHARBLOCK[1], cavebackparallaxTilesLen / 2);
-    DMANow(3, cavebackparallaxMap, &SCREENBLOCK[30], cavebackparallaxMapLen / 2);
+    DMANow(3, cavebackparallaxMap, &SCREENBLOCK[28], cavebackparallaxMapLen / 2);
 
     DMANow(3, cavefarthestparallaxTiles, &CHARBLOCK[2], cavefarthestparallaxTilesLen / 2);
-    DMANow(3, cavefarthestparallaxMap, &SCREENBLOCK[31], cavefarthestparallaxMapLen / 2);
+    DMANow(3, cavefarthestparallaxMap, &SCREENBLOCK[27], cavefarthestparallaxMapLen / 2);
 
     frameCounter = 0;
     pauseHoff1 = 0;
