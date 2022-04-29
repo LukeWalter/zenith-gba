@@ -34,17 +34,11 @@ void initGame() {
 } // initGame
 
 void updateLevel() {
-    
+
     level++;
     
-    if (level > LEVELCOUNT) {
-        gameWon = 1;
-    
-    } else {
-        levelData = initLevel(level);
-        levelData->setup();
-
-    } // if
+    if (level > LEVELCOUNT) gameWon = 1;
+    else levelData = initLevel(level);
     
 } // updateLevel
 
@@ -52,11 +46,7 @@ void updateGame() {
     
     gamePaused = 0;
     if (BUTTON_PRESSED(BUTTON_START) && zenith.obj.idle) gamePaused = 1;
-    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) {
-        levelData = initLevel(level);
-        levelData->setup();
-
-    } // if
+    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) levelData = initLevel(level);
     
     updateZenith();
     updatePlates();
@@ -94,12 +84,6 @@ void drawGame() {
 
 
 
-
-
-void showGameObjects() {
-
-
-} // showGameObjects
 
 int canMoveUp(OBJECT* obj) {
 
@@ -359,3 +343,85 @@ int getTileId(int x, int y) {
     return levelData->mapTiles[OFFSET(x, y, mapWidth)];
 
 } // getTileId
+
+
+void pickaxeFunction() {
+
+    if (BUTTON_PRESSED(BUTTON_A)) {
+
+        int tileId;
+
+        switch (zenith.obj.sprite.prevAniState) {
+        
+        case FRONTWALK:
+            
+            if (zenith.obj.yPos < mapHeight - 1) {
+                
+                tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
+
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
+                    drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
+
+                } // if
+            
+            } // if
+            
+            break;
+        
+        case BACKWALK:
+            
+            if (zenith.obj.yPos > 0) {
+                
+                tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos - 1);
+
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos - 1, mapWidth)] = 0;
+                    drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos - 1) * 2, 1);
+
+                } // if
+            
+            } // if
+            
+            break;
+        
+        case LEFTWALK:
+            
+            if (zenith.obj.xPos > 0) {
+                
+                tileId = getTileId(zenith.obj.xPos - 1, zenith.obj.yPos);
+
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos - 1, zenith.obj.yPos, mapWidth)] = 0;
+                    drawTile((zenith.obj.xPos - 1) * 2, zenith.obj.yPos * 2, 1);
+
+                } // if
+            
+            } // if
+            
+            break;
+        
+        case RIGHTWALK:
+            
+            if (zenith.obj.xPos < mapWidth - 1) {
+                
+                tileId = getTileId(zenith.obj.xPos + 1, zenith.obj.yPos);
+
+                if (tileId == 3 || tileId == 4) {
+                    levelData->mapTiles[OFFSET(zenith.obj.xPos + 1, zenith.obj.yPos, mapWidth)] = 0;
+                    drawTile((zenith.obj.xPos + 1) * 2, zenith.obj.yPos * 2, 1);
+
+                } // if
+            
+            } // if
+            
+            break;
+
+        default:
+            break;
+
+        } // switch
+
+    } // if
+    
+} // pickaxe

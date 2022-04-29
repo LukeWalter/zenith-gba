@@ -1,5 +1,7 @@
 #include "player.h"
 
+#include "game.h"
+
 #include "block.h"
 #include "plate.h"
 
@@ -34,6 +36,8 @@ void initZenith(LEVEL level) {
 
     zenith.obj.sprite.attributes = &shadowOAM[7];
 
+    zenith.equippedTool = NULL;
+
 } // initZenith
 
 void updateZenith() {
@@ -53,9 +57,11 @@ void moveZenith() {
     
     if (zenith.obj.idle) {
         
+        int pickedUp = 0;
+
         if (BUTTON_HELD(BUTTON_B)) {
 
-            for (int i = 0; i < BLOCKCOUNT; i++) {
+            for (int i = 0; i < numBlocks; i++) {
 
                 if (BUTTON_HELD(BUTTON_UP) && zenith.obj.yTarget - 1 == blocks[i].obj.yPos && zenith.obj.xPos == blocks[i].obj.xPos && canMoveUp(&blocks[i].obj)) {
                     blocks[i].obj.yTarget--;
@@ -87,10 +93,10 @@ void moveZenith() {
 
         } else if (BUTTON_PRESSED(BUTTON_A)) {
 
-            for (int i = 0; i < TOOLCOUNT; i++) {
+            for (int i = 0; i < numTools; i++) {
 
                 if (tools[i].obj.active && tools[i].obj.xPos == zenith.obj.xPos && tools[i].obj.yPos == zenith.obj.yPos) {
-                    
+
                     tools[i].obj.active = 0;
                     tools[i].obj.sprite.hide = 1;
                     
@@ -106,7 +112,9 @@ void moveZenith() {
 
                     } // if
 
-                    *zenith.equippedTool = tools[i];
+                    zenith.equippedTool = &tools[i];
+                    pickedUp = 1;
+                    break;
 
                 } // if
 
@@ -143,6 +151,11 @@ void moveZenith() {
                 zenith.obj.sprite.aniState = RIGHTWALK;
 
             } // if
+
+        } // if
+
+        if (!pickedUp && zenith.equippedTool != NULL) {
+            zenith.equippedTool->ability();
 
         } // if
 

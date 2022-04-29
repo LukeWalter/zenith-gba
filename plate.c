@@ -8,7 +8,7 @@ int numPlates;
 
 void initPlates(LEVEL level) {
 
-    numPlates = level.numPlates;
+    numPlates = level.numPlates; mgba_printf("%d", numPlates);
 
     for (int i = 0; i < numPlates; i++) {
 
@@ -44,6 +44,12 @@ void initPlates(LEVEL level) {
         plates[i].pressed = level.plateInitStates[i];
         plates[i].onFunc = level.onFuncs[i];
         plates[i].offFunc = level.offFuncs[i];
+
+    } // for
+
+    for (int i = numPlates; i < PLATECOUNT; i++) {
+        plates[i].obj.sprite.hide = 1;
+        plates[i].obj.active = 0;
 
     } // for
     

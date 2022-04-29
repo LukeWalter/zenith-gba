@@ -11,6 +11,7 @@ typedef struct {
 
 } TOOL;
 
+extern int numTools;
 extern TOOL tools[TOOLCOUNT];
 
 void initTools(LEVEL);

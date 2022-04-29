@@ -10,6 +10,7 @@ typedef struct {
 
 } BLOCK;
 
+extern int numBlocks;
 extern BLOCK blocks[BLOCKCOUNT];
 
 void initBlocks(LEVEL);
