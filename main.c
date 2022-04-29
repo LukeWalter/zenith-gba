@@ -331,7 +331,7 @@ void goToWin() {
 
 // Runs every frame of the win state.
 void win() {
-    if (BUTTON_PRESSED(BUTTON_SELECT)) goToStart();
+    if (BUTTON_PRESSED(BUTTON_START)) goToStart();
 
 } // win
 

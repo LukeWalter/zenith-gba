@@ -74,7 +74,7 @@ void buildRm1() {
     levels[0].hOff = 0;
     levels[0].vOff = 0;
 
-    levels[0].zenithOrientation = FRONTWALK;
+    levels[0].zenithOrientation = RIGHTWALK;
 
     levels[0].numBlocks = 1;
     levels[0].numPlates = 1;
