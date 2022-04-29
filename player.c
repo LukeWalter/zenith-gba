@@ -5,6 +5,9 @@
 #include "block.h"
 #include "plate.h"
 
+#include "sound.h"
+#include "step.h"
+
 void initZenith(LEVEL level) {
 
     zenith.obj.xPos = level.zenithLoc.col;
@@ -152,18 +155,22 @@ void moveZenith() {
             if (BUTTON_HELD(BUTTON_UP) && canMoveUp(&zenith.obj)) {
                 zenith.obj.sprite.aniState = BACKWALK;
                 zenith.obj.yTarget--;
+                playSoundB(step_data, step_length, 0);
                 
             } else if (BUTTON_HELD(BUTTON_DOWN) && canMoveDown(&zenith.obj)) {
                 zenith.obj.sprite.aniState = FRONTWALK;
                 zenith.obj.yTarget++;
+                playSoundB(step_data, step_length, 0);
                 
             } else if (BUTTON_HELD(BUTTON_LEFT) && canMoveLeft(&zenith.obj)) {
                 zenith.obj.sprite.aniState = LEFTWALK;
                 zenith.obj.xTarget--;
+                playSoundB(step_data, step_length, 0);
 
             } else if (BUTTON_HELD(BUTTON_RIGHT) && canMoveRight(&zenith.obj)) {
                 zenith.obj.sprite.aniState = RIGHTWALK;
                 zenith.obj.xTarget++;
+                playSoundB(step_data, step_length, 0);
 
             } else if (BUTTON_HELD(BUTTON_UP)) {
                 zenith.obj.sprite.aniState = BACKWALK;
