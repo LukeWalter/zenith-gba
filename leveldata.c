@@ -26,6 +26,8 @@ void buildRooms() {
 LEVEL* initLevel(int level) {
 
     hideSprites();
+    cheaterShovel.obj.active = 0;
+    cheaterShovel.obj.sprite.hide = 1;
 
     // Measured in double tiles
     mapWidth = levels[level - 1].mapWidth;
