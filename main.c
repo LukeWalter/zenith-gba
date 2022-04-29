@@ -15,6 +15,8 @@
 #include "winscreen.h"
 #include "losescreen.h"
 
+#include "spritesheet.h"
+
 // Prototypes.
 void initialize();
 
@@ -126,7 +128,17 @@ void initialize() {
 // Sets up the start state.
 void goToStart() {
     
+    DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
+    DMANow(3, spritesheetTiles, &CHARBLOCK[4], spritesheetTilesLen / 2);
     hideSprites();
+
+    shadowOAM[127].attr0 = 40 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[127].attr1 = 50 | ATTR1_LARGE;
+    shadowOAM[127].attr2 = ATTR2_TILEID(16, 21);
+
+    shadowOAM[126].attr0 = 40 | ATTR0_4BPP | ATTR0_WIDE;
+    shadowOAM[126].attr1 = 114 | ATTR1_LARGE;
+    shadowOAM[126].attr2 = ATTR2_TILEID(24, 21);
 
     DMANow(3, zenithtitlePal, PALETTE, 256);
     DMANow(3, zenithtitleTiles, &CHARBLOCK[0], zenithtitleTilesLen / 2);
@@ -184,10 +196,6 @@ void goToPause() {
 
 // Runs every frame of the pause state.
 void pause() {
-
-    shadowOAM[127].attr0 = 40 | ATTR0_4BPP | ATTR0_WIDE;
-    shadowOAM[127].attr1 = (120 - 32)  | ATTR1_LARGE;
-    shadowOAM[127].attr2 = ATTR2_TILEID(0, 20);
 
     waitForVBlank();
     updateOAM();
@@ -315,7 +323,18 @@ void interruptHandler() {
 	} // if
 
     if (REG_IF & INT_TM3) {
-        mgba_printf("Timer Interrupt");
+        
+        if (shadowOAM[127].attr0 == ATTR0_HIDE) {
+            shadowOAM[126].attr0 = 80 | ATTR0_4BPP | ATTR0_WIDE;
+            shadowOAM[127].attr0 = 80 | ATTR0_4BPP | ATTR0_WIDE;
+            updateOAM();
+
+        } else {
+            shadowOAM[126].attr0 = ATTR0_HIDE;
+            shadowOAM[127].attr0 = ATTR0_HIDE;
+            updateOAM();
+
+        } // if 
 
     } // if
 
