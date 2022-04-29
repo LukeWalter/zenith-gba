@@ -52,6 +52,11 @@ void updateGame() {
     
     gamePaused = 0;
     if (BUTTON_PRESSED(BUTTON_START) && zenith.obj.idle) gamePaused = 1;
+    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) {
+        levelData = initLevel(level);
+        levelData->setup();
+
+    } // if
     
     updateZenith();
     updatePlates();
