@@ -353,3 +353,41 @@ int getTileId(int x, int y) {
     return levelData->mapTiles[OFFSET(x, y, mapWidth)];
 
 } // getTileId
+
+
+void pickaxeFunction() {
+
+    mgba_printf("Pickaxe swing!");
+
+    int tileId;
+
+    switch (zenith.obj.sprite.aniState) {
+    
+    case FRONTWALK:
+        
+        if (zenith.obj.yPos < mapHeight) {
+            
+            tileId = getTileId(zenith.obj.xPos, zenith.obj.yPos + 1);
+
+            if (tileId == 3 || tileId == 4) {
+                levelData->mapTiles[OFFSET(zenith.obj.xPos, zenith.obj.yPos + 1, mapWidth)] = 0;
+                drawTile(zenith.obj.xPos * 2, (zenith.obj.yPos + 1) * 2, 1);
+
+            } // if
+        
+        } // if
+        
+        break;
+    
+    case BACKWALK:
+        break;
+    
+    case LEFTWALK:
+        break;
+    
+    case RIGHTWALK:
+        break;
+
+    } // switch
+    
+} // pickaxe

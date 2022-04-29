@@ -34,4 +34,6 @@ void moveRight(OBJECT*);
 
 void readInput(OBJECT*);
 
+void pickaxeFunction();
+
 #endif

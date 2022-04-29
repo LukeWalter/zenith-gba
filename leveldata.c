@@ -150,7 +150,7 @@ void buildRm2() {
     COORDINATE tLoc2 = {4, 4};
     levels[1].toolLocs[0] = tLoc2;
 
-    levels[1].toolAbilities[0] = &doNothing;
+    levels[1].toolAbilities[0] = &pickaxeFunction;
 
     levels[1].palLen = cavePalLen;
     levels[1].tileLen = caveTilesLen;

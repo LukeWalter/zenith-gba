@@ -13,6 +13,7 @@ typedef struct {
 
 } PLATE;
 
+extern int numPlates;
 extern PLATE plates[PLATECOUNT];
 
 void initPlates(LEVEL);
