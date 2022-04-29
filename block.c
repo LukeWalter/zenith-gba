@@ -36,7 +36,7 @@ void initBlocks(LEVEL level) {
         blocks[i].obj.sprite.aniCounter = 0;
         blocks[i].obj.sprite.aniState = BACKWALK;
         blocks[i].obj.sprite.curFrame = 0;
-        blocks[i].obj.sprite.numFrames = 1;
+        blocks[i].obj.sprite.numFrames = 4;
         blocks[i].obj.sprite.hide = 0;
 
         blocks[i].obj.sprite.attributes = &shadowOAM[8 + i];
@@ -59,12 +59,30 @@ void updateBlocks() {
 void moveBlocks() {
     
     for (int i = 0; i < numBlocks; i++) {
-
-        if (blocks[i].obj.yTarget < blocks[i].obj.yPos)      moveUp(&blocks[i].obj);
-        else if (blocks[i].obj.yTarget > blocks[i].obj.yPos) moveDown(&blocks[i].obj);
-        else if (blocks[i].obj.xTarget < blocks[i].obj.xPos) moveLeft(&blocks[i].obj);
-        else if (blocks[i].obj.xTarget > blocks[i].obj.xPos) moveRight(&blocks[i].obj);
         
+        blocks[i].obj.sprite.aniCounter++;
+
+        if (blocks[i].obj.yTarget < blocks[i].obj.yPos) {
+            moveUp(&blocks[i].obj);
+
+        } else if (blocks[i].obj.yTarget > blocks[i].obj.yPos) {
+            moveDown(&blocks[i].obj);
+
+        } else if (blocks[i].obj.xTarget < blocks[i].obj.xPos) {
+            moveLeft(&blocks[i].obj);
+            if (blocks[i].obj.sprite.aniCounter % 10 == 0) 
+                blocks[i].obj.sprite.curFrame = (blocks[i].obj.sprite.curFrame - 1 + blocks[i].obj.sprite.numFrames) % blocks[i].obj.sprite.numFrames;
+
+        } else if (blocks[i].obj.xTarget > blocks[i].obj.xPos) {
+            moveRight(&blocks[i].obj);
+            if (blocks[i].obj.sprite.aniCounter % 10 == 0)
+                blocks[i].obj.sprite.curFrame = (blocks[i].obj.sprite.curFrame + 1 + blocks[i].obj.sprite.numFrames) % blocks[i].obj.sprite.numFrames;
+
+        } else {
+            blocks[i].obj.sprite.curFrame = 0;
+             
+        } // if
+
     } // for
 
 } // moveBlock
@@ -79,7 +97,7 @@ void drawBlocks() {
         } else {
             blocks[i].obj.sprite.attributes->attr0 = (blocks[i].obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
             blocks[i].obj.sprite.attributes->attr1 = (blocks[i].obj.sprite.worldCol - hOff) | ATTR1_SMALL;
-            blocks[i].obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(10, 0);
+            blocks[i].obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(10, blocks[i].obj.sprite.curFrame * 2);
         
         } // if
 
