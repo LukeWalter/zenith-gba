@@ -1,7 +1,7 @@
 #ifndef LEVEL_DATA
 #define LEVEL_DATA
 
-#define LEVELCOUNT 2
+#define LEVELCOUNT 3
 
 #define BLOCKCOUNT 2
 #define PLATECOUNT 1
