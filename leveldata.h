@@ -53,7 +53,7 @@ typedef struct {
 
 } LEVEL;
 
-extern LEVEL levels[LEVELCOUNT];
+extern LEVEL* level;
 
 extern int mapWidth;
 extern int mapHeight;
@@ -63,7 +63,8 @@ extern int mapYOffset;
 extern int hOff;
 extern int vOff;
 
-void buildRooms();
+void initMemory();
+void (*buildLevel[LEVELCOUNT])(void);
 LEVEL* initLevel(int);
 
 int getTileId(int, int);

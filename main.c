@@ -404,17 +404,17 @@ void controls() {
         REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
         REG_BG1CNT = BG_CHARBLOCK(0) | BG_SCREENBLOCK(28) | BG_4BPP | BG_SIZE_LARGE;
 
-        DMANow(3, levels[level - 1].pal, PALETTE, 256);
-        DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
-        DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
+        DMANow(3, level->pal, PALETTE, 256);
+        DMANow(3, level->tiles, &CHARBLOCK[0], level->tileLen / 2);
+        DMANow(3, level->map, &SCREENBLOCK[28], level->mapLen / 2);
         REG_BG1VOFF = vOff;
         REG_BG1HOFF = hOff;
 
-        for (int c = 0; c < levels[level - 1].mapWidth; c++) {
+        for (int c = 0; c < level->mapWidth; c++) {
 
-            for (int r = 0; r < levels[level - 1].mapHeight; r++) {
+            for (int r = 0; r < level->mapHeight; r++) {
             
-                int tileposition = levels[level - 1].mapTiles[OFFSET(c, r, mapWidth)];
+                int tileposition = level->mapTiles[OFFSET(c, r, mapWidth)];
                 drawTile(c * 2, r * 2, tileposition);
 
             }  // for
