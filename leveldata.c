@@ -14,13 +14,23 @@ LEVEL* level;
 
 void buildRm1();
 void buildRm2();
+void buildRm3();
 
 void allocate() {
+    
     level = malloc(sizeof(LEVEL));
     if (level == NULL) {
         mgba_printf("Too much memory >_<");
 
     } // if
+
+    level->palLen = cavePalLen;
+    level->tileLen = caveTilesLen;
+    level->mapLen = caveMapLen;
+
+    level->pal = cavePal;
+    level->tiles = caveTiles;
+    level->map = caveMap;
 
 } // allocate
 
@@ -28,6 +38,7 @@ void initMemory() {
     allocate();
     buildLevel[0] = &buildRm1;
     buildLevel[1] = &buildRm2;
+    buildLevel[2] = &buildRm3;
 
 } // buildLevels
 
@@ -110,14 +121,6 @@ void buildRm1() {
     level->onFuncs[0] = &openDoor;
     level->offFuncs[0] = &closeDoor;
 
-    level->palLen = cavePalLen;
-    level->tileLen = caveTilesLen;
-    level->mapLen = caveMapLen;
-
-    level->pal = cavePal;
-    level->tiles = caveTiles;
-    level->map = caveMap;
-
     const unsigned short tileData[15 * 10] = {
 
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -135,7 +138,7 @@ void buildRm1() {
 
     DMANow(3, tileData, level->mapTiles, 15 * 10);
 
-} // buildLv1
+} // buildRm1
 
 void buildRm2() {
 
@@ -165,14 +168,6 @@ void buildRm2() {
 
     level->toolAbilities[0] = &pickaxeFunction;
 
-    level->palLen = cavePalLen;
-    level->tileLen = caveTilesLen;
-    level->mapLen = caveMapLen;
-
-    level->pal = cavePal;
-    level->tiles = caveTiles;
-    level->map = caveMap;
-
     const unsigned short tileData[15 * 10] = {
 
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -190,7 +185,70 @@ void buildRm2() {
 
     DMANow(3, tileData, level->mapTiles, 15 * 10);
 
-} // buildLv2
+} // buildRm2
+
+void buildRm3() {
+
+    level->mapWidth = 16;
+    level->mapHeight = 32;
+    level->mapXOffset = 0;
+    level->mapYOffset = 0;
+
+    level->hOff = 0;
+    level->vOff = 0;
+
+    level->zenithOrientation = RIGHTWALK;
+
+    level->numBlocks = 1;
+    level->numPlates = 0;
+    level->numTools = 0;
+
+    COORDINATE zLoc = {1, 6};
+    level->zenithLoc = zLoc;
+
+    COORDINATE bLoc1 = {7, 4};
+    level->blockLocs[0] = bLoc1;
+
+    const unsigned short tileData[16 * 32] = {
+
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+    };
+
+    DMANow(3, tileData, level->mapTiles, 16 * 32);
+
+} // buildRm3
 
 void drawTile(int c, int r, int tileposition) {
 
