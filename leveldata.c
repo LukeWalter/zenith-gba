@@ -36,9 +36,9 @@ void allocate() {
 
 void initMemory() {
     allocate();
-    buildLevel[0] = &buildRm3;
+    buildLevel[0] = &buildRm1;
     buildLevel[1] = &buildRm2;
-    buildLevel[2] = &buildRm1;
+    buildLevel[2] = &buildRm3;
 
 } // buildLevels
 
@@ -143,6 +143,60 @@ void buildRm1() {
 void buildRm2() {
 
     level->mapWidth = 15;
+    level->mapHeight = 16;
+    level->mapXOffset = 0;
+    level->mapYOffset = 0;
+
+    level->hOff = 0;
+    level->vOff = 96;
+
+    level->zenithOrientation = BACKWALK;
+
+    level->numBlocks = 1;
+    level->numPlates = 1;
+    level->numTools = 0;
+
+    COORDINATE zLoc = {7, 14};
+    level->zenithLoc = zLoc;
+
+    COORDINATE bLoc1 = {7, 12};
+    level->blockLocs[0] = bLoc1;
+
+    COORDINATE pLoc = {7, 12};
+    level->plateLocs[0] = pLoc;
+
+    level->plateInitStates[0] = 0;
+    level->onFuncs[0] = &openDoor;
+    level->offFuncs[0] = &closeDoor;
+
+    const unsigned short tileData[15 * 16] = {
+
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,
+        5,6,5,6,5,6,5,33,5,6,5,6,5,6,5,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,0,3,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,3,0,3,0,0,0,0,0,4,
+        4,4,0,3,3,3,3,0,3,3,3,3,0,4,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,4,4,3,3,3,3,0,3,3,3,3,4,4,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
+        4,0,0,0,0,0,0,0,0,0,0,0,0,0,4
+
+    };
+
+    DMANow(3, tileData, level->mapTiles, 15 * 16);
+
+} // buildRm2
+
+void buildRm3() {
+
+    level->mapWidth = 15;
     level->mapHeight = 10;
     level->mapXOffset = 0;
     level->mapYOffset = 0;
@@ -184,53 +238,6 @@ void buildRm2() {
     };
 
     DMANow(3, tileData, level->mapTiles, 15 * 10);
-
-} // buildRm2
-
-void buildRm3() {
-
-    level->mapWidth = 16;
-    level->mapHeight = 16;
-    level->mapXOffset = 0;
-    level->mapYOffset = 0;
-
-    level->hOff = 0;
-    level->vOff = 0;
-
-    level->zenithOrientation = RIGHTWALK;
-
-    level->numBlocks = 1;
-    level->numPlates = 0;
-    level->numTools = 0;
-
-    COORDINATE zLoc = {1, 6};
-    level->zenithLoc = zLoc;
-
-    COORDINATE bLoc1 = {7, 4};
-    level->blockLocs[0] = bLoc1;
-
-    const unsigned short tileData[16 * 16] = {
-
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,
-        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,6,
-        5,6,5,6,5,6,5,33,5,6,5,6,5,6,5,6,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-
-    };
-
-    DMANow(3, tileData, level->mapTiles, 16 * 16);
 
 } // buildRm3
 
