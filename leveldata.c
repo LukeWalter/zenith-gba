@@ -15,9 +15,6 @@ LEVEL* level;
 void buildRm1();
 void buildRm2();
 
-void setupMapOne();
-void setupMapTwo();
-
 void allocate() {
     level = malloc(sizeof(LEVEL));
     if (level == NULL) {
@@ -52,8 +49,6 @@ LEVEL* initLevel(int lv) {
 
     hOff = level->hOff;
     vOff = level->vOff;
-
-    level->setup();
 
     DMANow(3, level->pal, PALETTE, 256);
     DMANow(3, level->tiles, &CHARBLOCK[0], level->tileLen / 2);
@@ -140,8 +135,6 @@ void buildRm1() {
 
     DMANow(3, tileData, level->mapTiles, 15 * 10);
 
-    level->setup = &setupMapOne;
-
 } // buildLv1
 
 void buildRm2() {
@@ -197,8 +190,6 @@ void buildRm2() {
 
     DMANow(3, tileData, level->mapTiles, 15 * 10);
 
-    level->setup = &setupMapTwo;
-
 } // buildLv2
 
 void drawTile(int c, int r, int tileposition) {
@@ -247,47 +238,4 @@ void closeDoor() {
 
     } // if
 
-
 } // closeDoor
-
-void setupMapOne() {
-
-    const unsigned short tileData[15 * 10] = {
-
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,
-        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,
-        5,6,5,6,5,6,5,33,5,6,5,6,5,13,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
-
-    };
-
-    DMANow(3, tileData, level->mapTiles, 15 * 10);
-
-} // setupMapOne
-
-void setupMapTwo() {
-
-    const unsigned short tileData[15 * 10] = {
-
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        5,6,5,6,5,6,5,6,5,6,5,6,5,13,1,
-        5,6,5,6,5,6,5,15,5,6,5,6,13,7,1,
-        5,6,5,6,5,6,5,30,5,6,5,13,7,7,1,
-        5,6,5,13,0,0,3,0,4,0,0,7,7,7,1,
-        5,6,13,7,0,4,0,0,0,0,0,7,7,7,1,
-        5,13,7,7,0,0,0,4,0,3,0,7,7,7,1,
-        1,7,7,7,0,0,0,0,0,0,0,7,7,7,1,
-        1,7,7,7,3,0,0,0,0,0,0,7,7,7,1,
-        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
-
-    };
-
-    DMANow(3, tileData, level->mapTiles, 15 * 10);
-
-} // setupMapTwo

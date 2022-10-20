@@ -45,7 +45,6 @@ typedef struct {
     const unsigned short* map;
 
     unsigned short mapTiles[64 * 64];
-    void (*setup)(void);
 
     int numBlocks;
     int numPlates;
