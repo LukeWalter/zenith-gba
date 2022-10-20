@@ -1,7 +1,7 @@
 #ifndef LEVEL_DATA
 #define LEVEL_DATA
 
-#define LEVELCOUNT 2
+#define LEVELCOUNT 3
 
 #define BLOCKCOUNT 1
 #define PLATECOUNT 1
@@ -45,7 +45,6 @@ typedef struct {
     const unsigned short* map;
 
     unsigned short mapTiles[64 * 64];
-    void (*setup)(void);
 
     int numBlocks;
     int numPlates;
@@ -53,7 +52,7 @@ typedef struct {
 
 } LEVEL;
 
-extern LEVEL levels[LEVELCOUNT];
+extern LEVEL* level;
 
 extern int mapWidth;
 extern int mapHeight;
@@ -63,7 +62,8 @@ extern int mapYOffset;
 extern int hOff;
 extern int vOff;
 
-void buildRooms();
+void initMemory();
+void (*buildLevel[LEVELCOUNT])(void);
 LEVEL* initLevel(int);
 
 int getTileId(int, int);

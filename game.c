@@ -11,8 +11,6 @@ TOOL tools[TOOLCOUNT];
 
 TOOL cheaterShovel;
 
-LEVEL levels[LEVELCOUNT];
-
 int gamePaused;
 int gameWon;
 
@@ -24,15 +22,15 @@ int mapYOffset;
 int hOff;
 int vOff;
 
-int level;
+int lv;
 LEVEL* levelData;
 
 void initGame() {
 
-    buildRooms();
+    initMemory();
 
-    level = 1;
-    levelData = initLevel(level);
+    lv = 1;
+    levelData = initLevel(lv);
 
     gamePaused = 0;
     gameWon = 0;
@@ -41,18 +39,18 @@ void initGame() {
 
 void updateLevel() {
 
-    level++;
+    lv++;
     
-    if (level > LEVELCOUNT) gameWon = 1;
-    else levelData = initLevel(level);
-    
+    if (lv > LEVELCOUNT) gameWon = 1;
+    else levelData = initLevel(lv);
+
 } // updateLevel
 
 void updateGame() {
     
     gamePaused = 0;
     if (BUTTON_PRESSED(BUTTON_START) && zenith.obj.idle) gamePaused = 1;
-    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) levelData = initLevel(level);
+    if (BUTTON_PRESSED(BUTTON_L) && zenith.obj.idle) levelData = initLevel(lv);
     
     updateZenith();
     updatePlates();

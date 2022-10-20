@@ -226,8 +226,8 @@ void drawZenith() {
         zenith.obj.sprite.attributes->attr0 |= ATTR0_HIDE;
 
     } else {
-        zenith.obj.sprite.attributes->attr0 = (zenith.obj.sprite.worldRow - 5 - vOff) | ATTR0_TALL;
-        zenith.obj.sprite.attributes->attr1 = (zenith.obj.sprite.worldCol - hOff) | ATTR1_MEDIUM;
+        zenith.obj.sprite.attributes->attr0 = ((zenith.obj.sprite.worldRow - 5 - vOff) & 0x00FF) | ATTR0_TALL;
+        zenith.obj.sprite.attributes->attr1 = ((zenith.obj.sprite.worldCol - hOff) & 0x01FF) | ATTR1_MEDIUM;
         zenith.obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(zenith.obj.sprite.aniState * 2, zenith.obj.sprite.curFrame * 4);
     
     } // if

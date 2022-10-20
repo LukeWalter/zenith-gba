@@ -13,7 +13,6 @@ enum { FRONTWALK, BACKWALK, RIGHTWALK, LEFTWALK, IDLE };
 extern int gamePaused;
 extern int gameWon;
 
-extern int level;
 extern LEVEL* levelData;
 
 extern TOOL cheaterShovel;

@@ -10,49 +10,68 @@
 #include "sound.h"
 #include "door.h"
 
+LEVEL* level;
+
 void buildRm1();
 void buildRm2();
+void buildRm3();
 
-void setupMapOne();
-void setupMapTwo();
+void allocate() {
+    
+    level = malloc(sizeof(LEVEL));
+    if (level == NULL) {
+        mgba_printf("Too much memory >_<");
 
-void buildRooms() {
+    } // if
 
-    buildRm1();
-    buildRm2();
+    level->palLen = cavePalLen;
+    level->tileLen = caveTilesLen;
+    level->mapLen = caveMapLen;
+
+    level->pal = cavePal;
+    level->tiles = caveTiles;
+    level->map = caveMap;
+
+} // allocate
+
+void initMemory() {
+    allocate();
+    buildLevel[0] = &buildRm3;
+    buildLevel[1] = &buildRm2;
+    buildLevel[2] = &buildRm1;
 
 } // buildLevels
 
-LEVEL* initLevel(int level) {
+LEVEL* initLevel(int lv) {
+
+    buildLevel[lv - 1]();
 
     hideSprites();
     cheaterShovel.obj.active = 0;
     cheaterShovel.obj.sprite.hide = 1;
 
     // Measured in double tiles
-    mapWidth = levels[level - 1].mapWidth;
-    mapHeight = levels[level - 1].mapHeight;
+    mapWidth = level->mapWidth;
+    mapHeight = level->mapHeight;
 
     // Measured in single tiles
-    mapXOffset = levels[level - 1].mapXOffset;
-    mapYOffset = levels[level - 1].mapYOffset;
+    mapXOffset = level->mapXOffset;
+    mapYOffset = level->mapYOffset;
 
-    hOff = levels[level - 1].hOff;
-    vOff = levels[level - 1].vOff;
+    hOff = level->hOff;
+    vOff = level->vOff;
 
-    levels[level - 1].setup();
-
-    DMANow(3, levels[level - 1].pal, PALETTE, 256);
-    DMANow(3, levels[level - 1].tiles, &CHARBLOCK[0], levels[level - 1].tileLen / 2);
-    DMANow(3, levels[level - 1].map, &SCREENBLOCK[28], levels[level - 1].mapLen / 2);
+    DMANow(3, level->pal, PALETTE, 256);
+    DMANow(3, level->tiles, &CHARBLOCK[0], level->tileLen / 2);
+    DMANow(3, level->map, &SCREENBLOCK[28], level->mapLen / 2);
     REG_BG1VOFF = vOff;
     REG_BG1HOFF = hOff;
 
-    for (int c = 0; c < levels[level - 1].mapWidth; c++) {
+    for (int c = 0; c < level->mapWidth; c++) {
 
-        for (int r = 0; r < levels[level - 1].mapHeight; r++) {
+        for (int r = 0; r < level->mapHeight; r++) {
             
-            int tileposition = levels[level - 1].mapTiles[OFFSET(c, r, mapWidth)];
+            int tileposition = level->mapTiles[OFFSET(c, r, mapWidth)];
             drawTile(c * 2, r * 2, tileposition);
 
         }  // for
@@ -64,51 +83,43 @@ LEVEL* initLevel(int level) {
     hideSprites();
     updateOAM();
 
-    initZenith(levels[level - 1]);
-    initBlocks(levels[level - 1]);
-    initPlates(levels[level - 1]);
-    initTools(levels[level - 1]);
+    initZenith(*level);
+    initBlocks(*level);
+    initPlates(*level);
+    initTools(*level);
 
-    return &levels[level - 1];
+    return level;
 
 } // initLevel
 
 void buildRm1() {
 
-    levels[0].mapWidth = 15;
-    levels[0].mapHeight = 10;
-    levels[0].mapXOffset = 0;
-    levels[0].mapYOffset = 0;
+    level->mapWidth = 15;
+    level->mapHeight = 10;
+    level->mapXOffset = 0;
+    level->mapYOffset = 0;
 
-    levels[0].hOff = 0;
-    levels[0].vOff = 0;
+    level->hOff = 0;
+    level->vOff = 0;
 
-    levels[0].zenithOrientation = RIGHTWALK;
+    level->zenithOrientation = RIGHTWALK;
 
-    levels[0].numBlocks = 1;
-    levels[0].numPlates = 1;
-    levels[0].numTools = 0;
+    level->numBlocks = 1;
+    level->numPlates = 1;
+    level->numTools = 0;
 
     COORDINATE zLoc = {1, 6};
-    levels[0].zenithLoc = zLoc;
+    level->zenithLoc = zLoc;
 
     COORDINATE bLoc = {11, 7};
-    levels[0].blockLocs[0] = bLoc;
+    level->blockLocs[0] = bLoc;
 
     COORDINATE pLoc = {7, 5};
-    levels[0].plateLocs[0] = pLoc;
+    level->plateLocs[0] = pLoc;
 
-    levels[0].plateInitStates[0] = 0;
-    levels[0].onFuncs[0] = &openDoor;
-    levels[0].offFuncs[0] = &closeDoor;
-
-    levels[0].palLen = cavePalLen;
-    levels[0].tileLen = caveTilesLen;
-    levels[0].mapLen = caveMapLen;
-
-    levels[0].pal = cavePal;
-    levels[0].tiles = caveTiles;
-    levels[0].map = caveMap;
+    level->plateInitStates[0] = 0;
+    level->onFuncs[0] = &openDoor;
+    level->offFuncs[0] = &closeDoor;
 
     const unsigned short tileData[15 * 10] = {
 
@@ -125,47 +136,37 @@ void buildRm1() {
 
     };
 
-    DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
+    DMANow(3, tileData, level->mapTiles, 15 * 10);
 
-    levels[0].setup = &setupMapOne;
-
-} // buildLv1
+} // buildRm1
 
 void buildRm2() {
 
-    levels[1].mapWidth = 15;
-    levels[1].mapHeight = 10;
-    levels[1].mapXOffset = 0;
-    levels[1].mapYOffset = 0;
+    level->mapWidth = 15;
+    level->mapHeight = 10;
+    level->mapXOffset = 0;
+    level->mapYOffset = 0;
 
-    levels[1].hOff = 0;
-    levels[1].vOff = 0;
+    level->hOff = 0;
+    level->vOff = 0;
 
-    levels[1].zenithOrientation = BACKWALK;
+    level->zenithOrientation = BACKWALK;
 
-    levels[1].numBlocks = 1;
-    levels[1].numPlates = 0;
-    levels[1].numTools = 1;
+    level->numBlocks = 1;
+    level->numPlates = 0;
+    level->numTools = 1;
 
     COORDINATE zLoc2 = {7, 8};
-    levels[1].zenithLoc = zLoc2;
+    level->zenithLoc = zLoc2;
 
     COORDINATE bLoc2 = {7, 4};
-    levels[1].blockLocs[0] = bLoc2;
+    level->blockLocs[0] = bLoc2;
 
     
     COORDINATE tLoc2 = {4, 4};
-    levels[1].toolLocs[0] = tLoc2;
+    level->toolLocs[0] = tLoc2;
 
-    levels[1].toolAbilities[0] = &pickaxeFunction;
-
-    levels[1].palLen = cavePalLen;
-    levels[1].tileLen = caveTilesLen;
-    levels[1].mapLen = caveMapLen;
-
-    levels[1].pal = cavePal;
-    levels[1].tiles = caveTiles;
-    levels[1].map = caveMap;
+    level->toolAbilities[0] = &pickaxeFunction;
 
     const unsigned short tileData[15 * 10] = {
 
@@ -182,11 +183,56 @@ void buildRm2() {
 
     };
 
-    DMANow(3, tileData, levels[1].mapTiles, 15 * 10);
+    DMANow(3, tileData, level->mapTiles, 15 * 10);
 
-    levels[1].setup = &setupMapTwo;
+} // buildRm2
 
-} // buildLv2
+void buildRm3() {
+
+    level->mapWidth = 16;
+    level->mapHeight = 16;
+    level->mapXOffset = 0;
+    level->mapYOffset = 0;
+
+    level->hOff = 0;
+    level->vOff = 0;
+
+    level->zenithOrientation = RIGHTWALK;
+
+    level->numBlocks = 1;
+    level->numPlates = 0;
+    level->numTools = 0;
+
+    COORDINATE zLoc = {1, 6};
+    level->zenithLoc = zLoc;
+
+    COORDINATE bLoc1 = {7, 4};
+    level->blockLocs[0] = bLoc1;
+
+    const unsigned short tileData[16 * 16] = {
+
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,
+        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,6,
+        5,6,5,6,5,6,5,33,5,6,5,6,5,6,5,6,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+    };
+
+    DMANow(3, tileData, level->mapTiles, 16 * 16);
+
+} // buildRm3
 
 void drawTile(int c, int r, int tileposition) {
 
@@ -234,47 +280,4 @@ void closeDoor() {
 
     } // if
 
-
 } // closeDoor
-
-void setupMapOne() {
-
-    const unsigned short tileData[15 * 10] = {
-
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,
-        5,6,5,6,5,6,5,18,5,6,5,6,5,6,5,
-        5,6,5,6,5,6,5,33,5,6,5,6,5,13,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,7,1,
-        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
-
-    };
-
-    DMANow(3, tileData, levels[0].mapTiles, 15 * 10);
-
-} // setupMapOne
-
-void setupMapTwo() {
-
-    const unsigned short tileData[15 * 10] = {
-
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        5,6,5,6,5,6,5,6,5,6,5,6,5,13,1,
-        5,6,5,6,5,6,5,15,5,6,5,6,13,7,1,
-        5,6,5,6,5,6,5,30,5,6,5,13,7,7,1,
-        5,6,5,13,0,0,3,0,4,0,0,7,7,7,1,
-        5,6,13,7,0,4,0,0,0,0,0,7,7,7,1,
-        5,13,7,7,0,0,0,4,0,3,0,7,7,7,1,
-        1,7,7,7,0,0,0,0,0,0,0,7,7,7,1,
-        1,7,7,7,3,0,0,0,0,0,0,7,7,7,1,
-        2,2,2,2,2,2,2,2,2,2,2,2,2,2,1
-
-    };
-
-    DMANow(3, tileData, levels[1].mapTiles, 15 * 10);
-
-} // setupMapTwo

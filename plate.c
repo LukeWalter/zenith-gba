@@ -129,8 +129,8 @@ void drawPlates() {
             plates[i].obj.sprite.attributes->attr0 |= ATTR0_HIDE;
 
         } else {
-            plates[i].obj.sprite.attributes->attr0 = (plates[i].obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
-            plates[i].obj.sprite.attributes->attr1 = (plates[i].obj.sprite.worldCol - hOff) | ATTR1_SMALL;
+            plates[i].obj.sprite.attributes->attr0 = ((plates[i].obj.sprite.worldRow - vOff) & 0x00FF) | ATTR0_SQUARE;
+            plates[i].obj.sprite.attributes->attr1 = ((plates[i].obj.sprite.worldCol - hOff) & 0x01FF) | ATTR1_SMALL;
             plates[i].obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(8, plates[i].obj.sprite.curFrame * 2);
         
         } // if
