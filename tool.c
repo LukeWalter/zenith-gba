@@ -61,8 +61,8 @@ void drawTools() {
             tools[i].obj.sprite.attributes->attr0 |= ATTR0_HIDE;
 
         } else {
-            tools[i].obj.sprite.attributes->attr0 = (tools[i].obj.sprite.worldRow - vOff) | ATTR0_SQUARE;
-            tools[i].obj.sprite.attributes->attr1 = (tools[i].obj.sprite.worldCol - hOff) | ATTR1_SMALL;
+            tools[i].obj.sprite.attributes->attr0 = ((tools[i].obj.sprite.worldRow - vOff) & 0x00FF) | ATTR0_SQUARE;
+            tools[i].obj.sprite.attributes->attr1 = ((tools[i].obj.sprite.worldCol - hOff) & 0x01FF) | ATTR1_SMALL;
             tools[i].obj.sprite.attributes->attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(14, tools[i].obj.sprite.curFrame * 2);
         
         } // if
